@@ -17,7 +17,9 @@
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.30.9",
     "fastify": "^4.26.2",
-    "postgres": "^3.4.4"
+    "fastify-type-provider-zod": "^1.1.9",
+    "postgres": "^3.4.4",
+    "zod": "^3.23.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.1.1",

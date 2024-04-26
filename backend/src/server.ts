@@ -5,6 +5,7 @@ import postgres from 'postgres'
 import { drizzle } from 'drizzle-orm/postgres-js'
 import { migrate } from 'drizzle-orm/postgres-js/migrator'
 import { EnvManager } from './system/EnvManager'
+import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod'
 
 // In production use environment variables instead of .env file. Make sure to set the var NODE_ENV = 'production'.
 if (process.env.NODE_ENV !== 'production') {
@@ -28,7 +29,9 @@ migrate(dbMigration, { migrationsFolder: 'drizzle' })
 const queryClient = postgres(connectionString)
 export const db = drizzle(queryClient)
 
-const fastify = Fastify()
+const fastify = Fastify().withTypeProvider<ZodTypeProvider>()
+fastify.setValidatorCompiler(validatorCompiler)
+fastify.setSerializerCompiler(serializerCompiler)
 
 const start = async () => {
   try {
