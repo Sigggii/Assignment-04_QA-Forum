@@ -1,5 +1,9 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+#other
+.dist/
+.nx/
+
 # Compiled output
 /dist
 /tmp
@@ -40,10 +44,3 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
-
-# dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local

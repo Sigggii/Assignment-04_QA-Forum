@@ -22,6 +22,7 @@
       "dom"
     ],
     "paths": {
+      "@/shared/*": ["../backend/src/shared/*"],
       "@spartan-ng/ui-input-helm": [
         "./src/components/ui/ui-input-helm/src/index.ts"
       ],
@@ -38,5 +39,5 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
 }
