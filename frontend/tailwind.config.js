@@ -4,7 +4,18 @@ module.exports = {
     content: ['./src/**/*.{html,ts}'],
     darkMode: 'class',
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                noob: {
+                    DEFAULT: 'hsl(var(--noob))',
+                    foreground: 'hsl(var(--noob-foreground))',
+                },
+                pro: {
+                    DEFAULT: 'hsl(var(--pro))',
+                    foreground: 'hsl(var(--pro-foreground))',
+                },
+            },
+        },
     },
     plugins: [],
 }
