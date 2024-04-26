@@ -27,6 +27,9 @@
       ],
       "@spartan-ng/ui-button-helm": [
         "./src/components/ui/ui-button-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-icon-helm": [
+        "./src/components/ui/ui-icon-helm/src/index.ts"
       ]
     }
   },
