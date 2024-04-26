@@ -3,6 +3,8 @@ import { RouterOutlet } from '@angular/router'
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm'
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm'
 import { AppbarComponent } from './core/components/appbar/appbar.component'
+import { NgIf } from '@angular/common'
+import { SidebarComponent } from './core/components/sidebar/sidebar.component'
 
 @Component({
     selector: 'app-root',
@@ -13,10 +15,16 @@ import { AppbarComponent } from './core/components/appbar/appbar.component'
         HlmInputDirective,
         AppbarComponent,
         AppbarComponent,
+        NgIf,
+        SidebarComponent,
     ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
 })
 export class AppComponent {
-    title = 'frontend'
+    isSidebarOpen = false
+
+    toggleSidebar() {
+        this.isSidebarOpen = !this.isSidebarOpen
+    }
 }

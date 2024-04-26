@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, EventEmitter, Output } from '@angular/core'
 import { provideIcons } from '@ng-icons/core'
 import { lucideMenu, lucideBell, lucideSearch } from '@ng-icons/lucide'
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
@@ -20,4 +20,10 @@ import { HlmInputDirective } from '@spartan-ng/ui-input-helm'
     styleUrl: './appbar.component.css',
     providers: [provideIcons({ lucideMenu, lucideBell, lucideSearch })],
 })
-export class AppbarComponent {}
+export class AppbarComponent {
+    @Output() toggleSidebar = new EventEmitter<void>()
+
+    handleToggleSidebar() {
+        this.toggleSidebar.emit()
+    }
+}
