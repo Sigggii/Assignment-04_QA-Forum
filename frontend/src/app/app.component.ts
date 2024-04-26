@@ -2,7 +2,7 @@ import { Component } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm'
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm'
-import { AppbarComponent } from '../components/base/appbar/appbar.component'
+import { AppbarComponent } from './core/components/appbar/appbar.component'
 
 @Component({
     selector: 'app-root',

@@ -23,16 +23,16 @@
     ],
     "paths": {
       "@spartan-ng/ui-input-helm": [
-        "./src/components/ui/ui-input-helm/src/index.ts"
+        "./lib/ui/ui-input-helm/src/index.ts"
       ],
       "@spartan-ng/ui-button-helm": [
-        "./src/components/ui/ui-button-helm/src/index.ts"
+        "./lib/ui/ui-button-helm/src/index.ts"
       ],
       "@spartan-ng/ui-icon-helm": [
-        "./src/components/ui/ui-icon-helm/src/index.ts"
+        "./lib/ui/ui-icon-helm/src/index.ts"
       ],
       "@spartan-ng/ui-avatar-helm": [
-        "./src/components/ui/ui-avatar-helm/src/index.ts"
+        "./lib/ui/ui-avatar-helm/src/index.ts"
       ]
     }
   },
