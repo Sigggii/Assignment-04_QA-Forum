@@ -1,5 +1,19 @@
 <div class="flex flex-col gap-4">
-    <div class="h-10 w-full bg-red-300"></div>
-    <div class="h-10 w-full bg-red-300"></div>
-    <div class="h-10 w-full bg-red-300"></div>
+    <a
+        class="w-full rounded-md p-2 text-xl font-semibold hover:underline"
+        routerLink="/"
+        routerLinkActive="bg-accent"
+        ariaCurrentWhenActive="page"
+        [routerLinkActiveOptions]="{ exact: true }"
+    >
+        Home
+    </a>
+    <a
+        class="w-full rounded-md p-2 text-xl font-semibold hover:underline"
+        routerLink="/questions"
+        routerLinkActive="bg-accent"
+        ariaCurrentWhenActive="page"
+    >
+        Questions
+    </a>
 </div>
