@@ -1,19 +1,23 @@
 <div class="flex flex-col gap-4">
     <a
-        class="w-full rounded-md p-2 text-xl font-semibold hover:underline"
+        class="flex w-full items-center gap-2 rounded-md p-2 text-xl font-semibold hover:underline"
         routerLink="/"
         routerLinkActive="bg-accent"
         ariaCurrentWhenActive="page"
         [routerLinkActiveOptions]="{ exact: true }"
+        (click)="handleClick('/')"
     >
+        <hlm-icon name="lucideHome" />
         Home
     </a>
     <a
-        class="w-full rounded-md p-2 text-xl font-semibold hover:underline"
+        class="flex w-full items-center gap-2 rounded-md p-2 text-xl font-semibold hover:underline"
         routerLink="/questions"
         routerLinkActive="bg-accent"
         ariaCurrentWhenActive="page"
+        (click)="handleClick('/questions')"
     >
+        <hlm-icon name="lucideMessageCircleQuestion" />
         Questions
     </a>
 </div>
