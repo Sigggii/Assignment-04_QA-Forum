@@ -5,6 +5,7 @@ import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm'
 import { HlmAvatarComponent, HlmAvatarFallbackDirective } from '@spartan-ng/ui-avatar-helm'
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm'
+import { NgOptimizedImage } from '@angular/common'
 
 @Component({
     selector: 'app-appbar',
@@ -15,6 +16,7 @@ import { HlmInputDirective } from '@spartan-ng/ui-input-helm'
         HlmAvatarComponent,
         HlmAvatarFallbackDirective,
         HlmInputDirective,
+        NgOptimizedImage,
     ],
     templateUrl: './appbar.component.html',
     styleUrl: './appbar.component.css',
