@@ -27,4 +27,8 @@ export class AppComponent {
     toggleSidebar() {
         this.isSidebarOpen = !this.isSidebarOpen
     }
+
+    closeSidebar() {
+        this.isSidebarOpen = false
+    }
 }
