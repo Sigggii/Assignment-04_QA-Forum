@@ -31,10 +31,7 @@ TODO: Not finished yet:
     - maybe use directives for control of inputs
     - currently I use span for badges (eslint is whining about it)
     - eslint mag kein autofocus attribut (ignoren oder anders handlen?)
-    - errorMessage in globaler error farbe machen
     - unordered list listen elemente funktionieren nicht
-    - maxWidth in parent container benötigt, damit input overflow funktioniert
-
  */
 export class BadgeInputComponent {
     @Input() errorMessages: string[] = []
