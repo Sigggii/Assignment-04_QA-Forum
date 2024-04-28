@@ -45,7 +45,7 @@ export class BadgeInputComponent {
 
     handleNewBadgeInput = (event: Event) => {
         const input = event.target as HTMLInputElement
-        //dont allow space if input is empty
+        //don't allow space if input is empty
         if (input.value.trim() === '') {
             input.value = ''
             return
