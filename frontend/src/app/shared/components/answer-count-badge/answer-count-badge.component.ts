@@ -5,13 +5,13 @@ import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
 import { NgStyle } from '@angular/common'
 
 @Component({
-    selector: 'app-comment-count-badge',
+    selector: 'app-answer-count-badge',
     standalone: true,
     imports: [HlmIconComponent, NgStyle],
-    templateUrl: './comment-count-badge.component.html',
-    styleUrl: './comment-count-badge.component.css',
+    templateUrl: './answer-count-badge.component.html',
+    styleUrl: './answer-count-badge.component.css',
     providers: [provideIcons({ lucideMessageCircleReply })],
 })
-export class CommentCountBadgeComponent {
+export class AnswerCountBadgeComponent {
     @Input({ required: true }) commentCount!: number
 }

@@ -5,7 +5,7 @@ import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
 import { UserBadgeComponent } from '../user-badge/user-badge.component'
 import { formatDateXTimeAgo } from '../../utils/date-utils'
 import { ScoreBadgeComponent } from '../score-badge/score-badge.component'
-import { CommentCountBadgeComponent } from '../comment-count-badge/comment-count-badge.component'
+import { AnswerCountBadgeComponent } from '../answer-count-badge/answer-count-badge.component'
 import { AnswerRatingBadgeComponent } from '../answer-rating-badge/answer-rating-badge.component'
 
 @Component({
@@ -17,7 +17,7 @@ import { AnswerRatingBadgeComponent } from '../answer-rating-badge/answer-rating
         HlmIconComponent,
         UserBadgeComponent,
         ScoreBadgeComponent,
-        CommentCountBadgeComponent,
+        AnswerCountBadgeComponent,
         AnswerRatingBadgeComponent,
     ],
     templateUrl: './question-preview.component.html',
