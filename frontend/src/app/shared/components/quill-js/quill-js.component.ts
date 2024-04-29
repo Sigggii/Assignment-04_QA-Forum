@@ -51,6 +51,7 @@ export class QuillJsComponent implements ControlValueAccessor {
         this.onTouched = onTouched
     }
     handleContentChanged = (event: ContentChange) => {
+        console.log(event)
         if (event.html) {
             this.value = event.html
             this.onChange(this.value)
