@@ -4,26 +4,28 @@ import dotenv from 'dotenv'
 import postgres from 'postgres'
 import { drizzle } from 'drizzle-orm/postgres-js'
 import { migrate } from 'drizzle-orm/postgres-js/migrator'
-import { EnvManager } from './system/EnvManager'
+import { checkEnv, getConfig } from './system/EnvManager'
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod'
 
 // In production use environment variables instead of .env file. Make sure to set the var NODE_ENV = 'production'.
 if (process.env.NODE_ENV !== 'production') {
-  dotenv.config()
+    dotenv.config()
 }
+// Check if all required environment variables are set
+checkEnv()
 
 //setup drizzle
-const connectionString = EnvManager.getDB_CONNECTION_STRING()
+const connectionString = getConfig().DB_CONNECTION_STRING
 const sql = postgres(connectionString, { max: 1 })
 const dbMigration = drizzle(sql)
 
 //migrate db schema
 migrate(dbMigration, { migrationsFolder: 'drizzle' })
-  .then(() => console.log('Migration completed'))
-  .catch((err) => {
-    console.log(err)
-    process.exit(1)
-  })
+    .then(() => console.log('Migration completed'))
+    .catch((err) => {
+        console.log(err)
+        process.exit(1)
+    })
 
 // initialize db-client for database access
 const queryClient = postgres(connectionString)
@@ -34,11 +36,10 @@ fastify.setValidatorCompiler(validatorCompiler)
 fastify.setSerializerCompiler(serializerCompiler)
 
 const start = async () => {
-  try {
-    await fastify.listen({ port: 8080 })
-  } catch (err) {
-    console.log(err)
-  }
+    try {
+        await fastify.listen({ port: getConfig().PORT })
+    } catch (err) {
+        console.log(err)
+    }
 }
-
 start()
