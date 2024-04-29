@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 import postgres from 'postgres'
 import { drizzle } from 'drizzle-orm/postgres-js'
 import { migrate } from 'drizzle-orm/postgres-js/migrator'
-import { EnvManager } from './system/EnvManager'
+import { checkEnv, getConfig } from './system/EnvManager'
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod'
 import { questionRoutes } from './routes/questionRoutes'
 import fastifyPlugin from 'fastify-plugin'
@@ -20,9 +20,11 @@ declare module 'fastify' {
 if (process.env.NODE_ENV !== 'production') {
     dotenv.config()
 }
+// Check if all required environment variables are set
+checkEnv()
 
 //setup drizzle
-const connectionString = EnvManager.getDB_CONNECTION_STRING()
+const connectionString = getConfig().DB_CONNECTION_STRING
 const sql = postgres(connectionString, { max: 1 })
 const dbMigration = drizzle(sql)
 
@@ -58,10 +60,9 @@ const routes = (fastify: BaseFastifyInstance, opt: any, done: any) => {
 fastify.register(routes, { prefix: '/api' })
 const start = async () => {
     try {
-        await fastify.listen({ port: 8080 })
+        await fastify.listen({ port: getConfig().PORT })
     } catch (err) {
         console.log(err)
     }
 }
-
 start()

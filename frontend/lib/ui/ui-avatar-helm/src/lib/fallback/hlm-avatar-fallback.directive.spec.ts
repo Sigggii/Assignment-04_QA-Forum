@@ -1,5 +1,9 @@
 import { Component, PLATFORM_ID } from '@angular/core'
-import { TestBed, fakeAsync, type ComponentFixture } from '@angular/core/testing'
+import {
+    TestBed,
+    fakeAsync,
+    type ComponentFixture,
+} from '@angular/core/testing'
 import { hexColorFor, isBright } from '@spartan-ng/ui-avatar-brain'
 import { HlmAvatarFallbackDirective } from './hlm-avatar-fallback.directive'
 
@@ -8,7 +12,9 @@ import { HlmAvatarFallbackDirective } from './hlm-avatar-fallback.directive'
     standalone: true,
     imports: [HlmAvatarFallbackDirective],
     template: `
-        <span hlmAvatarFallback [class]="userCls" [autoColor]="autoColor">fallback2</span>
+        <span hlmAvatarFallback [class]="userCls" [autoColor]="autoColor"
+            >fallback2</span
+        >
     `,
 })
 class HlmMockComponent {
@@ -21,9 +27,9 @@ describe('HlmAvatarFallbackDirective', () => {
     let fixture: ComponentFixture<HlmMockComponent>
 
     beforeEach(() => {
-        fixture = TestBed.overrideProvider(PLATFORM_ID, { useValue: 'browser' }).createComponent(
-            HlmMockComponent
-        )
+        fixture = TestBed.overrideProvider(PLATFORM_ID, {
+            useValue: 'browser',
+        }).createComponent(HlmMockComponent)
         component = fixture.componentInstance
     })
 
@@ -42,13 +48,17 @@ describe('HlmAvatarFallbackDirective', () => {
         component.userCls = 'test-class'
 
         fixture.detectChanges()
-        expect(fixture.nativeElement.querySelector('span').className).toContain('test-class')
+        expect(fixture.nativeElement.querySelector('span').className).toContain(
+            'test-class'
+        )
     })
     it('should merge bg-destructive correctly when set as user defined class, therefore removing bg-muted', async () => {
         component.userCls = 'bg-destructive '
 
         fixture.detectChanges()
-        expect(fixture.nativeElement.querySelector('span').className).toContain('bg-destructive')
+        expect(fixture.nativeElement.querySelector('span').className).toContain(
+            'bg-destructive'
+        )
     })
 
     describe('autoColor', () => {
@@ -59,16 +69,21 @@ describe('HlmAvatarFallbackDirective', () => {
 
         it('should remove the bg-muted class from the component', fakeAsync(() => {
             fixture.detectChanges()
-            expect(fixture.nativeElement.querySelector('span').className).not.toContain('bg-muted')
+            expect(
+                fixture.nativeElement.querySelector('span').className
+            ).not.toContain('bg-muted')
         }))
 
         it('should remove add a text color class and hex backgroundColor style depending on its content', () => {
             const hex = hexColorFor('fallback2')
             const textCls = isBright(hex) ? 'text-black' : 'text-white'
-            expect(fixture.nativeElement.querySelector('span').className).toContain(textCls)
-            expect(fixture.nativeElement.querySelector('span').style.backgroundColor).toBe(
-                'rgb(144, 53, 149)'
-            )
+            expect(
+                fixture.nativeElement.querySelector('span').className
+            ).toContain(textCls)
+            expect(
+                fixture.nativeElement.querySelector('span').style
+                    .backgroundColor
+            ).toBe('rgb(144, 53, 149)')
         })
     })
 })

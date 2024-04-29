@@ -1,54 +1,45 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "outDir": "./dist/out-tsc",
-    "strict": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "sourceMap": true,
-    "declaration": false,
-    "experimentalDecorators": true,
-    "moduleResolution": "node",
-    "importHelpers": true,
-    "target": "ES2022",
-    "module": "ES2022",
-    "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ],
-    "paths": {
-      "@/shared/*": [
-        "../backend/src/shared/*"
-      ],
-      "@spartan-ng/ui-input-helm": [
-        "./lib/ui/ui-input-helm/src/index.ts"
-      ],
-      "@spartan-ng/ui-button-helm": [
-        "./lib/ui/ui-button-helm/src/index.ts"
-      ],
-      "@spartan-ng/ui-icon-helm": [
-        "./lib/ui/ui-icon-helm/src/index.ts"
-      ],
-      "@spartan-ng/ui-avatar-helm": [
-        "./lib/ui/ui-avatar-helm/src/index.ts"
-      ],
-      "@spartan-ng/ui-label-helm": [
-        "./lib/ui/ui-label-helm-custom/src/index.ts"
-      ],
-      "@spartan-ng/ui-badge-helm": [
-        "./lib/ui/ui-badge-helm/src/index.ts"
-      ]
+    "compileOnSave": false,
+    "compilerOptions": {
+        "outDir": "./dist/out-tsc",
+        "strict": true,
+        "noImplicitOverride": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "sourceMap": true,
+        "declaration": false,
+        "experimentalDecorators": true,
+        "moduleResolution": "node",
+        "importHelpers": true,
+        "target": "ES2022",
+        "module": "ES2022",
+        "useDefineForClassFields": false,
+        "lib": ["ES2022", "dom"],
+        "paths": {
+            "@/shared/*": ["../backend/src/shared/*"],
+            "@spartan-ng/ui-input-helm": [
+                "./lib/ui/ui-input-helm/src/index.ts"
+            ],
+            "@spartan-ng/ui-button-helm": [
+                "./lib/ui/ui-button-helm/src/index.ts"
+            ],
+            "@spartan-ng/ui-icon-helm": ["./lib/ui/ui-icon-helm/src/index.ts"],
+            "@spartan-ng/ui-avatar-helm": [
+                "./lib/ui/ui-avatar-helm/src/index.ts"
+            ],
+            "@spartan-ng/ui-label-helm": [
+                "./lib/ui/ui-label-helm-custom/src/index.ts"
+            ],
+            "@spartan-ng/ui-badge-helm": ["./lib/ui/ui-badge-helm/src/index.ts"]
+        }
+    },
+    "angularCompilerOptions": {
+        "enableI18nLegacyMessageIdFormat": false,
+        "strictInjectionParameters": true,
+        "strictInputAccessModifiers": true,
+        "strictTemplates": true
     }
-  },
-  "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
-    "strictTemplates": true
-  }
 }

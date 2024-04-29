@@ -1,0 +1,12 @@
+<div
+    hlmBadge
+    variant="outline"
+    class="flex cursor-pointer gap-1 pl-2"
+    [ngClass]="
+        user.role === 'PRO'
+            ? 'border-pro bg-pro text-pro-foreground hover:bg-pro/80'
+            : 'border-noob bg-noob text-noob-foreground hover:bg-noob/80'
+    "
+>
+    <hlm-icon name="lucideUser" size="sm" />{{ user.username }}
+</div>

@@ -4,7 +4,7 @@
 @import 'quill/dist/quill.snow.css';
 
 .ql-toolbar {
-  @apply rounded-t
+    @apply rounded-t;
 }
 
 /* You can add global styles to this file, and also import other style files */
@@ -20,6 +20,10 @@
         --noob-foreground: 0 0% 3.9%;
         --pro: 230 100% 60%;
         --pro-foreground: 0 0% 98%;
+        --success: 142.4 71.8% 29.2%;
+        --success-foreground: 0 0% 98%;
+        --warning: 40 100% 55%;
+        --warning-foreground: 0 0% 3.9%;
 
         --background: 0 0% 100%;
         --foreground: 0 0% 3.9%;

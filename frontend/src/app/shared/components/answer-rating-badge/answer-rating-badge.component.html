@@ -1,0 +1,13 @@
+<div
+    class="flex items-center gap-0.5 rounded-full py-[1px] pl-2 pr-2.5 text-sm"
+    [ngClass]="{
+        'bg-success text-success-foreground': rating >= 4,
+        'bg-accent text-accent-foreground': rating >= 2 && rating < 4,
+        'bg-warning text-warning-foreground': rating >= 1 && rating < 2,
+        'bg-destructive text-destructive-foreground': rating < 1
+    }"
+>
+    <span class="mr-0.5 font-semibold">Top Answer:</span
+    >{{ formatNumber(Math.round(rating * 10) / 10, 'en-UK', '1.0-1') }}
+    <hlm-icon name="lucideStar" size="sm" />
+</div>

@@ -75,7 +75,9 @@ export class HlmIconComponent implements OnDestroy {
     protected readonly _name = signal<IconName | string>('')
     protected readonly _size = signal<IconSize>('base')
     protected readonly _color = signal<string | undefined>(undefined)
-    protected readonly _strokeWidth = signal<string | number | undefined>(undefined)
+    protected readonly _strokeWidth = signal<string | number | undefined>(
+        undefined
+    )
     protected readonly userCls = signal<ClassValue>('')
     protected readonly ngIconSize = computed(() =>
         isDefinedSize(this._size()) ? '100%' : (this._size() as string)
@@ -96,14 +98,17 @@ export class HlmIconComponent implements OnDestroy {
 
     constructor() {
         if (isPlatformBrowser(this._platformId)) {
-            this._mutObs = new MutationObserver((mutations: MutationRecord[]) => {
-                mutations.forEach((mutation: MutationRecord) => {
-                    if (mutation.attributeName !== 'class') return
-                    this._hostClasses.set(
-                        (mutation.target as Node & { className?: string })?.className ?? ''
-                    )
-                })
-            })
+            this._mutObs = new MutationObserver(
+                (mutations: MutationRecord[]) => {
+                    mutations.forEach((mutation: MutationRecord) => {
+                        if (mutation.attributeName !== 'class') return
+                        this._hostClasses.set(
+                            (mutation.target as Node & { className?: string })
+                                ?.className ?? ''
+                        )
+                    })
+                }
+            )
             this._mutObs.observe(this._host.nativeElement, {
                 attributes: true,
             })

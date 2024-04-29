@@ -1,4 +1,9 @@
-import { Directive, ElementRef, HostListener, AfterContentChecked } from '@angular/core'
+import {
+    Directive,
+    ElementRef,
+    HostListener,
+    AfterContentChecked,
+} from '@angular/core'
 
 @Directive({
     selector: '[appDynamicSize]',

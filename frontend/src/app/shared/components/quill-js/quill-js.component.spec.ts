@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { QuillJsComponent } from './quill-js.component';
+import { QuillJsComponent } from './quill-js.component'
 
 describe('QuillJsComponent', () => {
   let component: QuillJsComponent;
@@ -11,13 +11,13 @@ describe('QuillJsComponent', () => {
       imports: [QuillJsComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(QuillJsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    it('should create', () => {
+        expect(component).toBeTruthy()
+    })
+})
