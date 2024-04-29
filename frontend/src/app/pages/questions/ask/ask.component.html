@@ -1,12 +1,26 @@
-<section id="ask-question-container" class="flex w-full flex-col">
+<section id="ask-question-container" class="flex max-w-2xl flex-col">
     <h1 class="text-3xl font-bold">Ask others for help</h1>
-    <section class="mt-10 flex max-w-4xl flex-col gap-3">
+
+    <form
+        [formGroup]="questionForm"
+        (ngSubmit)="handleSubmitQuestion()"
+        class="mt-10 flex max-w-4xl flex-col gap-3"
+    >
+        {{ questionForm.value | json }}
         <label hlmLabel class="font-medium"
             >Title
-            <input hlmInput class="w-full" maxlength="150" placeholder="Title" />
+            <input
+                formControlName="title"
+                hlmInput
+                class="w-full"
+                maxlength="150"
+                placeholder="Title"
+            />
         </label>
-        <app-content />
-        <app-category-input />
-        <button class="w-fit" hlmBtn>Post Question</button>
-    </section>
+        <app-content formControlName="content" />
+        <app-tag-input formControlName="tags" maxTags="5" />
+        <button [disabled]="!questionForm.valid" class="w-fit" type="submit" hlmBtn>
+            Post Question
+        </button>
+    </form>
 </section>

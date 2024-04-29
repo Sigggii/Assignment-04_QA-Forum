@@ -1,10 +1,12 @@
 <section id="ask-question-content-container">
     <span class="text-base">Content</span>
-    <quill-editor
+    <app-quill-js
+        #editor
+        [formControlName]="formControlName"
         class="w-full"
         classes="rounded-b h-[500px]"
         theme="snow"
         [modules]="modules"
         placeholder=""
-    ></quill-editor>
+    ></app-quill-js>
 </section>

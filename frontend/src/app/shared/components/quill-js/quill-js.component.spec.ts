@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CategoryInputComponent } from './category-input.component';
+import { QuillJsComponent } from './quill-js.component';
 
-describe('CategoryInputComponent', () => {
-  let component: CategoryInputComponent;
-  let fixture: ComponentFixture<CategoryInputComponent>;
+describe('QuillJsComponent', () => {
+  let component: QuillJsComponent;
+  let fixture: ComponentFixture<QuillJsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CategoryInputComponent]
+      imports: [QuillJsComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(CategoryInputComponent);
+    fixture = TestBed.createComponent(QuillJsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
