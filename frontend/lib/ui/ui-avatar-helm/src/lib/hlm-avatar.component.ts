@@ -12,18 +12,21 @@ import { hlm } from '@spartan-ng/ui-core'
 import { cva, type VariantProps } from 'class-variance-authority'
 import type { ClassValue } from 'clsx'
 
-export const avatarVariants = cva('relative flex shrink-0 overflow-hidden rounded-full', {
-    variants: {
-        variant: {
-            small: 'h-6 w-6 text-xs',
-            medium: 'h-10 w-10',
-            large: 'h-14 w-14 text-lg',
+export const avatarVariants = cva(
+    'relative flex shrink-0 overflow-hidden rounded-full',
+    {
+        variants: {
+            variant: {
+                small: 'h-6 w-6 text-xs',
+                medium: 'h-10 w-10',
+                large: 'h-14 w-14 text-lg',
+            },
         },
-    },
-    defaultVariants: {
-        variant: 'medium',
-    },
-})
+        defaultVariants: {
+            variant: 'medium',
+        },
+    }
+)
 
 type AvatarVariants = VariantProps<typeof avatarVariants>
 

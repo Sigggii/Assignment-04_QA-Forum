@@ -1,9 +1,31 @@
-<article class="flex w-full flex-col gap-1.5">
-    <div class="flex flex-wrap">tags</div>
+<article class="flex w-full flex-col gap-1 rounded-lg border p-3">
+    @if (question.tags.length > 0) {
+        <section class="flex flex-wrap gap-1">
+            @for (tag of question.tags; track $index) {
+                <app-tag-badge [tag]="tag" />
+            }
+        </section>
+    }
 
-    <h2>title</h2>
+    <h2 class="cursor-pointer text-xl font-semibold hover:underline">
+        {{ question.title }}
+    </h2>
 
-    <div>content...</div>
+    <div>{{ question.content }}</div>
 
-    <div class="flex flex-wrap">bottom row</div>
+    <section class="flex flex-wrap items-center gap-1">
+        <app-score-badge [score]="question.score" />
+        <span class="font-bold">·</span>
+        <app-comment-count-badge [commentCount]="question.commentCount" />
+        <span class="font-bold">·</span>
+        <app-answer-rating-badge [rating]="question.rating" />
+
+        <div class="ml-auto flex items-center gap-1 pl-3">
+            <app-user-badge [user]="question.author" />
+            <span class="font-bold">·</span>
+            <span class="text-sm text-foreground/80">{{
+                formatDateXTimeAgo(question.createdAt)
+            }}</span>
+        </div>
+    </section>
 </article>

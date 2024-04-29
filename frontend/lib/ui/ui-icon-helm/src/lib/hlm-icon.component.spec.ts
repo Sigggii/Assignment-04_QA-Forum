@@ -42,7 +42,9 @@ describe('HlmIconComponent', () => {
     })
 
     it('should pass the size, color and strokeWidth props and the classes to the ng-icon component', () => {
-        const debugEl = r.fixture.debugElement.query(By.directive(NgIconComponent))
+        const debugEl = r.fixture.debugElement.query(
+            By.directive(NgIconComponent)
+        )
         const component = debugEl.componentInstance as NgIconComponent
         expect(component.color).toBe('red')
         expect(component.strokeWidth).toBe('2')
@@ -51,21 +53,35 @@ describe('HlmIconComponent', () => {
     })
 
     it('should add the appropriate size variant class', () => {
-        expect(r.container.querySelector('hlm-icon')?.classList).toContain('h-6')
-        expect(r.container.querySelector('hlm-icon')?.classList).toContain('w-6')
+        expect(r.container.querySelector('hlm-icon')?.classList).toContain(
+            'h-6'
+        )
+        expect(r.container.querySelector('hlm-icon')?.classList).toContain(
+            'w-6'
+        )
     })
 
     it('should compose the user classes', () => {
-        expect(r.container.querySelector('hlm-icon')?.classList).toContain('inline-flex')
-        expect(r.container.querySelector('hlm-icon')?.classList).toContain('test')
+        expect(r.container.querySelector('hlm-icon')?.classList).toContain(
+            'inline-flex'
+        )
+        expect(r.container.querySelector('hlm-icon')?.classList).toContain(
+            'test'
+        )
     })
 
     it('should forward the size property if the size is not a pre-defined size', async () => {
         await r.rerender({ componentInputs: { size: '2rem' } })
         r.fixture.detectChanges()
-        const debugEl = r.fixture.debugElement.query(By.directive(NgIconComponent))
+        const debugEl = r.fixture.debugElement.query(
+            By.directive(NgIconComponent)
+        )
         expect(debugEl.componentInstance.size).toBe('2rem')
-        expect(r.container.querySelector('hlm-icon')?.classList).not.toContain('h-6')
-        expect(r.container.querySelector('hlm-icon')?.classList).not.toContain('w-6')
+        expect(r.container.querySelector('hlm-icon')?.classList).not.toContain(
+            'h-6'
+        )
+        expect(r.container.querySelector('hlm-icon')?.classList).not.toContain(
+            'w-6'
+        )
     })
 })

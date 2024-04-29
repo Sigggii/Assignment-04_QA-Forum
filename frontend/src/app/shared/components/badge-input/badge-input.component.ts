@@ -50,7 +50,7 @@ export class BadgeInputComponent {
         const newBadgeResult = this.parseNewBadges(input)
         //remove newBadges which already exist and empty strings
         const filteredBadges = newBadgeResult.newBadges.filter(
-            (elem) => !this.badges.includes(elem) && elem !== ''
+            elem => !this.badges.includes(elem) && elem !== ''
         )
         this.badges.push(...filteredBadges)
         input.value = newBadgeResult.lastValue
@@ -71,12 +71,14 @@ export class BadgeInputComponent {
         //if there are new badges, set them at position of editedBadge and set badge to not edited
         if (newBadge.length >= 1) {
             //if last value is not empty, add this to new badges as well (handles copy paste cases)
-            if (newBadgesResult.lastValue !== '') newBadge.push(newBadgesResult.lastValue)
+            if (newBadgesResult.lastValue !== '')
+                newBadge.push(newBadgesResult.lastValue)
             const filteredBadges = newBadge.filter(
-                (elem) => !this.badges.includes(elem) || elem === editedBadge
+                elem => !this.badges.includes(elem) || elem === editedBadge
             )
             const indexEditBadge = this.badges.indexOf(editedBadge)
-            indexEditBadge !== -1 && this.badges.splice(indexEditBadge, 1, ...filteredBadges)
+            indexEditBadge !== -1 &&
+                this.badges.splice(indexEditBadge, 1, ...filteredBadges)
             this.editBadge = ''
         }
         this.badgeChange.emit(this.badges)
@@ -105,7 +107,7 @@ export class BadgeInputComponent {
     }
 
     handleDeleteBadge = (badge: string) => {
-        this.badges = this.badges.filter((cat) => badge !== cat)
+        this.badges = this.badges.filter(cat => badge !== cat)
         this.badgeChange.emit(this.badges)
     }
 

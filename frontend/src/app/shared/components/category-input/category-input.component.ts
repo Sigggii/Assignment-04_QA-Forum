@@ -29,12 +29,12 @@ export class CategoryInputComponent {
 
         if (this.categoryMaxLength) {
             const lenthErrorMessages: string[] = this.categories
-                .map((category) => {
+                .map(category => {
                     return category.length > this.categoryMaxLength!
                         ? `Category ${category} is ${category.length - this.categoryMaxLength!} chars too long`
                         : null
                 })
-                .filter((message) => {
+                .filter(message => {
                     return message !== null
                 }) as string[]
 

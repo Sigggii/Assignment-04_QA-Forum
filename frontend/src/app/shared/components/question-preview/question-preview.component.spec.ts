@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { QuestionPreviewComponent } from './question-preview.component';
+import { QuestionPreviewComponent } from './question-preview.component'
 
 describe('QuestionPreviewComponent', () => {
-  let component: QuestionPreviewComponent;
-  let fixture: ComponentFixture<QuestionPreviewComponent>;
+    let component: QuestionPreviewComponent
+    let fixture: ComponentFixture<QuestionPreviewComponent>
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [QuestionPreviewComponent]
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [QuestionPreviewComponent],
+        }).compileComponents()
+
+        fixture = TestBed.createComponent(QuestionPreviewComponent)
+        component = fixture.componentInstance
+        fixture.detectChanges()
     })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(QuestionPreviewComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    it('should create', () => {
+        expect(component).toBeTruthy()
+    })
+})
