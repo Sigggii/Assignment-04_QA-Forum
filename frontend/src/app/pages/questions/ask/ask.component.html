@@ -6,7 +6,6 @@
         (ngSubmit)="handleSubmitQuestion()"
         class="mt-10 flex max-w-4xl flex-col gap-3"
     >
-        {{ questionForm.value | json }}
         <label hlmLabel class="font-medium"
             >Title
             <input
@@ -18,8 +17,37 @@
             />
         </label>
         <app-content formControlName="content" />
-        <app-tag-input formControlName="tags" maxTags="5" />
-        <button [disabled]="!questionForm.valid" class="w-fit" type="submit" hlmBtn>
+        <section>
+            <app-badge-input formControlName="tags" label="Tags" />
+            <ul class="text-sm text-destructive">
+                <li
+                    *ngIf="
+                        questionForm.controls.tags.getError('minLengthArray') &&
+                        questionForm.controls.tags.dirty
+                    "
+                >
+                    Minimum {{ minTags }} Tag required (type in text and press
+                    space to enter tag)
+                </li>
+                <li
+                    *ngIf="
+                        questionForm.controls.tags.getError('maxLengthArray') &&
+                        questionForm.controls.tags.dirty
+                    "
+                >
+                    Maximum {{ maxTags }} Tags
+                </li>
+                <li *ngIf="questionForm.controls.tags.getError('maxTagLength')">
+                    Maximum length for a tag is {{ maxTagLength }} characters
+                </li>
+            </ul>
+        </section>
+        <button
+            [disabled]="!questionForm.valid"
+            class="w-fit"
+            type="submit"
+            hlmBtn
+        >
             Post Question
         </button>
     </form>

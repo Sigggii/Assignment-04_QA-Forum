@@ -4,8 +4,11 @@
 @import 'quill/dist/quill.snow.css';
 
 .ql-toolbar {
-    @apply rounded-t;
+    @apply rounded-t !border-accent;
+
+
 }
+
 
 /* You can add global styles to this file, and also import other style files */
 @tailwind base;

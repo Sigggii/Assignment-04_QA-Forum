@@ -1,0 +1,13 @@
+
+/*Style input in case of errors set by FormControl*/
+:host.ng-invalid.ng-touched span {
+    border-color: hsl(var(--destructive));
+    color: hsl(var(--destructive));
+    --tw-ring-color: hsl(var(--destructive));
+}
+
+/*Style badges in case of errors set by FormControl (prevent text and border from getting red*/
+:host.ng-invalid.ng-touched span[hlmBadge] {
+    border-color: hsl(var(--primary));;
+    color: hsl(var(--foreground));
+}
