@@ -1,20 +1,13 @@
-import Fastify, { FastifyInstance, FastifyPluginCallback, FastifyPluginOptions } from 'fastify'
+import Fastify from 'fastify'
 import dotenv from 'dotenv'
-
 import postgres from 'postgres'
 import { drizzle } from 'drizzle-orm/postgres-js'
 import { migrate } from 'drizzle-orm/postgres-js/migrator'
 import { checkEnv, getConfig } from './system/EnvManager'
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod'
 import { questionRoutes } from './routes/questionRoutes'
-import fastifyPlugin from 'fastify-plugin'
 import fastifyCors from '@fastify/cors'
-
-declare module 'fastify' {
-    interface FastifyInstance {
-        typeProvider: ZodTypeProvider
-    }
-}
+import * as schema from './db/schema'
 
 // In production use environment variables instead of .env file. Make sure to set the var NODE_ENV = 'production'.
 if (process.env.NODE_ENV !== 'production') {
@@ -38,7 +31,7 @@ migrate(dbMigration, { migrationsFolder: 'drizzle' })
 
 // initialize db-client for database access
 const queryClient = postgres(connectionString)
-export const db = drizzle(queryClient)
+export const db = drizzle(queryClient, { schema })
 
 export const fastify = Fastify().withTypeProvider<ZodTypeProvider>()
 fastify.register(fastifyCors, {

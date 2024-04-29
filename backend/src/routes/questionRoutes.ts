@@ -1,6 +1,6 @@
-import { BaseFastifyInstance, fastify } from '../server'
+import { BaseFastifyInstance } from '../server'
 import { CreateQuestionRequestSchema } from '../shared/types'
-import { createQuestion } from '../controller/questionController'
+import { createQuestion, getQuestions } from '../controller/questionController'
 
 export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any) => {
     fastify.post(
@@ -23,5 +23,14 @@ export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any
             }
         },
     )
+
+    fastify.get('/', async (req, rep) => {
+        try {
+            return await getQuestions()
+        } catch (err) {
+            console.log(err)
+        }
+    })
+
     done()
 }

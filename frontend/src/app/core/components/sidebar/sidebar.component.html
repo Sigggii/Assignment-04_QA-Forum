@@ -21,4 +21,16 @@
         <hlm-icon name="lucideMessageCircleQuestion" />
         Questions
     </a>
+    <span class="h-[1px] w-full bg-accent"></span>
+    <a
+        class="flex w-full items-center gap-2 rounded-md p-2 text-xl font-semibold hover:underline"
+        routerLink="/questions/me"
+        routerLinkActive="bg-accent"
+        ariaCurrentWhenActive="page"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="handleClick('/questions/me')"
+    >
+        <hlm-icon name="lucideMessageCircleQuestion" />
+        My Questions
+    </a>
 </div>

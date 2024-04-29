@@ -1,4 +1,3 @@
-import { CreateQuestionRequest } from '../shared/types'
 import { question, question_tag, tag } from './schema'
 import { getTableColumns } from 'drizzle-orm'
 import { db } from '../server'
@@ -28,4 +27,25 @@ export const createQuestionDB = async (createQuestion: CreateQuestion) => {
 
         return newQuestion
     })
+}
+
+export const queryQuestions = async () => {
+    return await db.query.question
+        .findMany({
+            with: {
+                user: true,
+                question_tag: {
+                    with: {
+                        tag: true,
+                    },
+                },
+                votesQuestion: true,
+                answer: {
+                    with: {
+                        ratingAnswer: true,
+                    },
+                },
+            },
+        })
+        .execute()
 }

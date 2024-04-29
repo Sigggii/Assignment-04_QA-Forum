@@ -1,6 +1,8 @@
-import { Component } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core'
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm'
 import { QuestionPreviewComponent } from '../../shared/components/question-preview/question-preview.component'
+import { BackendService } from '../../core/services/backend.service'
+import { QuestionData } from '@/shared/types'
 
 @Component({
     selector: 'app-questions',
@@ -9,4 +11,14 @@ import { QuestionPreviewComponent } from '../../shared/components/question-previ
     templateUrl: './questions.component.html',
     styleUrl: './questions.component.css',
 })
-export class QuestionsComponent {}
+export class QuestionsComponent implements OnInit {
+    backendService = inject(BackendService)
+
+    data: QuestionData[] = []
+
+    ngOnInit(): void {
+        this.backendService.fetchQuestions().subscribe(data => {
+            this.data = data
+        })
+    }
+}

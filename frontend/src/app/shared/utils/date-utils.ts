@@ -4,9 +4,9 @@
  * @param date The date to convert
  * @returns The formatted date string
  */
-export const formatDateXTimeAgo = (date: Date): string => {
+export const formatDateXTimeAgo = (date: string): string => {
     const now = new Date()
-    const diff = now.getTime() - date.getTime()
+    const diff = now.getTime() - new Date(date).getTime()
 
     const seconds = diff / 1000
     const minutes = seconds / 60
@@ -45,8 +45,8 @@ export const formatDateXTimeAgo = (date: Date): string => {
  * @param date The date to convert
  * @returns The formatted date string
  */
-export const formatDate = (date: Date): string => {
-    return date.toLocaleDateString('en-UK', {
+export const formatDate = (date: string): string => {
+    return new Date(date).toLocaleDateString('en-UK', {
         day: 'numeric',
         month: 'short',
         year: 'numeric',

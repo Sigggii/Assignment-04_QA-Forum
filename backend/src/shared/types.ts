@@ -9,3 +9,26 @@ export const CreateQuestionRequestSchema = z.object({
 })
 
 export type CreateQuestionRequest = z.infer<typeof CreateQuestionRequestSchema>
+
+export type QuestionData = {
+    id: string
+    createdAt: string
+    authorId: string
+    title: string
+    content: string
+    lastEditedAt: string | null
+    user: {
+        id: string
+        role: 'NOOB' | 'PRO' | 'ADMIN'
+        username: string
+        createdAt: string
+    }
+    tags: {
+        id: string
+        name: string
+    }[]
+
+    score: number
+    answerCount: number
+    topAnswerRating: number
+}

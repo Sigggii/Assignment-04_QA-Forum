@@ -2,7 +2,7 @@
     @if (question.tags.length > 0) {
         <section class="flex flex-wrap gap-1">
             @for (tag of question.tags; track $index) {
-                <app-tag-badge [tag]="tag" />
+                <app-tag-badge [tag]="tag.name" />
             }
         </section>
     }
@@ -16,12 +16,12 @@
     <section class="flex flex-wrap items-center gap-1">
         <app-score-badge [score]="question.score" />
         <span class="font-bold">·</span>
-        <app-answer-count-badge [commentCount]="question.commentCount" />
+        <app-answer-count-badge [commentCount]="question.answerCount" />
         <span class="font-bold">·</span>
-        <app-answer-rating-badge [rating]="question.rating" />
+        <app-answer-rating-badge [rating]="question.topAnswerRating" />
 
         <div class="ml-auto flex items-center gap-1 pl-3">
-            <app-user-badge [user]="question.author" />
+            <app-user-badge [user]="question.user" />
             <span class="font-bold">·</span>
             <span class="text-sm text-foreground/80">{{
                 formatDateXTimeAgo(question.createdAt)
