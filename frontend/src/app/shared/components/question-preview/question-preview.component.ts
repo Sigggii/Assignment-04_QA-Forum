@@ -7,6 +7,7 @@ import { formatDateXTimeAgo } from '../../utils/date-utils'
 import { ScoreBadgeComponent } from '../score-badge/score-badge.component'
 import { AnswerCountBadgeComponent } from '../answer-count-badge/answer-count-badge.component'
 import { AnswerRatingBadgeComponent } from '../answer-rating-badge/answer-rating-badge.component'
+import { QuestionData } from '@/shared/types'
 
 @Component({
     selector: 'app-question-preview',
@@ -24,22 +25,7 @@ import { AnswerRatingBadgeComponent } from '../answer-rating-badge/answer-rating
     styleUrl: './question-preview.component.css',
 })
 export class QuestionPreviewComponent {
-    @Input() question = {
-        id: 'id',
-        tags: ['angular', 'javascript'],
-        title: 'What is Angular?',
-        content:
-            'I have been hearing a lot about Angular, but I am not sure what it is. Can someone explain it to me?',
-        createdAt: new Date(),
+    @Input({ required: true }) question!: QuestionData
 
-        score: 4,
-        commentCount: 2,
-        rating: 4.1,
-
-        author: {
-            username: 'Username',
-            role: 'NOOB',
-        },
-    } //TODO: Add real type and data
     protected readonly formatDateXTimeAgo = formatDateXTimeAgo
 }

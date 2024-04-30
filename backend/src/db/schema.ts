@@ -1,6 +1,3 @@
-//db schemas
-
-//user table
 import {
     boolean,
     date,
@@ -11,7 +8,7 @@ import {
     uuid,
     varchar,
 } from 'drizzle-orm/pg-core'
-import { number } from 'zod'
+import { relations } from 'drizzle-orm'
 
 export const roleEnum = pgEnum('role', ['NOOB', 'PRO', 'ADMIN'])
 
@@ -22,6 +19,15 @@ export const user = pgTable('user', {
     role: roleEnum('role').default('NOOB').notNull(),
     createdAt: date('createdAt').defaultNow().notNull(),
 })
+export const userRelations = relations(user, ({ many }) => ({
+    question: many(question),
+    answer: many(answer),
+    commentQuestion: many(commentQuestion),
+    commentAnswer: many(commentAnswer),
+    votesQuestion: many(votesQuestion),
+    votesAnswer: many(votesAnswer),
+    ratingAnswer: many(ratingAnswer),
+}))
 
 export const question = pgTable('question', {
     id: uuid('id').defaultRandom().primaryKey().notNull(),
@@ -33,11 +39,21 @@ export const question = pgTable('question', {
     createdAt: date('createdAt').defaultNow().notNull(),
     lastEditedAt: date('lastEditedAt'),
 })
+export const questionRelations = relations(question, ({ one, many }) => ({
+    user: one(user, { fields: [question.authorId], references: [user.id] }),
+    answer: many(answer),
+    commentQuestion: many(commentQuestion),
+    question_tag: many(question_tag),
+    votesQuestion: many(votesQuestion),
+}))
 
 export const tag = pgTable('tag', {
     id: uuid('id').defaultRandom().primaryKey().notNull(),
     name: varchar('name', { length: 20 }).unique().notNull(),
 })
+export const tagRelations = relations(tag, ({ many }) => ({
+    question_tag: many(question_tag),
+}))
 
 export const question_tag = pgTable(
     'question_tag',
@@ -55,6 +71,10 @@ export const question_tag = pgTable(
         }
     },
 )
+export const question_tagRelations = relations(question_tag, ({ one, many }) => ({
+    question: one(question, { fields: [question_tag.questionId], references: [question.id] }),
+    tag: one(tag, { fields: [question_tag.tagId], references: [tag.id] }),
+}))
 
 export const answer = pgTable('answer', {
     id: uuid('id').defaultRandom().primaryKey().notNull(),
@@ -68,6 +88,12 @@ export const answer = pgTable('answer', {
     createdAt: date('createdAt').defaultNow().notNull(),
     lastEditedAt: date('lastEditedAt'),
 })
+export const answerRelations = relations(answer, ({ one, many }) => ({
+    user: one(user, { fields: [answer.authorId], references: [user.id] }),
+    question: one(question, { fields: [answer.questionId], references: [question.id] }),
+    commentAnswer: many(commentAnswer),
+    ratingAnswer: many(ratingAnswer),
+}))
 
 export const commentQuestion = pgTable('commentQuestion', {
     id: uuid('id').defaultRandom().primaryKey().notNull(),
@@ -81,6 +107,10 @@ export const commentQuestion = pgTable('commentQuestion', {
     createdAt: date('createdAt').defaultNow().notNull(),
     lastEditedAt: date('lastEditedAt'),
 })
+export const commentQuestionRelations = relations(commentQuestion, ({ one }) => ({
+    user: one(user, { fields: [commentQuestion.authorId], references: [user.id] }),
+    question: one(question, { fields: [commentQuestion.questionId], references: [question.id] }),
+}))
 
 export const commentAnswer = pgTable('commentAnswer', {
     id: uuid('id').defaultRandom().primaryKey().notNull(),
@@ -94,6 +124,10 @@ export const commentAnswer = pgTable('commentAnswer', {
     createdAt: date('createdAt').defaultNow().notNull(),
     lastEditedAt: date('lastEditedAt'),
 })
+export const commentAnswerRelations = relations(commentAnswer, ({ one }) => ({
+    user: one(user, { fields: [commentAnswer.authorId], references: [user.id] }),
+    answer: one(answer, { fields: [commentAnswer.answerId], references: [answer.id] }),
+}))
 
 export const votesQuestion = pgTable(
     'votesQuestion',
@@ -112,6 +146,10 @@ export const votesQuestion = pgTable(
         }
     },
 )
+export const votesQuestionRelation = relations(votesQuestion, ({ one }) => ({
+    user: one(user, { fields: [votesQuestion.userId], references: [user.id] }),
+    answer: one(question, { fields: [votesQuestion.questionId], references: [question.id] }),
+}))
 
 export const votesAnswer = pgTable(
     'votesAnswer',
@@ -130,6 +168,10 @@ export const votesAnswer = pgTable(
         }
     },
 )
+export const votesAnswerRelation = relations(votesAnswer, ({ one }) => ({
+    user: one(user, { fields: [votesAnswer.userId], references: [user.id] }),
+    answer: one(answer, { fields: [votesAnswer.answerId], references: [answer.id] }),
+}))
 
 export const ratingAnswer = pgTable(
     'ratingAnswer',
@@ -148,3 +190,7 @@ export const ratingAnswer = pgTable(
         }
     },
 )
+export const ratingAnswerRelation = relations(ratingAnswer, ({ one }) => ({
+    user: one(user, { fields: [ratingAnswer.userId], references: [user.id] }),
+    answer: one(answer, { fields: [ratingAnswer.answerId], references: [answer.id] }),
+}))
