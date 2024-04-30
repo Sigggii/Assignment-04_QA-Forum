@@ -1,47 +1,42 @@
-<section>
-    <label hlmLabel
-        >Categories
-        <span
-            class="my-1 flex w-full max-w-full gap-1 overflow-auto rounded-md border border-solid border-input bg-transparent p-2 text-sm font-normal ring-offset-background focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 hover:cursor-text"
-        >
-            <span class="flex flex-wrap gap-1">
-                <ng-template ngFor let-category [ngForOf]="badges">
-                    <span
-                        *ngIf="category !== editBadge"
-                        hlmBadge
-                        (click)="handleEditBadge(category)"
-                        class="text-sm hover:cursor-text"
-                    >
-                        {{ category }}
-                        <hlm-icon
-                            size="sm"
-                            name="lucideX"
-                            class="ml-1 hover:cursor-pointer hover:bg-foreground hover:text-primary"
-                            (click)="handleDeleteBadge(category)"
-                        />
-                    </span>
-                    <input
-                        *ngIf="category === editBadge"
-                        [value]="category"
-                        (input)="handleEditBadgeInput($event, category)"
-                        appDynamicSize
-                        type="text"
-                        autofocus
-                        class="bg-background focus:outline-none"
+<label hlmLabel
+    >{{ label }}
+    <span
+        class="my-1 flex w-full max-w-full gap-1 overflow-auto rounded-md border border-solid border-input bg-transparent p-2 text-sm font-normal ring-offset-background focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 hover:cursor-text"
+    >
+        <span class="flex flex-wrap gap-1">
+            <ng-template ngFor let-tag [ngForOf]="internalTags.slice(0, -1)">
+                <span
+                    *ngIf="tag !== editBadge"
+                    hlmBadge
+                    (click)="handleEditBadge(tag)"
+                    class="text-sm text-foreground hover:cursor-text"
+                >
+                    {{ tag }}
+                    <hlm-icon
+                        size="sm"
+                        name="lucideX"
+                        class="ml-1 hover:cursor-pointer hover:bg-foreground hover:text-primary"
+                        (click)="handleDeleteBadge(tag)"
                     />
-                </ng-template>
+                </span>
                 <input
-                    class="bg-background focus:outline-none"
-                    value=""
-                    type="text"
+                    *ngIf="tag === editBadge"
+                    [value]="tag"
+                    (input)="handleEditBadgeInput($event, tag)"
                     appDynamicSize
-                    (input)="handleNewBadgeInput($event)"
-                    (keydown)="handleKeyDown($event)"
+                    type="text"
+                    autofocus
+                    class="bg-background focus:outline-none"
                 />
-            </span>
+            </ng-template>
+            <input
+                class="bg-background focus:outline-none"
+                value=""
+                type="text"
+                appDynamicSize
+                (input)="handleNewBadgeInput($event)"
+                (keydown)="handleKeyDown($event)"
+            />
         </span>
-    </label>
-    <ul class="text-sm text-destructive">
-        <li *ngFor="let message of errorMessages">{{ message }}</li>
-    </ul>
-</section>
+    </span>
+</label>

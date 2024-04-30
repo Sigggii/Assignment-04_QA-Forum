@@ -1,7 +1,11 @@
-import { Component, ElementRef, Input, Output, ViewChild } from '@angular/core'
+import { Component, Input, ViewChild } from '@angular/core'
 import { QuillEditorComponent } from 'ngx-quill'
 import { QuillJsComponent } from '../../../../../shared/components/quill-js/quill-js.component'
-import { ControlContainer, FormGroupDirective, ReactiveFormsModule } from '@angular/forms'
+import {
+    ControlContainer,
+    FormGroupDirective,
+    ReactiveFormsModule,
+} from '@angular/forms'
 
 @Component({
     selector: 'app-content',

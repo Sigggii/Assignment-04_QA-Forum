@@ -1,7 +1,17 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core'
+import {
+    Component,
+    EventEmitter,
+    forwardRef,
+    Input,
+    Output,
+} from '@angular/core'
 import { NgForOf, NgIf } from '@angular/common'
 import { HlmBadgeDirective } from '@spartan-ng/ui-badge-helm'
-import { FormsModule } from '@angular/forms'
+import {
+    ControlValueAccessor,
+    FormsModule,
+    NG_VALUE_ACCESSOR,
+} from '@angular/forms'
 import { provideIcons } from '@ng-icons/core'
 import { lucideX } from '@ng-icons/lucide'
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
@@ -21,7 +31,14 @@ import { HlmLabelDirective } from '@spartan-ng/ui-label-helm'
         HlmLabelDirective,
     ],
     templateUrl: './badge-input.component.html',
-    providers: [provideIcons({ lucideX })],
+    providers: [
+        provideIcons({ lucideX }),
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => BadgeInputComponent),
+            multi: true,
+        },
+    ],
     styleUrl: './badge-input.component.css',
 })
 
@@ -33,28 +50,53 @@ TODO: Not finished yet:
     - eslint mag kein autofocus attribut (ignoren oder anders handlen?)
     - unordered list listen elemente funktionieren nicht
  */
-export class BadgeInputComponent {
-    @Input() errorMessages: string[] = []
-    @Output() badgeChange = new EventEmitter<string[]>()
+export class BadgeInputComponent implements ControlValueAccessor {
+    @Input() label: string = ''
 
-    badges: string[] = []
+    public value: string[] = []
+    internalTags: string[] = []
     editBadge: string = ''
+
+    public onTouched = () => {}
+    public onChange = (value: string[]) => {}
+
+    public touched: boolean = false
+
+    writeValue(value: string[]): void {
+        this.value = value.filter(val => val.trim() !== '')
+    }
+    registerOnChange(onChange: any): void {
+        this.onChange = onChange
+    }
+    registerOnTouched(onTouched: any): void {
+        this.onTouched = onTouched
+    }
 
     handleNewBadgeInput = (event: Event) => {
         const input = event.target as HTMLInputElement
         //don't allow space if input is empty
         if (input.value.trim() === '') {
+            this.internalTags.pop()
+            this.internalTags.push('')
+            this.writeValue(this.internalTags)
+            this.onChange(this.value)
             input.value = ''
             return
         }
         const newBadgeResult = this.parseNewBadges(input)
         //remove newBadges which already exist and empty strings
         const filteredBadges = newBadgeResult.newBadges.filter(
-            elem => !this.badges.includes(elem) && elem !== ''
+            elem => !this.value.slice(0, -1).includes(elem) && elem !== ''
         )
-        this.badges.push(...filteredBadges)
+
+        this.internalTags = this.internalTags.slice(0, -1)
+        this.internalTags.push(...filteredBadges, newBadgeResult.lastValue)
+        this.writeValue(this.internalTags)
+
         input.value = newBadgeResult.lastValue
-        this.badgeChange.emit(this.badges)
+
+        this.onChange(this.value)
+        this.onTouched()
     }
 
     handleEditBadgeInput = (event: Event, editedBadge: string) => {
@@ -67,21 +109,23 @@ export class BadgeInputComponent {
         }
         const newBadgesResult = this.parseNewBadges(input)
         const newBadge = newBadgesResult.newBadges
-        console.log(newBadge)
         //if there are new badges, set them at position of editedBadge and set badge to not edited
         if (newBadge.length >= 1) {
             //if last value is not empty, add this to new badges as well (handles copy paste cases)
             if (newBadgesResult.lastValue !== '')
                 newBadge.push(newBadgesResult.lastValue)
             const filteredBadges = newBadge.filter(
-                elem => !this.badges.includes(elem) || elem === editedBadge
+                elem =>
+                    !this.internalTags.includes(elem) || elem === editedBadge
             )
-            const indexEditBadge = this.badges.indexOf(editedBadge)
+            const indexEditBadge = this.internalTags.indexOf(editedBadge)
             indexEditBadge !== -1 &&
-                this.badges.splice(indexEditBadge, 1, ...filteredBadges)
+                this.internalTags.splice(indexEditBadge, 1, ...filteredBadges)
+            this.writeValue(this.internalTags)
             this.editBadge = ''
         }
-        this.badgeChange.emit(this.badges)
+        this.onChange(this.value)
+        this.onTouched()
     }
 
     parseNewBadges(input: HTMLInputElement) {
@@ -100,15 +144,19 @@ export class BadgeInputComponent {
     handleKeyDown = (event: KeyboardEvent) => {
         const input = event.target as HTMLInputElement
         if (event.key === 'Backspace' && input.value === '') {
-            if (this.badges.length >= 1) {
-                input.value = this.badges.pop() as string
+            if (this.value.length >= 1) {
+                this.internalTags.pop()
+                input.value = this.value[this.value.length - 1] as string
+                event.preventDefault()
             }
         }
     }
 
     handleDeleteBadge = (badge: string) => {
-        this.badges = this.badges.filter(cat => badge !== cat)
-        this.badgeChange.emit(this.badges)
+        this.internalTags = this.internalTags.filter(cat => badge !== cat)
+        this.writeValue(this.internalTags)
+        this.onChange(this.value)
+        this.onTouched()
     }
 
     handleEditBadge = (badge: string) => {

@@ -4,17 +4,11 @@ import { lucideMessageCircleQuestion, lucideHome } from '@ng-icons/lucide'
 import { provideIcons } from '@ng-icons/core'
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
 import { Router } from '@angular/router'
-import { BrnSeparatorComponent } from '@spartan-ng/ui-separator-brain'
 
 @Component({
     selector: 'app-sidebar',
     standalone: true,
-    imports: [
-        RouterLink,
-        RouterLinkActive,
-        HlmIconComponent,
-        BrnSeparatorComponent,
-    ],
+    imports: [RouterLink, RouterLinkActive, HlmIconComponent],
     templateUrl: './sidebar.component.html',
     styleUrl: './sidebar.component.css',
     providers: [provideIcons({ lucideMessageCircleQuestion, lucideHome })],
