@@ -1,7 +1,7 @@
 import { Question } from '../db/types'
-import { CreateQuestionRequest, QuestionData } from '../shared/types'
+import { CreateQuestionRequest, QuestionPreviewData } from '../shared/types'
 import { createQuestionDB, queryQuestions } from '../db/questionRepository'
-import { calculateTopAnswerRating } from '../utils/questionUtils'
+import { calculateScore, calculateTopAnswerRating } from '../utils/questionUtils'
 
 export const createQuestion = async (
     createQuestion: CreateQuestionRequest,
@@ -13,13 +13,12 @@ export const createQuestion = async (
     })
 }
 
-export const getQuestions = async (): Promise<QuestionData[]> => {
+export const getQuestions = async (): Promise<QuestionPreviewData[]> => {
     const data = await queryQuestions()
 
     return data.map((question) => {
-        const topAnswerRating = calculateTopAnswerRating(question.answer)
-
-        // TODO: calculate score
+        const topAnswerRating = calculateTopAnswerRating(question)
+        const score = calculateScore(question)
 
         return {
             id: question.id,
@@ -34,7 +33,7 @@ export const getQuestions = async (): Promise<QuestionData[]> => {
 
             topAnswerRating: topAnswerRating,
             answerCount: question.answer.length,
-            score: 0,
+            score: score,
         }
     })
 }

@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { CreateQuestionRequest } from '@/shared/types'
 import { environment } from '../../../environments/environment'
-import { QuestionData } from '@/shared/types'
+import { QuestionPreviewData } from '../../shared/types/api-types'
 
 @Injectable({
     providedIn: 'root',
@@ -15,6 +15,8 @@ export class BackendService {
     }
 
     fetchQuestions() {
-        return this.http.get<QuestionData[]>(`${environment.apiUrl}questions`)
+        return this.http.get<QuestionPreviewData[]>(
+            `${environment.apiUrl}questions`
+        )
     }
 }

@@ -8,6 +8,13 @@
       "when": 1714219443096,
       "tag": "0000_new_marvel_zombies",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1714474939046,
+      "tag": "0001_sticky_spencer_smythe",
+      "breakpoints": true
     }
   ]
 }

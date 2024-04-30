@@ -10,19 +10,22 @@ export const CreateQuestionRequestSchema = z.object({
 
 export type CreateQuestionRequest = z.infer<typeof CreateQuestionRequestSchema>
 
-export type QuestionData = {
+export type User = {
     id: string
-    createdAt: string
+    role: 'NOOB' | 'PRO' | 'ADMIN'
+    username: string
+    createdAt: Date
+}
+
+export type QuestionPreviewData = {
+    id: string
     authorId: string
     title: string
     content: string
-    lastEditedAt: string | null
-    user: {
-        id: string
-        role: 'NOOB' | 'PRO' | 'ADMIN'
-        username: string
-        createdAt: string
-    }
+    createdAt: Date
+    lastEditedAt: Date | null
+
+    user: User
     tags: {
         id: string
         name: string

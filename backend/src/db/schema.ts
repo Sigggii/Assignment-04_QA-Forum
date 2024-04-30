@@ -1,10 +1,10 @@
 import {
     boolean,
-    date,
     pgEnum,
     pgTable,
     primaryKey,
     smallint,
+    timestamp,
     uuid,
     varchar,
 } from 'drizzle-orm/pg-core'
@@ -17,7 +17,7 @@ export const user = pgTable('user', {
     username: varchar('username').unique().notNull(),
     password: varchar('password').notNull(),
     role: roleEnum('role').default('NOOB').notNull(),
-    createdAt: date('createdAt').defaultNow().notNull(),
+    createdAt: timestamp('createdAt').defaultNow().notNull(),
 })
 export const userRelations = relations(user, ({ many }) => ({
     question: many(question),
@@ -36,8 +36,8 @@ export const question = pgTable('question', {
         .notNull(),
     title: varchar('title', { length: 150 }).notNull(),
     content: varchar('content', { length: 10000 }).notNull(),
-    createdAt: date('createdAt').defaultNow().notNull(),
-    lastEditedAt: date('lastEditedAt'),
+    createdAt: timestamp('createdAt').defaultNow().notNull(),
+    lastEditedAt: timestamp('lastEditedAt'),
 })
 export const questionRelations = relations(question, ({ one, many }) => ({
     user: one(user, { fields: [question.authorId], references: [user.id] }),
@@ -71,7 +71,7 @@ export const question_tag = pgTable(
         }
     },
 )
-export const question_tagRelations = relations(question_tag, ({ one, many }) => ({
+export const question_tagRelations = relations(question_tag, ({ one }) => ({
     question: one(question, { fields: [question_tag.questionId], references: [question.id] }),
     tag: one(tag, { fields: [question_tag.tagId], references: [tag.id] }),
 }))
@@ -85,8 +85,8 @@ export const answer = pgTable('answer', {
         .references(() => user.id, { onDelete: 'cascade' })
         .notNull(),
     content: varchar('content', { length: 10000 }).notNull(),
-    createdAt: date('createdAt').defaultNow().notNull(),
-    lastEditedAt: date('lastEditedAt'),
+    createdAt: timestamp('createdAt').defaultNow().notNull(),
+    lastEditedAt: timestamp('lastEditedAt'),
 })
 export const answerRelations = relations(answer, ({ one, many }) => ({
     user: one(user, { fields: [answer.authorId], references: [user.id] }),
@@ -104,8 +104,8 @@ export const commentQuestion = pgTable('commentQuestion', {
         .references(() => user.id, { onDelete: 'cascade' })
         .notNull(),
     content: varchar('content', { length: 500 }).notNull(),
-    createdAt: date('createdAt').defaultNow().notNull(),
-    lastEditedAt: date('lastEditedAt'),
+    createdAt: timestamp('createdAt').defaultNow().notNull(),
+    lastEditedAt: timestamp('lastEditedAt'),
 })
 export const commentQuestionRelations = relations(commentQuestion, ({ one }) => ({
     user: one(user, { fields: [commentQuestion.authorId], references: [user.id] }),
@@ -121,8 +121,8 @@ export const commentAnswer = pgTable('commentAnswer', {
         .references(() => user.id, { onDelete: 'cascade' })
         .notNull(),
     content: varchar('content', { length: 500 }).notNull(),
-    createdAt: date('createdAt').defaultNow().notNull(),
-    lastEditedAt: date('lastEditedAt'),
+    createdAt: timestamp('createdAt').defaultNow().notNull(),
+    lastEditedAt: timestamp('lastEditedAt'),
 })
 export const commentAnswerRelations = relations(commentAnswer, ({ one }) => ({
     user: one(user, { fields: [commentAnswer.authorId], references: [user.id] }),

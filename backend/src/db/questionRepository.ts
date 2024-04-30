@@ -2,6 +2,7 @@ import { question, question_tag, tag } from './schema'
 import { getTableColumns } from 'drizzle-orm'
 import { db } from '../server'
 import { CreateQuestion, Question, QuestionTag } from './types'
+import { QueryResultType } from '../utils/typeUtils'
 
 export const createQuestionDB = async (createQuestion: CreateQuestion) => {
     const questionColumns = getTableColumns(question)
@@ -29,23 +30,24 @@ export const createQuestionDB = async (createQuestion: CreateQuestion) => {
     })
 }
 
-export const queryQuestions = async () => {
-    return await db.query.question
-        .findMany({
-            with: {
-                user: true,
-                question_tag: {
-                    with: {
-                        tag: true,
-                    },
-                },
-                votesQuestion: true,
-                answer: {
-                    with: {
-                        ratingAnswer: true,
-                    },
+const questionPreviewQuery = () =>
+    db.query.question.findMany({
+        with: {
+            user: true,
+            question_tag: {
+                with: {
+                    tag: true,
                 },
             },
-        })
-        .execute()
+            votesQuestion: true,
+            answer: {
+                with: {
+                    ratingAnswer: true,
+                },
+            },
+        },
+    })
+export type QuestionPreviewResult = QueryResultType<typeof questionPreviewQuery>[number]
+export const queryQuestions = async () => {
+    return await questionPreviewQuery().execute()
 }

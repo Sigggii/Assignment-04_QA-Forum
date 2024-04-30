@@ -11,14 +11,18 @@
         {{ question.title }}
     </h2>
 
+    <!-- TODO: make innerHTML and style correctly -->
     <div>{{ question.content }}</div>
 
     <section class="flex flex-wrap items-center gap-1">
         <app-score-badge [score]="question.score" />
         <span class="font-bold">·</span>
         <app-answer-count-badge [commentCount]="question.answerCount" />
-        <span class="font-bold">·</span>
-        <app-answer-rating-badge [rating]="question.topAnswerRating" />
+
+        @if (question.topAnswerRating !== -1) {
+            <span class="font-bold">·</span>
+            <app-answer-rating-badge [rating]="question.topAnswerRating" />
+        }
 
         <div class="ml-auto flex items-center gap-1 pl-3">
             <app-user-badge [user]="question.user" />
