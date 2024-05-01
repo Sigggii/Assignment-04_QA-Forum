@@ -33,7 +33,7 @@ migrate(dbMigration, { migrationsFolder: 'drizzle' })
 const queryClient = postgres(connectionString)
 export const db = drizzle(queryClient, { schema })
 
-export const fastify = Fastify().withTypeProvider<ZodTypeProvider>()
+export const fastify = Fastify({ logger: true }).withTypeProvider<ZodTypeProvider>()
 fastify.register(fastifyCors, {
     origin: '*',
 })

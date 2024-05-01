@@ -22,9 +22,6 @@
             "dom"
         ],
         "paths": {
-            "@/shared/*": [
-                "../backend/src/shared/*"
-            ],
             "@spartan-ng/ui-input-helm": [
                 "./lib/ui/ui-input-helm/src/index.ts"
             ],

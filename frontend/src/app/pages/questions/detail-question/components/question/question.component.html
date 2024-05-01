@@ -1,0 +1,35 @@
+<section>
+    @if (questionQuery.status() === 'pending') {
+        <span>loading...</span>
+    } @else if (questionQuery.status() === 'error') {
+        <!-- ToDo handle error globaly with alert or so and maybe redirect -->
+            Error: {{ questionQuery!.error()?.message }}
+    }
+    @if (questionQuery.data(); as question) {
+        <section class="flex gap-4">
+            <app-score-post [score]="question.score" />
+            <div class="flex flex-col justify-between pb-2">
+                <h1 class="text-4xl">{{ question.title }}</h1>
+                <span class="flex items-center gap-1">
+                <app-user-badge [user]="question.user"></app-user-badge>
+                <span class="font-bold">·</span>
+                <span class="text-sm text-foreground/80">{{
+                        formatDateXTimeAgo(question.createdAt)
+                    }}</span>
+            </span>
+            </div>
+        </section>
+        <section [innerHTML]="question.content" class="mt-3 leading-6">
+
+        </section>
+        <section class="mt-2 flex flex-wrap gap-1">
+            @for (tag of question.tags; track tag) {
+                <app-tag-badge [tag]="tag.name" />
+            }
+        </section>
+        <hr
+            class="my-4 h-[1px] border-t-0"
+            [ngClass]="question.user.role === 'NOOB' ? 'bg-noob' : 'bg-pro'"
+        />
+    }
+</section>

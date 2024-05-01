@@ -26,6 +26,7 @@
     "@spartan-ng/ui-core": "^0.0.1-alpha.347",
     "@spartan-ng/ui-label-brain": "0.0.1-alpha.347",
     "@spartan-ng/ui-separator-brain": "0.0.1-alpha.347",
+    "@tanstack/angular-query-experimental": "^5.33.0",
     "class-variance-authority": "^0.6.0",
     "clsx": "^1.2.1",
     "ngx-quill": "^25.3.2",

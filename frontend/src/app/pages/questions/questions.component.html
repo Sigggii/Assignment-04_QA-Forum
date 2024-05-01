@@ -5,7 +5,7 @@
 </div>
 
 <div class="mt-8 flex flex-col gap-4">
-    @for (question of data; track question.id) {
+    @for (question of questionQuery.data() || []; track question.id) {
         <app-question-preview [question]="question" />
     }
 </div>

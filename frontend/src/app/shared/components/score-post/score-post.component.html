@@ -1,0 +1,17 @@
+<div class="flex w-fit flex-col align-middle">
+    <button (click)="handleVote('UPVOTE')" hlmBtn size="icon" variant="ghost">
+        <hlm-icon
+            [ngClass]="upvoted ? 'text-success' : ''"
+            size="lg"
+            name="lucideArrowBigUp"
+        ></hlm-icon>
+    </button>
+    <span class="flex justify-center text-xl font-bold">{{ score }}</span>
+    <button (click)="handleVote('DOWNVOTE')" hlmBtn size="icon" variant="ghost">
+        <hlm-icon
+            [ngClass]="upvoted === false ? 'text-destructive' : ''"
+            size="lg"
+            name="lucideArrowBigDown"
+        ></hlm-icon>
+    </button>
+</div>

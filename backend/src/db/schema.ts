@@ -93,6 +93,7 @@ export const answerRelations = relations(answer, ({ one, many }) => ({
     question: one(question, { fields: [answer.questionId], references: [question.id] }),
     commentAnswer: many(commentAnswer),
     ratingAnswer: many(ratingAnswer),
+    votesAnswer: many(votesAnswer),
 }))
 
 export const commentQuestion = pgTable('commentQuestion', {

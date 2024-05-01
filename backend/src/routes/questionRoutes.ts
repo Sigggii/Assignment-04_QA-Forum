@@ -1,10 +1,12 @@
 import { BaseFastifyInstance } from '../server'
-import { CreateQuestionRequestSchema } from '../shared/types'
-import { createQuestion, getQuestions } from '../controller/questionController'
+import { CreateQuestionRequestSchema, UUID, UUIDSchema } from '../shared/types'
+import { createQuestion, getQuestionById, getQuestions } from '../controller/questionController'
+import { queryQuestionById } from '../db/questionRepository'
+import { z } from 'zod'
 
 export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any) => {
     fastify.post(
-        '/',
+        '/:id',
         {
             schema: {
                 body: CreateQuestionRequestSchema,
@@ -31,6 +33,26 @@ export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any
             console.log(err)
         }
     })
+
+    fastify.get<{ Params: { id: UUID } }>(
+        '/:id',
+        {
+            schema: {
+                params: z.object({
+                    id: UUIDSchema,
+                }),
+            },
+        },
+
+        async (req, rep) => {
+            try {
+                const { id } = req.params
+                return await getQuestionById(id)
+            } catch (err) {
+                console.log(err)
+            }
+        },
+    )
 
     done()
 }

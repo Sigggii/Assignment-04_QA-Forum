@@ -11,8 +11,11 @@ import {
     FormControl,
 } from '@angular/forms'
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common'
-import { BackendService } from '../../../core/services/backend.service'
-import { CreateQuestionRequest } from '@/shared/types'
+import {
+    BackendService,
+    CreateQuestionRequest,
+} from '../../../core/services/backend.service'
+
 import {
     maxLengthArray,
     maxLengthTag,
@@ -42,6 +45,7 @@ export class AskComponent {
     minTags = 1
     maxTags = 5
     maxTagLength = 20
+    createQuestion = this.backendService.createQuestion()
 
     questionForm = new FormGroup({
         title: new FormControl<string>('', {
@@ -58,6 +62,7 @@ export class AskComponent {
             nonNullable: true,
         }),
     })
+
     constructor(private backendService: BackendService) {
         //askStateService.getAskState().subscribe((state) => (this.askState = state))
     }
@@ -75,7 +80,7 @@ export class AskComponent {
                     }
                 ),
             }
-            this.backendService.createQuestions(question)
+            this.createQuestion.mutate(question)
         }
     }
 }
