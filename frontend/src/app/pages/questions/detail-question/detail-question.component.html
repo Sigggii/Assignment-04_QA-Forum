@@ -1,3 +1,24 @@
 <section class="max-w-3xl">
-    <app-question />
+    @if (questionQuery.status() === 'pending') {
+        <span>loading...</span>
+    } @else if (questionQuery.status() === 'error') {
+        <!-- ToDo handle error globaly with alert or so and maybe redirect -->
+            Error: {{ questionQuery!.error()?.message }}
+    }
+    @if (questionQuery.data(); as question) {
+        <app-question [question]="question" />
+
+        <section class="mt-10">
+            <h2 class="text-2xl mb-2">{{question.answers.length}} Answers</h2>
+            <div class="flex flex-col gap-10 mt-5">
+            @for (answer of question.answers; track answer) {
+                <app-answer [answer]="answer" />
+            }
+            </div>
+        </section>
+        <section class="mt-10 bg-background bottom-5" [ngClass]="answerEditorSticky? 'sticky' : ''">
+            <app-answer-editor (sticky)="handleAnswerEditorSticky($event)" (create)="handleCreateAnswer($event)" />
+        </section>
+    }
+
 </section>

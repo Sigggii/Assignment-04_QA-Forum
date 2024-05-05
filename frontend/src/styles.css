@@ -5,9 +5,21 @@
 
 .ql-toolbar {
     @apply rounded-t !border-accent;
-
-
 }
+
+app-quill-js.ng-invalid.ng-touched .ql-toolbar {
+    @apply !border-destructive
+}
+
+app-quill-js.ng-invalid.ng-touched .ql-container {
+    @apply !border-destructive text-destructive
+}
+
+app-quill-js.ng-invalid.ng-touched .ql-editor:focus-visible {
+    @apply outline-2 outline-destructive outline rounded-b
+}
+
+
 
 
 /* You can add global styles to this file, and also import other style files */

@@ -1,13 +1,19 @@
-import { question, question_tag, tag } from './schema'
+import { commentAnswer, commentQuestion, question, question_tag, tag } from './schema'
 import { getTableColumns } from 'drizzle-orm'
 import { db } from '../server'
-import { CreateQuestion, Question, QuestionTag } from './types'
+import {
+    CreateQuestion,
+    InsertAnswerComment,
+    InsertQuestionComment,
+    Question,
+    QuestionTag,
+} from './types'
 import { QueryResultType } from '../utils/typeUtils'
 import { UUID } from '../shared/types'
 import { PostgresJsQueryResultHKT } from 'drizzle-orm/postgres-js'
 import { PgTransaction } from 'drizzle-orm/pg-core'
 
-export const createQuestionDB = async (createQuestion: CreateQuestion) => {
+export const createQuestionQuery = async (createQuestion: CreateQuestion) => {
     const questionColumns = getTableColumns(question)
     const tagColumns = getTableColumns(tag)
     return await db.transaction(async (tx) => {
@@ -89,6 +95,7 @@ const questionQueryPartial = (id: UUID) =>
 const answerQueryPartial = (id: UUID) =>
     db.query.answer.findMany({
         with: {
+            user: true,
             votesAnswer: true,
             ratingAnswer: true,
             commentAnswer: {
@@ -120,4 +127,8 @@ export const queryQuestionById = async (id: UUID): Promise<QuestionQueryResult> 
         ...question,
         answers: answers,
     }
+}
+
+export const createQuestionCommentQuery = async (comment: InsertQuestionComment) => {
+    await db.insert(commentQuestion).values(comment).execute()
 }

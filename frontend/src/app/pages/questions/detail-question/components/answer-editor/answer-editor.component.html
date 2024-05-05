@@ -1,0 +1,14 @@
+<section>
+    <span class="flex justify-between">
+        <h1 class="text-xl">Write Answer</h1>
+       <span>
+        <label hlmLabel for="stick-answer-editor-cb">Stick to Position
+          <hlm-checkbox id="stick-answer-editor-cb" (change)="handleIsSticky($event)" />
+        </label>
+       </span>
+    </span>
+    <form [formGroup]="createAnswerForm" (ngSubmit)="handleSubmitForm()">
+        <app-quill-js formControlName="content" classes="h-[200px]" [modules]="modules" theme="snow" placeholder="" />
+        <button class="mt-1" type="submit" *ngIf="createAnswerForm.valid" hlmBtn>Create Answer</button>
+    </form>
+</section>

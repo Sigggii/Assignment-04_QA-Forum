@@ -1,18 +1,32 @@
 import { Question } from '../db/types'
-import { CreateQuestionRequest, DetailQuestion, QuestionPreviewData, UUID } from '../shared/types'
-import { createQuestionDB, queryQuestionById, queryQuestions } from '../db/questionRepository'
+import {
+    CreateAnswer,
+    CreateAnswerCommentRequest,
+    CreateQuestionCommentRequest,
+    CreateQuestionRequest,
+    DetailQuestion,
+    QuestionPreviewData,
+    UUID,
+} from '../shared/types'
+import {
+    createQuestionCommentQuery,
+    createQuestionQuery,
+    queryQuestionById,
+    queryQuestions,
+} from '../db/questionRepository'
 import {
     calculateAnswerRating,
     calculateAnswerScore,
     calculateQuestionScore,
     calculateTopAnswerRating,
 } from '../utils/questionUtils'
+import { createAnswerCommentQuery, createAnswerQuery } from '../db/answerRepository'
 
 export const createQuestion = async (
     createQuestion: CreateQuestionRequest,
     authorId: Question['authorId'],
 ) => {
-    return await createQuestionDB({
+    return await createQuestionQuery({
         ...createQuestion,
         question: { ...createQuestion.question, authorId: authorId },
     })
@@ -73,4 +87,32 @@ export const getQuestionById = async (id: UUID): Promise<DetailQuestion> => {
         comments: question.commentQuestion,
         answers: answers,
     }
+}
+
+export const createQuestionComment = async (
+    comment: CreateQuestionCommentRequest,
+    questionId: UUID,
+    authorId: UUID,
+) => {
+    await createQuestionCommentQuery({
+        ...comment,
+        questionId: questionId,
+        authorId: authorId,
+    })
+}
+
+export const createAnswer = async (
+    answerContent: CreateAnswer,
+    questionId: UUID,
+    authorId: UUID,
+) => {
+    await createAnswerQuery({ ...answerContent, questionId: questionId, authorId: authorId })
+}
+
+export const createAnswerComment = async (
+    comment: CreateAnswerCommentRequest,
+    answerId: UUID,
+    authorId: UUID,
+) => {
+    await createAnswerCommentQuery({ ...comment, answerId: answerId, authorId: authorId })
 }

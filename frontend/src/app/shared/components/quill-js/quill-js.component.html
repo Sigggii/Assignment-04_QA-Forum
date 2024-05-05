@@ -1,8 +1,12 @@
-<quill-editor
-    class="w-full"
-    [classes]="classes"
-    [theme]="theme"
-    [modules]="modules"
-    (onContentChanged)="handleContentChanged($event)"
-    placeholder=""
-></quill-editor>
+<label hlmLabel
+>{{ label }}
+    <quill-editor
+        class="w-full "
+        [ngModel]="value.html"
+        [classes]="classes.concat(' rounded-b !border-accent')"
+        [theme]="theme"
+        [modules]="modules"
+        (onContentChanged)="handleContentChanged($event)"
+        placeholder=""
+    ></quill-editor>
+</label>

@@ -1,7 +1,15 @@
 //shared types between frontend and backend
 
 import { z } from 'zod'
-import { InsertQuestionSchema, CreateTagSchema } from '../db/types'
+import {
+    InsertQuestionSchema,
+    CreateTagSchema,
+    InsertQuestionCommentSchema,
+    InsertQuestionComment,
+    InsertAnswer,
+    InsertAnswerSchema,
+    InsertAnswerCommentSchema,
+} from '../db/types'
 import { queryQuestionById, QuestionQueryResult } from '../db/questionRepository'
 
 export const CreateQuestionRequestSchema = z.object({
@@ -11,7 +19,17 @@ export const CreateQuestionRequestSchema = z.object({
 
 export type CreateQuestionRequest = z.infer<typeof CreateQuestionRequestSchema>
 
-const test: CreateQuestionRequest = {} as CreateQuestionRequest
+export const CreateQuestionCommentRequestSchema = InsertQuestionCommentSchema.pick({
+    content: true,
+})
+
+export type CreateQuestionCommentRequest = z.infer<typeof CreateQuestionCommentRequestSchema>
+
+export const CreateAnswerCommentRequestSchema = InsertAnswerCommentSchema.pick({
+    content: true,
+})
+
+export type CreateAnswerCommentRequest = z.infer<typeof CreateAnswerCommentRequestSchema>
 
 export type User = {
     id: string
@@ -66,6 +84,7 @@ export type DetailQuestion = {
     answers: {
         id: string
         authorId: string
+        user: User
         createdAt: Date
         content: string
         lastEditedAt: Date | null
@@ -83,6 +102,12 @@ export type DetailQuestion = {
         rating: number
     }[]
 }
+
+export const CreateAnswerRequestSchema = InsertAnswerSchema.pick({
+    content: true,
+})
+
+export type CreateAnswer = z.infer<typeof CreateAnswerRequestSchema>
 
 export const UUIDSchema = z.string().uuid()
 export type UUID = z.infer<typeof UUIDSchema>

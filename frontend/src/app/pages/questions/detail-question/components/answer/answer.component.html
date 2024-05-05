@@ -1,0 +1,26 @@
+<section>
+
+    <section class="flex gap-4">
+        <app-score-post [score]="answer.score" />
+        <div class="flex flex-col justify-between pb-2">
+
+            <span class="flex items-center gap-1">
+                <app-user-badge [user]="answer.user"></app-user-badge>
+                <span class="font-bold">·</span>
+                <span class="text-sm text-foreground/80">{{
+                        formatDateXTimeAgo(answer.createdAt)
+                    }}</span>
+            </span>
+        </div>
+    </section>
+    <section [innerHTML]="answer.content" class="mt-3 leading-6">
+
+    </section>
+    <hr
+        class="my-4 h-[1px] border-t-0"
+        [ngClass]="answer.user.role === 'NOOB' ? 'bg-noob' : 'bg-pro'"
+    />
+
+    <app-comments [comments]="answer.commentAnswer" type="ANSWER" [questionId]="answer.id" [answerId]="answer.id" />
+
+</section>

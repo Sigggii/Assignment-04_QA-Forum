@@ -1,12 +1,28 @@
 import { BaseFastifyInstance } from '../server'
-import { CreateQuestionRequestSchema, UUID, UUIDSchema } from '../shared/types'
-import { createQuestion, getQuestionById, getQuestions } from '../controller/questionController'
+import {
+    CreateAnswer,
+    CreateAnswerCommentRequestSchema,
+    CreateAnswerRequestSchema,
+    CreateQuestionCommentRequestSchema,
+    CreateQuestionRequestSchema,
+    UUID,
+    UUIDSchema,
+} from '../shared/types'
+import {
+    createAnswer,
+    createAnswerComment,
+    createQuestion,
+    createQuestionComment,
+    getQuestionById,
+    getQuestions,
+} from '../controller/questionController'
 import { queryQuestionById } from '../db/questionRepository'
 import { z } from 'zod'
+import { InsertQuestionCommentSchema } from '../db/types'
 
 export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any) => {
     fastify.post(
-        '/:id',
+        '/',
         {
             schema: {
                 body: CreateQuestionRequestSchema,
@@ -34,7 +50,7 @@ export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any
         }
     })
 
-    fastify.get<{ Params: { id: UUID } }>(
+    fastify.get(
         '/:id',
         {
             schema: {
@@ -51,6 +67,66 @@ export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any
             } catch (err) {
                 console.log(err)
             }
+        },
+    )
+
+    fastify.post(
+        '/:id/comments',
+        {
+            schema: {
+                body: CreateQuestionCommentRequestSchema,
+                params: z.object({
+                    id: UUIDSchema,
+                }),
+            },
+        },
+        async (req, resp) => {
+            //ToDo If authentication is etablished: Use real userId, this is only for testing purposes
+            const userId = 'da7cbcff-a968-4f99-bd9b-0bf0567fc4e5'
+            const questionId = req.params.id
+            await createQuestionComment(req.body, questionId, userId)
+            resp.status(201).send()
+        },
+    )
+
+    fastify.post(
+        '/:id/answers',
+        {
+            schema: {
+                body: CreateAnswerRequestSchema,
+                params: z.object({
+                    id: UUIDSchema,
+                }),
+            },
+        },
+        async (req, resp) => {
+            const questionId = req.params.id
+            //ToDo If authentication is etablished: Use real userId, this is only for testing purposes
+            const userId = 'da7cbcff-a968-4f99-bd9b-0bf0567fc4e5'
+            const body = req.body
+            await createAnswer(body, questionId, userId)
+            resp.status(201)
+        },
+    )
+
+    fastify.post(
+        '/:questionId/answers/:answerId',
+        {
+            schema: {
+                body: CreateAnswerCommentRequestSchema,
+                params: z.object({
+                    questionId: UUIDSchema,
+                    answerId: UUIDSchema,
+                }),
+            },
+        },
+        async (req, resp) => {
+            const answerId = req.params.answerId
+            //ToDo If authentication is etablished: Use real userId, this is only for testing purposes
+            const userId = 'da7cbcff-a968-4f99-bd9b-0bf0567fc4e5'
+
+            await createAnswerComment(req.body, answerId, userId)
+            resp.status(201)
         },
     )
 

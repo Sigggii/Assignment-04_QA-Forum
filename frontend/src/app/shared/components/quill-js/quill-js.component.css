@@ -1,0 +1,14 @@
+
+/*Style input in case of errors set by FormControl*/
+:host.ng-invalid.ng-touched .ql-container {
+    border-color: hsl(var(--destructive))!important;
+    color: hsl(var(--destructive))!important;
+    --tw-ring-color: hsl(var(--destructive))!important;
+}
+
+
+/*Style badges in case of errors set by FormControl (prevent text and border from getting red*/
+:host.ng-invalid.ng-touched span[hlmBadge] {
+    border-color: hsl(var(--primary));;
+    color: hsl(var(--foreground));
+}

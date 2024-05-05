@@ -1,6 +1,11 @@
 import { Component, forwardRef, Input } from '@angular/core'
 import { ContentChange, QuillEditorComponent } from 'ngx-quill'
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
+import {
+    ControlValueAccessor,
+    FormsModule,
+    NG_VALUE_ACCESSOR,
+} from '@angular/forms'
+import { HlmLabelDirective } from '@spartan-ng/ui-label-helm'
 
 const initialModules = {
     toolbar: [
@@ -14,10 +19,12 @@ const initialModules = {
     ],
 }
 
+export type QuillEditorValue = { html: string; text: string }
+
 @Component({
     selector: 'app-quill-js',
     standalone: true,
-    imports: [QuillEditorComponent],
+    imports: [QuillEditorComponent, HlmLabelDirective, FormsModule],
     templateUrl: './quill-js.component.html',
     styleUrl: './quill-js.component.css',
     providers: [
@@ -33,16 +40,19 @@ export class QuillJsComponent implements ControlValueAccessor {
     @Input() theme: string = 'snow'
     @Input() classes: string = ''
     @Input() placeholder: string = ''
+    @Input() label: string = ''
+    isProgrammaticInput: boolean = false
 
     public onTouched = () => {}
-    public onChange = (value: string) => {}
+    public onChange = (value: QuillEditorValue) => {}
 
     public touched: boolean = false
 
-    public value: string = ''
+    public value: QuillEditorValue = { html: '', text: '' }
 
-    writeValue(value: string): void {
+    writeValue(value: QuillEditorValue): void {
         this.value = value
+        this.isProgrammaticInput = true
     }
     registerOnChange(onChange: any): void {
         this.onChange = onChange
@@ -51,7 +61,11 @@ export class QuillJsComponent implements ControlValueAccessor {
         this.onTouched = onTouched
     }
     handleContentChanged = (event: ContentChange) => {
-        this.value = event.html || ''
+        if (this.isProgrammaticInput) {
+            this.isProgrammaticInput = false
+            return
+        }
+        this.value = { html: event.html || '', text: event.text || '' }
         this.onChange(this.value)
         this.onTouched()
     }

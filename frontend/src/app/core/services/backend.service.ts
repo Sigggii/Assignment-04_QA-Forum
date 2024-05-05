@@ -1,8 +1,13 @@
-import { inject, Injectable } from '@angular/core'
+import { inject, Injectable, InputSignal } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { environment } from '../../../environments/environment'
 import {
+    CreateAnswer,
+    CreateAnswerComment,
+    CreateQuestionComment,
+    CreateQuestionRequest,
     DetailQuestion,
+    Question,
     QuestionPreviewData,
 } from '../../shared/types/api-types'
 import {
@@ -11,11 +16,8 @@ import {
     injectQueryClient,
 } from '@tanstack/angular-query-experimental'
 import { lastValueFrom } from 'rxjs'
-
-export type CreateQuestionRequest = {
-    question: { title: string; content: string }
-    tags: { name: string }[]
-}
+import { addWarning } from '@angular-devkit/build-angular/src/utils/webpack-diagnostics'
+import { CommentSectionType } from '../../pages/questions/detail-question/components/comments/comments.component'
 
 @Injectable({
     providedIn: 'root',
@@ -24,14 +26,22 @@ export class BackendService {
     private http = inject(HttpClient)
     private queryClient = injectQueryClient()
 
-    createQuestion = () =>
+    createQuestion = (redirect?: (questionId: string) => Promise<void>) =>
         injectMutation(() => ({
             mutationFn: async (question: CreateQuestionRequest) =>
-                this.http
-                    .post(`${environment.apiUrl}questions`, question)
-                    .subscribe(),
-            onSuccess: () => {
-                this.queryClient.invalidateQueries({ queryKey: ['questions'] })
+                lastValueFrom(
+                    this.http.post<Question>(
+                        `${environment.apiUrl}questions`,
+                        question
+                    )
+                ),
+            onSuccess: async data => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['questions'],
+                })
+                if (redirect) {
+                    await redirect(data.id)
+                }
             },
         }))
 
@@ -46,14 +56,85 @@ export class BackendService {
                 ),
         }))
 
-    fetchQuestion = (questionId: string) =>
+    //Todo currently, only all question requests can be invalidatet. Trying to set the
+    // questionId as additional queryKey didnt work yet. If time left figure out what the
+    // problem is
+    fetchQuestion = (questionId: InputSignal<string>) =>
         injectQuery(() => ({
-            queryKey: ['questions', questionId],
+            enabled: !!questionId && questionId().trim() !== '',
+            queryKey: ['question'],
             queryFn: () =>
                 lastValueFrom(
                     this.http.get<DetailQuestion>(
-                        `${environment.apiUrl}questions/${questionId}`
+                        `${environment.apiUrl}questions/${questionId()}`
                     )
                 ),
+        }))
+
+    createQuestionComment = () =>
+        injectMutation(() => ({
+            mutationFn: async (req: {
+                questionId: string
+                comment: CreateQuestionComment
+            }) =>
+                lastValueFrom(
+                    this.http.post(
+                        `${environment.apiUrl}questions/${req.questionId}/comments`,
+                        req.comment
+                    )
+                ),
+            onSuccess: async () => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['questions'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['question'],
+                })
+            },
+        }))
+
+    createAnswerComment = () =>
+        injectMutation(() => ({
+            mutationFn: async (req: {
+                questionId: string
+                answerId: string
+                comment: CreateAnswerComment
+            }) =>
+                lastValueFrom(
+                    this.http.post(
+                        `${environment.apiUrl}questions/${req.questionId}/answers/${req.answerId}`,
+                        req.comment
+                    )
+                ),
+            onSuccess: async () => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['questions'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['question'],
+                })
+            },
+        }))
+
+    createAnswer = () =>
+        injectMutation(() => ({
+            mutationFn: async (req: {
+                answer: CreateAnswer
+                questionId: string
+            }) =>
+                lastValueFrom(
+                    this.http.post(
+                        `${environment.apiUrl}questions/${req.questionId}/answers`,
+                        req.answer
+                    )
+                ),
+            onSuccess: async () => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['questions'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['question'],
+                })
+            },
         }))
 }
