@@ -6,6 +6,7 @@ import { TagBadgeComponent } from '../../../../../shared/components/tag-badge/ta
 import { UserBadgeComponent } from '../../../../../shared/components/user-badge/user-badge.component'
 import { NgClass } from '@angular/common'
 import { Answer } from '../../../../../shared/types/api-types'
+import { RateAnswerComponent } from '../../../../../shared/components/rate-answer/rate-answer.component'
 
 @Component({
     selector: 'app-answer',
@@ -16,6 +17,7 @@ import { Answer } from '../../../../../shared/types/api-types'
         TagBadgeComponent,
         UserBadgeComponent,
         NgClass,
+        RateAnswerComponent,
     ],
     templateUrl: './answer.component.html',
     styleUrl: './answer.component.css',

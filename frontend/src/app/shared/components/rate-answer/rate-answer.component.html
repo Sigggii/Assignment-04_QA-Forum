@@ -1,0 +1,6 @@
+<span class="flex">
+    @for (star of starIndexes; track star) {
+        <hlm-icon (click)="handleSetRating(star)" (mouseover)="this.handleHoverOver(star)" (mouseleave)="this.handleHoverLeave()"
+                 [ngClass]="{'text-pro': star <= this.hoverStar}" name="{{star <= this.currentRating ? 'heroStarSolid': 'heroStar'}}" size="base" />
+    }
+</span>
