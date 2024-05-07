@@ -8,6 +8,7 @@ import { ScoreBadgeComponent } from '../score-badge/score-badge.component'
 import { AnswerCountBadgeComponent } from '../answer-count-badge/answer-count-badge.component'
 import { AnswerRatingBadgeComponent } from '../answer-rating-badge/answer-rating-badge.component'
 import { QuestionPreviewData } from '../../types/api-types'
+import { RouterLink } from '@angular/router'
 
 @Component({
     selector: 'app-question-preview',
@@ -20,6 +21,7 @@ import { QuestionPreviewData } from '../../types/api-types'
         ScoreBadgeComponent,
         AnswerCountBadgeComponent,
         AnswerRatingBadgeComponent,
+        RouterLink,
     ],
     templateUrl: './question-preview.component.html',
     styleUrl: './question-preview.component.css',

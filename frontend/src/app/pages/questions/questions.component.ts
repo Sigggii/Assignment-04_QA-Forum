@@ -4,6 +4,7 @@ import { QuestionPreviewComponent } from '../../shared/components/question-previ
 import { BackendService } from '../../core/services/backend.service'
 import { CreateQueryResult } from '@tanstack/angular-query-experimental'
 import { QuestionPreviewData } from '../../shared/types/api-types'
+import { NavigationService } from '../../core/services/navigation.service'
 
 @Component({
     selector: 'app-questions',
@@ -14,6 +15,7 @@ import { QuestionPreviewData } from '../../shared/types/api-types'
 })
 export class QuestionsComponent {
     backendService = inject(BackendService)
+    navigationService = inject(NavigationService)
 
     questionQuery: CreateQueryResult<QuestionPreviewData[]> =
         this.backendService.fetchQuestions()

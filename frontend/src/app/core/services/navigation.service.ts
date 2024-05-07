@@ -8,7 +8,10 @@ export class NavigationService {
     constructor(private router: Router) {}
 
     openQuestion = async (questionId: string) => {
-        console.log('Test')
         await this.router.navigate(['/questions', questionId])
+    }
+
+    openAskQuestion = async () => {
+        await this.router.navigate(['/questions/ask'])
     }
 }
