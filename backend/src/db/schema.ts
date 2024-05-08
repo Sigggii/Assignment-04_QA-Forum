@@ -20,13 +20,13 @@ export const user = pgTable('user', {
     createdAt: timestamp('createdAt').defaultNow().notNull(),
 })
 export const userRelations = relations(user, ({ many }) => ({
-    question: many(question),
-    answer: many(answer),
-    commentQuestion: many(commentQuestion),
-    commentAnswer: many(commentAnswer),
-    votesQuestion: many(votesQuestion),
-    votesAnswer: many(votesAnswer),
-    ratingAnswer: many(ratingAnswer),
+    questions: many(question),
+    answers: many(answer),
+    commentsOnQuestions: many(commentQuestion),
+    commentsOnAnswers: many(commentAnswer),
+    votesOnQuestions: many(votesQuestion),
+    votesOnAnswers: many(votesAnswer),
+    ratingsOnAnswers: many(ratingAnswer),
 }))
 
 export const question = pgTable('question', {
@@ -41,10 +41,10 @@ export const question = pgTable('question', {
 })
 export const questionRelations = relations(question, ({ one, many }) => ({
     user: one(user, { fields: [question.authorId], references: [user.id] }),
-    answer: many(answer),
-    commentQuestion: many(commentQuestion),
-    question_tag: many(question_tag),
-    votesQuestion: many(votesQuestion),
+    answers: many(answer),
+    comments: many(commentQuestion),
+    tags: many(question_tag),
+    votes: many(votesQuestion),
 }))
 
 export const tag = pgTable('tag', {
@@ -52,7 +52,7 @@ export const tag = pgTable('tag', {
     name: varchar('name', { length: 20 }).unique().notNull(),
 })
 export const tagRelations = relations(tag, ({ many }) => ({
-    question_tag: many(question_tag),
+    questions: many(question_tag),
 }))
 
 export const question_tag = pgTable(
@@ -91,9 +91,9 @@ export const answer = pgTable('answer', {
 export const answerRelations = relations(answer, ({ one, many }) => ({
     user: one(user, { fields: [answer.authorId], references: [user.id] }),
     question: one(question, { fields: [answer.questionId], references: [question.id] }),
-    commentAnswer: many(commentAnswer),
-    ratingAnswer: many(ratingAnswer),
-    votesAnswer: many(votesAnswer),
+    comments: many(commentAnswer),
+    ratings: many(ratingAnswer),
+    votes: many(votesAnswer),
 }))
 
 export const commentQuestion = pgTable('commentQuestion', {

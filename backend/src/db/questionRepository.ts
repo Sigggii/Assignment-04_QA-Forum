@@ -1,17 +1,9 @@
-import { commentAnswer, commentQuestion, question, question_tag, tag } from './schema'
+import { commentQuestion, question, question_tag, tag } from './schema'
 import { getTableColumns } from 'drizzle-orm'
 import { db } from '../server'
-import {
-    CreateQuestion,
-    InsertAnswerComment,
-    InsertQuestionComment,
-    Question,
-    QuestionTag,
-} from './types'
+import { CreateQuestion, InsertQuestionComment, Question, QuestionTag } from './types'
 import { QueryResultType } from '../utils/typeUtils'
 import { UUID } from '../shared/types'
-import { PostgresJsQueryResultHKT } from 'drizzle-orm/postgres-js'
-import { PgTransaction } from 'drizzle-orm/pg-core'
 
 export const createQuestionQuery = async (createQuestion: CreateQuestion) => {
     const questionColumns = getTableColumns(question)
@@ -47,15 +39,15 @@ const questionPreviewQuery = () =>
                     password: false,
                 },
             },
-            question_tag: {
+            tags: {
                 with: {
                     tag: true,
                 },
             },
-            votesQuestion: true,
-            answer: {
+            votes: true,
+            answers: {
                 with: {
-                    ratingAnswer: true,
+                    ratings: true,
                 },
             },
         },
@@ -73,13 +65,13 @@ const questionQueryPartial = (id: UUID) =>
                     password: false,
                 },
             },
-            question_tag: {
+            tags: {
                 with: {
                     tag: true,
                 },
             },
-            votesQuestion: true,
-            commentQuestion: {
+            votes: true,
+            comments: {
                 with: {
                     user: {
                         columns: {
@@ -96,9 +88,9 @@ const answerQueryPartial = (id: UUID) =>
     db.query.answer.findMany({
         with: {
             user: true,
-            votesAnswer: true,
-            ratingAnswer: true,
-            commentAnswer: {
+            votes: true,
+            ratings: true,
+            comments: {
                 with: {
                     user: {
                         columns: {

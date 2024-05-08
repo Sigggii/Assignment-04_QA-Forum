@@ -1,9 +1,9 @@
 import { QuestionPreviewResult, QuestionQueryResult } from '../db/questionRepository'
 
 export const calculateAnswerRating = (
-    ratingAnswer: QuestionPreviewResult['answer'][number]['ratingAnswer'],
+    ratings: QuestionPreviewResult['answers'][number]['ratings'],
 ) => {
-    return calculateAverage(ratingAnswer.map((rating) => rating.rating))
+    return calculateAverage(ratings.map((rating) => rating.rating))
 }
 
 /**
@@ -11,11 +11,11 @@ export const calculateAnswerRating = (
  *
  * The top answer rating is the highest average rating of all answers
  *
- * @param question question to calculate the top answer rating for
+ * @param answers all answers of a question
  * @returns top answer rating, or -1 if no answers / ratings are present
  */
-export const calculateTopAnswerRating = (question: QuestionPreviewResult) => {
-    const ratings = question.answer.map((answer) => answer.ratingAnswer).map(calculateAnswerRating)
+export const calculateTopAnswerRating = (answers: QuestionPreviewResult['answers']) => {
+    const ratings = answers.map((answer) => answer.ratings).map(calculateAnswerRating)
 
     if (ratings.length === 0) return -1
 
@@ -28,7 +28,7 @@ export const calculateTopAnswerRating = (question: QuestionPreviewResult) => {
  * @returns score of the question
  * @param votesQuestion
  */
-export const calculateQuestionScore = (votesQuestion: QuestionPreviewResult['votesQuestion']) => {
+export const calculateQuestionScore = (votesQuestion: QuestionPreviewResult['votes']) => {
     const upvotes = votesQuestion.filter((vote) => vote.upvote).length
     const downvotes = votesQuestion.filter((vote) => !vote.upvote).length
 
@@ -42,7 +42,7 @@ export const calculateQuestionScore = (votesQuestion: QuestionPreviewResult['vot
  * @param votesAnswer
  */
 export const calculateAnswerScore = (
-    votesAnswer: QuestionQueryResult['answers'][number]['votesAnswer'],
+    votesAnswer: QuestionQueryResult['answers'][number]['votes'],
 ) => {
     const upvotes = votesAnswer.filter((votes) => votes.upvote).length
     const downvotes = votesAnswer.filter((vote) => !vote.upvote).length

@@ -5,13 +5,9 @@ import {
     InsertQuestionSchema,
     CreateTagSchema,
     InsertQuestionCommentSchema,
-    InsertQuestionComment,
-    InsertAnswer,
     InsertAnswerSchema,
     InsertAnswerCommentSchema,
 } from '../db/types'
-import { queryQuestionById, QuestionQueryResult } from '../db/questionRepository'
-
 export const CreateQuestionRequestSchema = z.object({
     question: InsertQuestionSchema.pick({ title: true, content: true }),
     tags: z.array(CreateTagSchema.pick({ name: true })).max(5, 'Maximum 5 Tags'),
@@ -38,6 +34,22 @@ export type User = {
     createdAt: Date
 }
 
+type Tag = {
+    id: string
+    name: string
+}
+
+type Comment = {
+    id: string
+    authorId: string
+    createdAt: Date
+    content: string
+    lastEditedAt: Date | null
+    user: User
+}
+type CommentOnAnswer = Comment & { answerId: string }
+type CommentOnQuestion = Comment & { questionId: string }
+
 export type QuestionPreviewData = {
     id: string
     authorId: string
@@ -47,10 +59,7 @@ export type QuestionPreviewData = {
     lastEditedAt: Date | null
 
     user: User
-    tags: {
-        id: string
-        name: string
-    }[]
+    tags: Tag[]
 
     score: number
     answerCount: number
@@ -66,21 +75,10 @@ export type DetailQuestion = {
     lastEditedAt: Date | null
 
     user: User
-    tags: {
-        id: string
-        name: string
-    }[]
+    tags: Tag[]
 
     score: number
-    comments: {
-        id: string
-        authorId: string
-        createdAt: Date
-        content: string
-        lastEditedAt: Date | null
-        questionId: string
-        user: { id: string; username: string; role: 'NOOB' | 'PRO' | 'ADMIN'; createdAt: Date }
-    }[]
+    comments: CommentOnQuestion[]
     answers: {
         id: string
         authorId: string
@@ -89,15 +87,7 @@ export type DetailQuestion = {
         content: string
         lastEditedAt: Date | null
         questionId: string
-        commentAnswer: {
-            id: string
-            authorId: string
-            createdAt: Date
-            content: string
-            lastEditedAt: Date | null
-            answerId: string
-            user: User
-        }[]
+        comments: CommentOnAnswer[]
         score: number
         rating: number
     }[]

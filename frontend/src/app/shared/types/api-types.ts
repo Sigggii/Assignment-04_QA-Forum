@@ -9,6 +9,11 @@ export type User = {
     createdAt: DateAsString
 }
 
+export type Tag = {
+    id: string
+    name: string
+}
+
 export type CreateQuestionRequest = {
     question: { title: string; content: string }
     tags: { name: string }[]
@@ -44,10 +49,7 @@ export type QuestionPreviewData = {
     lastEditedAt: DateAsString | null
 
     user: User
-    tags: {
-        id: string
-        name: string
-    }[]
+    tags: Tag[]
 
     score: number
     answerCount: number
@@ -62,7 +64,7 @@ export type Answer = {
     content: string
     lastEditedAt: DateAsString | null
     questionId: string
-    commentAnswer: Comment[]
+    comments: Comment[]
     score: number
     rating: number
 }
@@ -76,10 +78,7 @@ export type DetailQuestion = {
     lastEditedAt: DateAsString | null
 
     user: User
-    tags: {
-        id: string
-        name: string
-    }[]
+    tags: Tag[]
 
     score: number
     comments: Comment[]

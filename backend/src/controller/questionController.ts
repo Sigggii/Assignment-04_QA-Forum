@@ -36,8 +36,8 @@ export const getQuestions = async (): Promise<QuestionPreviewData[]> => {
     const data = await queryQuestions()
 
     return data.map((question) => {
-        const topAnswerRating = calculateTopAnswerRating(question)
-        const score = calculateQuestionScore(question.votesQuestion)
+        const topAnswerRating = calculateTopAnswerRating(question.answers)
+        const score = calculateQuestionScore(question.votes)
 
         return {
             id: question.id,
@@ -48,10 +48,10 @@ export const getQuestions = async (): Promise<QuestionPreviewData[]> => {
             title: question.title,
 
             user: question.user,
-            tags: question.question_tag.map((tag) => tag.tag),
+            tags: question.tags.map((tag) => tag.tag),
 
             topAnswerRating: topAnswerRating,
-            answerCount: question.answer.length,
+            answerCount: question.answers.length,
             score: score,
         }
     })
@@ -61,10 +61,10 @@ export const getQuestions = async (): Promise<QuestionPreviewData[]> => {
 export const getQuestionById = async (id: UUID): Promise<DetailQuestion> => {
     const question = await queryQuestionById(id)
 
-    const questionScore = calculateQuestionScore(question.votesQuestion)
+    const questionScore = calculateQuestionScore(question.votes)
     const answers = question.answers.map((answer) => {
-        const answerScore = calculateAnswerScore(answer.votesAnswer)
-        const averageRating = calculateAnswerRating(answer.ratingAnswer)
+        const answerScore = calculateAnswerScore(answer.votes)
+        const averageRating = calculateAnswerRating(answer.ratings)
 
         return {
             ...answer,
@@ -82,9 +82,9 @@ export const getQuestionById = async (id: UUID): Promise<DetailQuestion> => {
         title: question.title,
 
         user: question.user,
-        tags: question.question_tag.map((tag) => tag.tag),
+        tags: question.tags.map((tag) => tag.tag),
         score: questionScore,
-        comments: question.commentQuestion,
+        comments: question.comments,
         answers: answers,
     }
 }
