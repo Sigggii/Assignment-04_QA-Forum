@@ -8,10 +8,21 @@ const ENV_SCHEMA = z.object({
         .optional()
         .default('development'),
 })
+export type Config = z.infer<typeof ENV_SCHEMA>
 
+let config: Config
+
+/**
+ * Checks if the environment variables are valid.
+ * If not, logs the error and stops the application.
+ *
+ * Runs at the start of the application.
+ */
 export const checkEnv = () => {
     try {
-        ENV_SCHEMA.parse(process.env)
+        config = ENV_SCHEMA.parse(process.env)
+
+        console.log('ENV variables are valid')
     } catch (error) {
         if (error instanceof ZodError) {
             console.error(
@@ -23,4 +34,8 @@ export const checkEnv = () => {
     }
 }
 
-export const getConfig = () => ENV_SCHEMA.parse(process.env)
+/**
+ * Returns the config object.
+ * @returns Config object
+ */
+export const getConfig = () => config
