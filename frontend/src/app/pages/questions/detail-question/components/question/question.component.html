@@ -7,14 +7,12 @@
                 <app-user-badge [user]="question.user"></app-user-badge>
                 <span class="font-bold">·</span>
                 <span class="text-sm text-foreground/80">{{
-                        formatDateXTimeAgo(question.createdAt)
-                    }}</span>
+                    formatDateXTimeAgo(question.createdAt)
+                }}</span>
             </span>
         </div>
     </section>
-    <section [innerHTML]="question.content" class="mt-3 leading-6">
-
-    </section>
+    <section [innerHTML]="question.content" class="mt-3 leading-6"></section>
     <section class="mt-2 flex flex-wrap gap-1">
         @for (tag of question.tags; track tag) {
             <app-tag-badge [tag]="tag.name" />
@@ -25,7 +23,5 @@
         [ngClass]="question.user.role === 'NOOB' ? 'bg-noob' : 'bg-pro'"
     />
 
-    <app-comments [comments]="question.comments" type="QUESTION" [questionId]="question.id" />
-
+    <app-comments [comments]="question.comments" [questionId]="question.id" />
 </section>
-

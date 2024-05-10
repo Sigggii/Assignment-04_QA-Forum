@@ -1,11 +1,9 @@
 import { BaseFastifyInstance } from '../server'
 import {
-    CreateAnswer,
     CreateAnswerCommentRequestSchema,
     CreateAnswerRequestSchema,
     CreateQuestionCommentRequestSchema,
     CreateQuestionRequestSchema,
-    UUID,
     UUIDSchema,
 } from '../shared/types'
 import {
@@ -16,9 +14,7 @@ import {
     getQuestionById,
     getQuestions,
 } from '../controller/questionController'
-import { queryQuestionById } from '../db/questionRepository'
 import { z } from 'zod'
-import { InsertQuestionCommentSchema } from '../db/types'
 
 export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any) => {
     fastify.post(

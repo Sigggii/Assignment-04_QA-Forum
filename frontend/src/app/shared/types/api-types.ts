@@ -31,13 +31,24 @@ export type CreateAnswer = {
     content: string
 }
 
+type BaseComment = {
+    id: string
+    authorId: string
+    createdAt: DateAsString
+    content: string
+    lastEditedAt: DateAsString | null
+    user: User
+}
+export type CommentOnAnswer = BaseComment & { answerId: string }
+export type CommentOnQuestion = BaseComment & { questionId: string }
+
 export type Question = {
     id: string
     authorId: string
-    createdAt: Date
+    createdAt: DateAsString
     title: string
     content: string
-    lastEditedAt: Date | null
+    lastEditedAt: DateAsString | null
 }
 
 export type QuestionPreviewData = {
@@ -64,7 +75,7 @@ export type Answer = {
     content: string
     lastEditedAt: DateAsString | null
     questionId: string
-    comments: Comment[]
+    comments: CommentOnAnswer[]
     score: number
     rating: number
 }
@@ -81,16 +92,6 @@ export type DetailQuestion = {
     tags: Tag[]
 
     score: number
-    comments: Comment[]
+    comments: CommentOnQuestion[]
     answers: Answer[]
-}
-
-export type Comment = {
-    id: string
-    authorId: string
-    createdAt: DateAsString
-    content: string
-    lastEditedAt: DateAsString | null
-    answerId: string
-    user: User
 }

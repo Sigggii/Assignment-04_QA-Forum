@@ -1,12 +1,15 @@
 import { Component, Input } from '@angular/core'
 import { NgIf } from '@angular/common'
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm'
-import { Comment } from '../../../../../shared/types/api-types'
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm'
 import { FormsModule } from '@angular/forms'
 import { AutosizeModule } from 'ngx-autosize'
 import { BackendService } from '../../../../../core/services/backend.service'
 import { UserBadgeComponent } from '../../../../../shared/components/user-badge/user-badge.component'
+import {
+    CommentOnAnswer,
+    CommentOnQuestion,
+} from '../../../../../shared/types/api-types'
 
 export type CommentSectionType = 'QUESTION' | 'ANSWER'
 
@@ -25,10 +28,14 @@ export type CommentSectionType = 'QUESTION' | 'ANSWER'
     styleUrl: './comments.component.css',
 })
 export class CommentsComponent {
-    @Input() comments: Comment[] = []
-    @Input({ required: true }) type: CommentSectionType = 'QUESTION'
-    @Input({ required: true }) questionId: string = ''
-    @Input() answerId: string | undefined = ''
+    @Input({ required: true }) comments: (
+        | CommentOnAnswer
+        | CommentOnQuestion
+    )[] = []
+    @Input({ required: true }) type!: CommentSectionType
+    @Input({ required: true }) questionId!: string
+    @Input() answerId: string | undefined = undefined
+
     newComment: string = ''
 
     constructor(private backendService: BackendService) {}

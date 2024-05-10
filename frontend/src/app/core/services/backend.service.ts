@@ -16,8 +16,6 @@ import {
     injectQueryClient,
 } from '@tanstack/angular-query-experimental'
 import { lastValueFrom } from 'rxjs'
-import { addWarning } from '@angular-devkit/build-angular/src/utils/webpack-diagnostics'
-import { CommentSectionType } from '../../pages/questions/detail-question/components/comments/comments.component'
 
 @Injectable({
     providedIn: 'root',
