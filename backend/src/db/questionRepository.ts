@@ -87,7 +87,11 @@ const questionQueryPartial = (id: UUID) =>
 const answerQueryPartial = (id: UUID) =>
     db.query.answer.findMany({
         with: {
-            user: true,
+            user: {
+                columns: {
+                    password: false,
+                },
+            },
             votes: true,
             ratings: true,
             comments: {
