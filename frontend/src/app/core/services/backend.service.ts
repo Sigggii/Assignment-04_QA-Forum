@@ -1,6 +1,7 @@
 import { inject, Injectable, InputSignal } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { environment } from '../../../environments/environment'
+
 import {
     CreateAnswer,
     CreateAnswerComment,
@@ -9,6 +10,8 @@ import {
     DetailQuestion,
     Question,
     QuestionPreviewData,
+    LoginUser,
+    JWTPayload,
 } from '../../shared/types/api-types'
 import {
     injectMutation,
@@ -134,5 +137,61 @@ export class BackendService {
                     queryKey: ['question'],
                 })
             },
+        }))
+
+    registerUser = () =>
+        injectMutation(() => ({
+            mutationFn: async (req: {
+                user: LoginUser
+                type: 'noob' | 'pro'
+            }) =>
+                lastValueFrom(
+                    this.http.post(
+                        `${environment.apiUrl}auth/register/${req.type}`,
+                        req.user
+                    )
+                ),
+            onSuccess: async () => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['userInfo'],
+                })
+            },
+        }))
+
+    loginUser = () =>
+        injectMutation(() => ({
+            mutationFn: async (user: LoginUser) =>
+                lastValueFrom(
+                    this.http.post(`${environment.apiUrl}auth/login`, user)
+                ),
+            onSuccess: async () => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['userInfo'],
+                })
+            },
+        }))
+
+    logoutUser = () =>
+        injectMutation(() => ({
+            mutationFn: async () =>
+                lastValueFrom(
+                    this.http.post(`${environment.apiUrl}auth/logout`, null)
+                ),
+            onSuccess: async () => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['userInfo'],
+                })
+            },
+        }))
+
+    fetchUserInformation = () =>
+        injectQuery(() => ({
+            queryKey: ['userInfo'],
+            queryFn: async () =>
+                lastValueFrom(
+                    this.http.get<JWTPayload | undefined>(
+                        `${environment.apiUrl}auth/me`
+                    )
+                ),
         }))
 }

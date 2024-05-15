@@ -14,4 +14,12 @@ export class NavigationService {
     openAskQuestion = async () => {
         await this.router.navigate(['/questions/ask'])
     }
+
+    openLogin = async () => {
+        await this.router.navigate(['/login'])
+    }
+
+    openHome = async () => {
+        await this.router.navigate(['/'])
+    }
 }

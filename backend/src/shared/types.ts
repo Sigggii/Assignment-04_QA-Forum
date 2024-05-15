@@ -7,6 +7,8 @@ import {
     InsertQuestionCommentSchema,
     InsertAnswerSchema,
     InsertAnswerCommentSchema,
+    InsertUser,
+    InsertUserSchema,
 } from '../db/types'
 export const CreateQuestionRequestSchema = z.object({
     question: InsertQuestionSchema.pick({ title: true, content: true }),
@@ -101,3 +103,20 @@ export type CreateAnswer = z.infer<typeof CreateAnswerRequestSchema>
 
 export const UUIDSchema = z.string().uuid()
 export type UUID = z.infer<typeof UUIDSchema>
+
+export type JWTPayload = Omit<User, 'createdAt'>
+
+export const LoginSchema = z.object({
+    username: z
+        .string()
+        .describe('Username')
+        .min(3, 'Username must be at least 3 characters long')
+        .max(30, 'Username can be no longer than 30 characters'),
+
+    password: z
+        .string()
+        .describe('Password')
+        .min(8, 'Password must be at least 8 characters long')
+        .max(265, 'Password can be no longer than 256 characters'),
+})
+export type LoginUser = z.infer<typeof LoginSchema>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core'
+import { Component, EventEmitter, inject, Output } from '@angular/core'
 import { provideIcons } from '@ng-icons/core'
 import { lucideMenu, lucideBell, lucideSearch } from '@ng-icons/lucide'
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
@@ -8,8 +8,11 @@ import {
     HlmAvatarFallbackDirective,
 } from '@spartan-ng/ui-avatar-helm'
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm'
-import { NgOptimizedImage } from '@angular/common'
+import { NgClass, NgIf, NgOptimizedImage } from '@angular/common'
 import { RouterLink } from '@angular/router'
+import { AuthService } from '../../services/auth.service'
+import { NavigationService } from '../../services/navigation.service'
+import { BackendService } from '../../services/backend.service'
 
 @Component({
     selector: 'app-appbar',
@@ -22,6 +25,8 @@ import { RouterLink } from '@angular/router'
         HlmInputDirective,
         NgOptimizedImage,
         RouterLink,
+        NgIf,
+        NgClass,
     ],
     templateUrl: './appbar.component.html',
     styleUrl: './appbar.component.css',
@@ -30,7 +35,18 @@ import { RouterLink } from '@angular/router'
 export class AppbarComponent {
     @Output() toggleSidebar = new EventEmitter<void>()
 
+    authService = inject(AuthService)
+    navService = inject(NavigationService)
+    backendService = inject(BackendService)
+
+    logoutUser = this.backendService.logoutUser()
+
     handleToggleSidebar() {
         this.toggleSidebar.emit()
+    }
+
+    async handleLogoutUser() {
+        this.logoutUser.mutate()
+        await this.navService.openLogin()
     }
 }

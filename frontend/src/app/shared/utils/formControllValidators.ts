@@ -19,3 +19,19 @@ export const maxLengthArray = (maxLength: number): ValidatorFn => {
         return value.length > maxLength ? { maxLengthArray: true } : null
     }
 }
+
+export const passwordMatchValidator =
+    (
+        passwordControlName: string,
+        confirmPasswordControlName: string
+    ): ValidatorFn =>
+    (control: AbstractControl) => {
+        const password = control.get(passwordControlName)?.value
+        const confirmPassword = control.get(confirmPasswordControlName)?.value
+
+        if (password !== confirmPassword) {
+            return { passwordMatch: true }
+        }
+
+        return null
+    }

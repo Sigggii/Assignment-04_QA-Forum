@@ -10,7 +10,7 @@
     </button>
     <a routerLink="/" class="flex items-center gap-1.5">
         <img
-            ngSrc="assets/logo-pro.png"
+            [ngSrc]="authService.isPro() ?  'assets/logo-pro.png' : 'assets/logo-noob.png'"
             title="logo"
             alt="logo"
             height="40"
@@ -40,11 +40,15 @@
     <button hlmBtn size="icon" variant="ghost">
         <hlm-icon name="lucideBell" />
     </button>
-    <hlm-avatar class="h-9 w-9 cursor-pointer">
+    <hlm-avatar *ngIf="authService.isLoggedIn()" class="h-9 w-9 cursor-pointer">
         <span
-            class="select-none bg-primary text-primary-foreground"
+            [ngClass]="authService.isPro() ? 'bg-pro text-pro-foreground':'bg-noob text-noob-foreground'"
+            class="select-none"
             hlmAvatarFallback
-            >TG</span
+            >{{authService.getUserData()!.username.charAt(0)}}</span
         >
     </hlm-avatar>
+    <button (click)="navService.openLogin()" *ngIf="!authService.isLoggedIn()" hlmBtn>Login</button>
+    <button (click)="handleLogoutUser()" [ngClass]="authService.isPro() ?'bg-pro text-pro-foreground':'bg-noob text-noob-foreground'" *ngIf="authService.isLoggedIn()" hlmBtn>Logout</button>
+
 </div>

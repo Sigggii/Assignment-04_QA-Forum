@@ -1,1 +1,27 @@
-<p>login works!</p>
+<form [formGroup]="loginForm" class="mt-36 gap-4 flex flex-col items-center justify-items-center">
+    <img
+        ngSrc="assets/logo-pro.png"
+        title="logo"
+        alt="logo"
+        height="40"
+        width="40"
+    />
+    <h1 class="text-xl font-bold">Login</h1>
+    <div class="flex-col flex gap-2 ">
+        <label hlmLabel>Username
+            <input formControlName="username" class='w-80' hlmInput placeholder='Username' />
+        </label>
+        <label hlmLabel>Password
+            <input formControlName="password" class='w-80' hlmInput type='password' placeholder='Password' />
+        </label>
+        <button [disabled]="!this.loginForm.valid" (click)="handleLoginUser()" hlmBtn class="w-full">Login</button>
+    </div>
+    <div>
+        <span>Don't have an account?</span>
+        <ul class="text-sm">
+            <li><a class="text-noob" href="/sign-up-noob">Signup as Noob</a></li>
+            <li><a class="text-pro" href="/sign-up-pro">Signup as Pro</a></li>
+        </ul>
+
+    </div>
+</form>

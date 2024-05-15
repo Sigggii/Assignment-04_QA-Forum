@@ -36,7 +36,6 @@ export class DetailQuestionComponent {
     }
 
     handleAnswerEditorSticky = (isSticky: boolean) => {
-        console.log(isSticky)
         this.answerEditorSticky = isSticky
     }
 }

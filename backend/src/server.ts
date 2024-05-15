@@ -8,6 +8,8 @@ import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-
 import { questionRoutes } from './routes/questionRoutes'
 import fastifyCors from '@fastify/cors'
 import * as schema from './db/schema'
+import cookie from '@fastify/cookie'
+import { authRoutes } from './routes/authRoutes'
 
 // In production use environment variables instead of .env file. Make sure to set the var NODE_ENV = 'production'.
 if (process.env.NODE_ENV !== 'production') {
@@ -34,8 +36,12 @@ const queryClient = postgres(connectionString)
 export const db = drizzle(queryClient, { schema })
 
 export const fastify = Fastify({ logger: true }).withTypeProvider<ZodTypeProvider>()
+fastify.register(cookie, {
+    secret: getConfig().COOKIE_SECRET,
+})
 fastify.register(fastifyCors, {
-    origin: '*',
+    origin: getConfig().CORS_ALLOWED_ORIGINS,
+    credentials: true,
 })
 export type BaseFastifyInstance = typeof fastify
 
@@ -43,6 +49,7 @@ fastify.setValidatorCompiler(validatorCompiler)
 fastify.setSerializerCompiler(serializerCompiler)
 
 const routes = (fastify: BaseFastifyInstance, opt: any, done: any) => {
+    fastify.register(authRoutes, { prefix: 'auth' })
     fastify.register(questionRoutes, { prefix: 'questions' })
     fastify.get('/', (res, rep) => {
         rep.status(200).send()

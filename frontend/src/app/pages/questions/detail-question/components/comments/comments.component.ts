@@ -47,7 +47,6 @@ export class CommentsComponent {
         const textArea = event.target as HTMLTextAreaElement
         const value = textArea.value
         const newText = value.replaceAll('\n', '').replaceAll('\r', '')
-        console.log(newText)
         this.newComment = newText
     }
 

@@ -3,6 +3,9 @@ import { z, ZodError } from 'zod'
 const ENV_SCHEMA = z.object({
     PORT: z.coerce.number().optional().default(8080),
     DB_CONNECTION_STRING: z.string({ message: 'DB_CONNECTION_STRING is required' }),
+    JWT_SECRET: z.string({ message: 'JWT_SECRET is required' }),
+    COOKIE_SECRET: z.string({ message: 'COOKIE_SECRET is required' }),
+    CORS_ALLOWED_ORIGINS: z.string({ message: 'CORS_ALLOWED_ORIGINS is required' }),
     NODE_ENV: z
         .union([z.literal('development'), z.literal('testing'), z.literal('production')])
         .optional()

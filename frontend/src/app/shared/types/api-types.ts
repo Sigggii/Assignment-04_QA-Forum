@@ -95,3 +95,12 @@ export type DetailQuestion = {
     comments: CommentOnQuestion[]
     answers: Answer[]
 }
+
+
+export type LoginUser = { username: string; password: string }
+
+export type JWTPayload = {
+    id: string
+    role: 'NOOB' | 'PRO' | 'ADMIN'
+    username: string
+}

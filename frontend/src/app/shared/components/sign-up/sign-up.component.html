@@ -1,0 +1,53 @@
+<form [formGroup]="registerForm" class="mt-36 gap-4 flex flex-col items-center justify-items-center">
+    <img
+        [ngSrc]="type === 'noob' ? 'assets/logo-noob.png':'assets/logo-pro.png'"
+        title="logo"
+        alt="logo"
+        height="40"
+        width="40"
+    />
+    <h1 [ngClass]="type === 'noob' ? 'text-noob':'text-pro'" class="text-xl font-bold">Sign up as {{type.toUpperCase()}}</h1>
+    <div class="flex-col flex gap-2 ">
+        <div>
+            <label hlmLabel>Username
+                <input formControlName="username" class='w-80' maxlength="30" hlmInput placeholder='Username' />
+            </label>
+
+            <span
+                *ngIf="(registerForm.controls.username.getError('minlength') || registerForm.controls.username.getError('maxlength')) && registerForm.controls.username.dirty"
+                class="text-destructive text-xs">Username has to be between 3 and 30 characters long</span>
+        </div>
+        <div>
+            <label hlmLabel>Password
+                <input formControlName="password" maxlength="256" class='w-80' hlmInput type='password'
+                       placeholder='Password' />
+            </label>
+            <span
+                *ngIf="(registerForm.controls.password.getError('minlength') || registerForm.controls.password.getError('maxlength')) && registerForm.controls.password.dirty"
+                class="text-destructive text-xs">Password has to be between 8 and 256 characters long</span>
+        </div>
+        <div>
+            <label hlmLabel>Confirm Password
+                <input formControlName="passwordConfirm" maxlength="256" class='w-80' hlmInput type='password'
+                       placeholder='Confirm Password' />
+            </label>
+            <span *ngIf="registerForm.getError('passwordMatch') && registerForm.controls.passwordConfirm.dirty"
+                  class="text-destructive text-xs">Passwords don't match</span>
+        </div>
+        <button (click)="handleRegisterUser()" [disabled]="!registerForm.valid" hlmBtn [ngClass]="type==='noob' ? '!bg-noob !text-black':'!bg-pro'"
+                class="w-full">Sign Up
+        </button>
+    </div>
+    <div>
+        <span>Don't have an account?</span>
+        <ul class="text-sm">
+            <li *ngIf="type === 'pro'"><a class="text-noob" href="/sign-up-noob">Signup as Noob</a></li>
+            <li *ngIf="type === 'noob'"><a class="text-pro" href="/sign-up-pro">Signup as Pro</a></li>
+        </ul>
+        <span class="mt-2">Already have an account?</span>
+        <ul class="text-sm">
+            <li><a class="text-blue-500" href="/login">Login</a></li>
+
+        </ul>
+    </div>
+</form>

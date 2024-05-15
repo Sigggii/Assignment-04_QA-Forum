@@ -52,7 +52,7 @@ export class AskComponent {
 
     questionForm = new FormGroup({
         title: new FormControl<string>('', {
-            validators: [Validators.required, Validators.min(1)],
+            validators: [Validators.required, Validators.minLength(1)],
             nonNullable: true,
         }),
         content: new FormControl<QuillEditorValue>(
