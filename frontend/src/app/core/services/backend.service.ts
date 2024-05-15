@@ -103,7 +103,7 @@ export class BackendService {
             }) =>
                 lastValueFrom(
                     this.http.post(
-                        `${environment.apiUrl}questions/${req.questionId}/answers/${req.answerId}`,
+                        `${environment.apiUrl}questions/${req.questionId}/answers/${req.answerId}/comments`,
                         req.comment
                     )
                 ),

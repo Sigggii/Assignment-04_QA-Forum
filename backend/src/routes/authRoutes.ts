@@ -3,6 +3,7 @@ import { JWTPayload, LoginSchema } from '../shared/types'
 import { loginUser, registerUser } from '../controller/authController'
 import { getConfig } from '../system/EnvManager'
 import jwt from 'jsonwebtoken'
+import auth from '@fastify/auth'
 
 export const authRoutes = (fastify: BaseFastifyInstance, opt: any, done: any) => {
     fastify.post(
@@ -70,15 +71,8 @@ export const authRoutes = (fastify: BaseFastifyInstance, opt: any, done: any) =>
     })
 
     fastify.get('/me', async (req, resp) => {
-        const jwtCookie = req.cookies.jwt
-        if (!jwtCookie) return undefined
-
-        const jwtSecret = getConfig().JWT_SECRET
-        try {
-            return jwt.verify(jwtCookie, jwtSecret) as JWTPayload
-        } catch (err) {
-            return undefined
-        }
+        if (!req.authUser) return undefined
+        return req.authUser
     })
 
     done()

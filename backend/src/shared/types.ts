@@ -29,9 +29,11 @@ export const CreateAnswerCommentRequestSchema = InsertAnswerCommentSchema.pick({
 
 export type CreateAnswerCommentRequest = z.infer<typeof CreateAnswerCommentRequestSchema>
 
+export type Role = 'NOOB' | 'PRO' | 'ADMIN'
+
 export type User = {
     id: string
-    role: 'NOOB' | 'PRO' | 'ADMIN'
+    role: Role
     username: string
     createdAt: Date
 }

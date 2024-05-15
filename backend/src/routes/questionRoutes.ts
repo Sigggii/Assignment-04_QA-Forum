@@ -1,7 +1,10 @@
 import { BaseFastifyInstance } from '../server'
 import {
+    CreateAnswer,
+    CreateAnswerCommentRequest,
     CreateAnswerCommentRequestSchema,
     CreateAnswerRequestSchema,
+    CreateQuestionCommentRequest,
     CreateQuestionCommentRequestSchema,
     CreateQuestionRequestSchema,
     UUIDSchema,
@@ -15,6 +18,7 @@ import {
     getQuestions,
 } from '../controller/questionController'
 import { z } from 'zod'
+import { CreateQuestion } from '../db/types'
 
 export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any) => {
     fastify.post(
@@ -23,11 +27,16 @@ export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any
             schema: {
                 body: CreateQuestionRequestSchema,
             },
+            config: {
+                rolesAllowed: 'ALL',
+            },
+            onRequest: [fastify.auth([fastify.authorize])],
         },
         async (req, rep) => {
             //ToDo If authentication is etablished: Use real userId, this is only for testing purposes
             const userId = 'da7cbcff-a968-4f99-bd9b-0bf0567fc4e5'
-            const question = req.body
+            // ToDo fix stupid type cast
+            const question = req.body as CreateQuestion
             const createdQuestion = await createQuestion(question, userId)
 
             rep.status(201).send(createdQuestion)
@@ -71,12 +80,20 @@ export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any
                     id: UUIDSchema,
                 }),
             },
+            config: {
+                rolesAllowed: 'ALL',
+            },
+            onRequest: [fastify.auth([fastify.authorize])],
         },
         async (req, resp) => {
             //ToDo If authentication is etablished: Use real userId, this is only for testing purposes
             const userId = 'da7cbcff-a968-4f99-bd9b-0bf0567fc4e5'
-            const questionId = req.params.id
-            await createQuestionComment(req.body, questionId, userId)
+            const questionId = (req.params as { id: string }).id
+            await createQuestionComment(
+                req.body as CreateQuestionCommentRequest,
+                questionId,
+                userId,
+            )
             resp.status(201).send()
         },
     )
@@ -90,19 +107,23 @@ export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any
                     id: UUIDSchema,
                 }),
             },
+            config: {
+                rolesAllowed: 'ALL',
+            },
+            onRequest: [fastify.auth([fastify.authorize])],
         },
         async (req, resp) => {
-            const questionId = req.params.id
+            const questionId = (req.params as { id: string }).id
             //ToDo If authentication is etablished: Use real userId, this is only for testing purposes
             const userId = 'da7cbcff-a968-4f99-bd9b-0bf0567fc4e5'
-            const body = req.body
+            const body = req.body as CreateAnswer
             await createAnswer(body, questionId, userId)
             resp.status(201)
         },
     )
 
     fastify.post(
-        '/:questionId/answers/:answerId',
+        '/:questionId/answers/:answerId/comments',
         {
             schema: {
                 body: CreateAnswerCommentRequestSchema,
@@ -111,13 +132,17 @@ export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any
                     answerId: UUIDSchema,
                 }),
             },
+            config: {
+                rolesAllowed: 'ALL',
+            },
+            onRequest: [fastify.auth([fastify.authorize])],
         },
         async (req, resp) => {
-            const answerId = req.params.answerId
+            const answerId = (req.params as { answerId: string }).answerId
             //ToDo If authentication is etablished: Use real userId, this is only for testing purposes
             const userId = 'da7cbcff-a968-4f99-bd9b-0bf0567fc4e5'
 
-            await createAnswerComment(req.body, answerId, userId)
+            await createAnswerComment(req.body as CreateAnswerCommentRequest, answerId, userId)
             resp.status(201)
         },
     )

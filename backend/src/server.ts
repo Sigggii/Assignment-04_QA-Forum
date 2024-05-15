@@ -1,4 +1,4 @@
-import Fastify from 'fastify'
+import Fastify, { FastifyReply, FastifyRequest } from 'fastify'
 import dotenv from 'dotenv'
 import postgres from 'postgres'
 import { drizzle } from 'drizzle-orm/postgres-js'
@@ -10,6 +10,25 @@ import fastifyCors from '@fastify/cors'
 import * as schema from './db/schema'
 import cookie from '@fastify/cookie'
 import { authRoutes } from './routes/authRoutes'
+import auth from '@fastify/auth'
+import jwt from 'jsonwebtoken'
+import { JWTPayload, Role } from './shared/types'
+import { authenticationHandler, authorizationHandler } from './routes/authHandler'
+
+declare module 'fastify' {
+    interface FastifyRequest {
+        authUser: JWTPayload | undefined
+    }
+
+    interface FastifyInstance {
+        authenticate: (req: FastifyRequest, resp: FastifyReply, done: any) => void
+        authorize: (req: FastifyRequest, resp: FastifyReply, done: any) => void
+    }
+
+    interface FastifyContextConfig {
+        rolesAllowed: Role[] | 'ALL' | undefined
+    }
+}
 
 // In production use environment variables instead of .env file. Make sure to set the var NODE_ENV = 'production'.
 if (process.env.NODE_ENV !== 'production') {
@@ -43,10 +62,18 @@ fastify.register(fastifyCors, {
     origin: getConfig().CORS_ALLOWED_ORIGINS,
     credentials: true,
 })
-export type BaseFastifyInstance = typeof fastify
+
+fastify.register(auth)
+fastify.decorate('authenticate', authenticationHandler)
+fastify.decorate('authorize', authorizationHandler)
+
+//Run authenticate hook before every request
+fastify.addHook('onRequest', fastify.authenticate)
 
 fastify.setValidatorCompiler(validatorCompiler)
 fastify.setSerializerCompiler(serializerCompiler)
+
+export type BaseFastifyInstance = typeof fastify
 
 const routes = (fastify: BaseFastifyInstance, opt: any, done: any) => {
     fastify.register(authRoutes, { prefix: 'auth' })
@@ -65,4 +92,5 @@ const start = async () => {
         console.log(err)
     }
 }
+
 start()
