@@ -25,16 +25,12 @@ export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any
             },
         },
         async (req, rep) => {
-            try {
-                //ToDo If authentication is etablished: Use real userId, this is only for testing purposes
-                const userId = 'da7cbcff-a968-4f99-bd9b-0bf0567fc4e5'
-                const question = req.body
-                const createdQuestion = await createQuestion(question, userId)
+            //ToDo If authentication is etablished: Use real userId, this is only for testing purposes
+            const userId = 'da7cbcff-a968-4f99-bd9b-0bf0567fc4e5'
+            const question = req.body
+            const createdQuestion = await createQuestion(question, userId)
 
-                rep.status(201).send(createdQuestion)
-            } catch (err) {
-                console.log(err)
-            }
+            rep.status(201).send(createdQuestion)
         },
     )
 

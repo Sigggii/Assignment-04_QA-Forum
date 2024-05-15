@@ -6,8 +6,8 @@ import { QueryResultType } from '../utils/typeUtils'
 import { UUID } from '../shared/types'
 
 export const createQuestionQuery = async (createQuestion: CreateQuestion) => {
+    console.log(createQuestion)
     const questionColumns = getTableColumns(question)
-    const tagColumns = getTableColumns(tag)
     return await db.transaction(async (tx) => {
         const newQuestion: Question = (
             await tx.insert(question).values(createQuestion.question).returning(questionColumns)
@@ -15,12 +15,20 @@ export const createQuestionQuery = async (createQuestion: CreateQuestion) => {
 
         //Insert new Tags, if already exists, do nothing
         if (createQuestion.tags.length > 0) {
-            const newTags = await tx
+            await tx
                 .insert(tag)
                 .values(createQuestion.tags)
                 .onConflictDoNothing({ target: tag.name })
-                .returning(tagColumns)
 
+            const newTags = await tx.query.tag
+                .findMany({
+                    where: (tag, { inArray }) =>
+                        inArray(
+                            tag.name,
+                            createQuestion.tags.map((tag) => tag.name),
+                        ),
+                })
+                .execute()
             const questionTags: QuestionTag[] = newTags.map((tag) => {
                 return { questionId: newQuestion.id, tagId: tag.id }
             })
