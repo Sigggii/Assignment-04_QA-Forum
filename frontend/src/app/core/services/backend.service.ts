@@ -25,8 +25,8 @@ import { lastValueFrom } from 'rxjs'
     providedIn: 'root',
 })
 export class BackendService {
-    private http = inject(HttpClient)
-    private queryClient = injectQueryClient()
+    http = inject(HttpClient)
+    queryClient = injectQueryClient()
 
     createQuestion = (redirect?: (questionId: string) => Promise<void>) =>
         injectMutation(() => ({
@@ -232,7 +232,7 @@ export class BackendService {
         }))
 
     fetchUserInformation = () =>
-        injectQuery(() => ({
+        injectQuery<JWTPayload | undefined>(() => ({
             queryKey: ['userInfo'],
             queryFn: async () =>
                 lastValueFrom(

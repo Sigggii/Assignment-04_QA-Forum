@@ -11,6 +11,7 @@ import {
     Validators,
 } from '@angular/forms'
 import { passwordMatchValidator } from '../../utils/formControllValidators'
+import { NavigationService } from '../../../core/services/navigation.service'
 
 @Component({
     selector: 'app-sign-up',
@@ -28,6 +29,8 @@ import { passwordMatchValidator } from '../../utils/formControllValidators'
     styleUrl: './sign-up.component.css',
 })
 export class SignUpComponent {
+    navigationService = inject(NavigationService)
+
     registerForm = new FormGroup(
         {
             username: new FormControl<string>('', {

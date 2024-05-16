@@ -10,7 +10,11 @@
     </button>
     <a routerLink="/" class="flex items-center gap-1.5">
         <img
-            [ngSrc]="authService.isPro() ?  'assets/logo-pro.png' : 'assets/logo-noob.png'"
+            [ngSrc]="
+                authService.isPro()
+                    ? 'assets/logo-pro.png'
+                    : 'assets/logo-noob.png'
+            "
             title="logo"
             alt="logo"
             height="40"
@@ -40,15 +44,29 @@
     <button hlmBtn size="icon" variant="ghost">
         <hlm-icon name="lucideBell" />
     </button>
-    <hlm-avatar *ngIf="authService.isLoggedIn()" class="h-9 w-9 cursor-pointer">
-        <span
-            [ngClass]="authService.isPro() ? 'bg-pro text-pro-foreground':'bg-noob text-noob-foreground'"
-            class="select-none"
-            hlmAvatarFallback
-            >{{authService.getUserData()!.username.charAt(0)}}</span
-        >
-    </hlm-avatar>
-    <button (click)="navService.openLogin()" *ngIf="!authService.isLoggedIn()" hlmBtn>Login</button>
-    <button (click)="handleLogoutUser()" [ngClass]="authService.isPro() ?'bg-pro text-pro-foreground':'bg-noob text-noob-foreground'" *ngIf="authService.isLoggedIn()" hlmBtn>Logout</button>
 
+    @if (authService.isLoggedIn()) {
+        <hlm-avatar class="h-9 w-9 cursor-pointer">
+            <span
+                [ngClass]="
+                    authService.isPro()
+                        ? 'bg-pro text-pro-foreground'
+                        : 'bg-noob text-noob-foreground'
+                "
+                class="select-none"
+                hlmAvatarFallback
+                >{{ authService.getUserData()!.username.charAt(0) }}
+            </span>
+        </hlm-avatar>
+
+        <button
+            (click)="handleLogoutUser()"
+            *ngIf="authService.isLoggedIn()"
+            hlmBtn
+        >
+            Logout
+        </button>
+    } @else {
+        <button (click)="handleLogoutUser()" hlmBtn>Login</button>
+    }
 </div>

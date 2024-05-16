@@ -18,6 +18,8 @@ export const buttonVariants = cva(
                     'bg-secondary text-secondary-foreground hover:bg-secondary/80',
                 ghost: 'hover:bg-accent hover:text-accent-foreground',
                 link: 'underline-offset-4 hover:underline text-primary',
+                pro: 'bg-pro text-pro-foreground hover:bg-pro/90', // custom
+                noob: 'bg-noob text-noob-foreground hover:bg-noob/90', // custom
             },
             size: {
                 default: 'h-10 py-2 px-4',
