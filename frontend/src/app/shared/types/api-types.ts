@@ -51,6 +51,8 @@ export type Question = {
     lastEditedAt: DateAsString | null
 }
 
+export type QuestionWithTags = Question & { tags: Tag[] }
+
 export type QuestionPreviewData = {
     id: string
     authorId: string
@@ -95,7 +97,6 @@ export type DetailQuestion = {
     comments: CommentOnQuestion[]
     answers: Answer[]
 }
-
 
 export type LoginUser = { username: string; password: string }
 

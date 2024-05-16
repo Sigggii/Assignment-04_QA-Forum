@@ -62,7 +62,22 @@ export class BadgeInputComponent implements ControlValueAccessor {
 
     public touched: boolean = false
 
-    writeValue(value: string[]): void {
+    /**
+     * Is used from formControl, to write initial Value
+     * @param value
+     */
+    writeValue(value: string[]) {
+        this.value = value
+        this.internalTags = value
+        this.internalTags.push('')
+    }
+
+    /**
+     * Used internally, to update value
+     * @param value
+     */
+    _writeValue(value: string[]): void {
+        console.log(value)
         this.value = value.filter(val => val.trim() !== '')
     }
     registerOnChange(onChange: any): void {
@@ -78,7 +93,7 @@ export class BadgeInputComponent implements ControlValueAccessor {
         if (input.value.trim() === '') {
             this.internalTags.pop()
             this.internalTags.push('')
-            this.writeValue(this.internalTags)
+            this._writeValue(this.internalTags)
             this.onChange(this.value)
             input.value = ''
             return
@@ -91,7 +106,7 @@ export class BadgeInputComponent implements ControlValueAccessor {
 
         this.internalTags = this.internalTags.slice(0, -1)
         this.internalTags.push(...filteredBadges, newBadgeResult.lastValue)
-        this.writeValue(this.internalTags)
+        this._writeValue(this.internalTags)
 
         input.value = newBadgeResult.lastValue
 
@@ -121,7 +136,7 @@ export class BadgeInputComponent implements ControlValueAccessor {
             const indexEditBadge = this.internalTags.indexOf(editedBadge)
             indexEditBadge !== -1 &&
                 this.internalTags.splice(indexEditBadge, 1, ...filteredBadges)
-            this.writeValue(this.internalTags)
+            this._writeValue(this.internalTags)
             this.editBadge = ''
         }
         this.onChange(this.value)
@@ -154,7 +169,7 @@ export class BadgeInputComponent implements ControlValueAccessor {
 
     handleDeleteBadge = (badge: string) => {
         this.internalTags = this.internalTags.filter(cat => badge !== cat)
-        this.writeValue(this.internalTags)
+        this._writeValue(this.internalTags)
         this.onChange(this.value)
         this.onTouched()
     }

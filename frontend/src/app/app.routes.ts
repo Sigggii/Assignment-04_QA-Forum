@@ -8,6 +8,7 @@ import { SignUpProComponent } from './pages/sign-up-pro/sign-up-pro.component'
 import { SignUpNoobComponent } from './pages/sign-up-noob/sign-up-noob.component'
 import { authGuard } from './core/guards/auth.guard'
 import { loginGuard } from './core/guards/login.guard'
+import { EditComponent } from './pages/questions/edit/edit.component'
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -19,6 +20,7 @@ export const routes: Routes = [
         canActivate: [authGuard(['NOOB', 'PRO', 'ADMIN'])],
     },
     { path: 'questions/:questionId', component: DetailQuestionComponent },
+    { path: 'questions/:questionId/edit', component: EditComponent },
     {
         path: 'login',
         component: LoginComponent,

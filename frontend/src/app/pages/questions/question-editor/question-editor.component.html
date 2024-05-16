@@ -1,0 +1,62 @@
+<section id="ask-question-container" class="flex max-w-2xl flex-col">
+    <form
+        [formGroup]="questionForm"
+        (ngSubmit)="handleSubmitQuestion()"
+        class="mt-10 flex max-w-4xl flex-col gap-3"
+    >
+        <label hlmLabel class="font-medium"
+        >Title
+            <input
+                hlmInput
+                formControlName="title"
+                class="w-full"
+                maxlength="150"
+                placeholder="Title"
+            />
+        </label>
+        <app-quill-js
+            #editor
+            formControlName="content"
+            class="w-full"
+            classes="h-[500px]"
+            theme="snow"
+            [modules]="modules"
+            placeholder=""
+            label="Content"
+        ></app-quill-js>
+        <section>
+            <app-badge-input formControlName="tags" label="Tags" />
+            <ul class="text-sm text-destructive">
+                <li
+                    *ngIf="
+                        questionForm.controls.tags.getError('minLengthArray') &&
+                        questionForm.controls.tags.dirty
+                    "
+                >
+                    Minimum {{ minTags }} Tag required (type in text and press
+                    space to enter tag)
+                </li>
+                <li
+                    *ngIf="
+                        questionForm.controls.tags.getError('maxLengthArray') &&
+                        questionForm.controls.tags.dirty
+                    "
+                >
+                    Maximum {{ maxTags }} Tags
+                </li>
+                <li *ngIf="questionForm.controls.tags.getError('maxTagLength')">
+                    Maximum length for a tag is {{ maxTagLength }} characters
+                </li>
+            </ul>
+        </section>
+        <button
+            [disabled]="!questionForm.valid"
+            class="w-fit"
+            type="submit"
+            hlmBtn
+        >
+            Post Question
+        </button>
+    </form>
+</section>
+
