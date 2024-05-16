@@ -7,6 +7,10 @@ import { Router } from '@angular/router'
 export class NavigationService {
     constructor(private router: Router) {}
 
+    openQuestions = async () => {
+        await this.router.navigate(['/questions'])
+    }
+
     openQuestion = async (questionId: string) => {
         await this.router.navigate(['/questions', questionId])
     }

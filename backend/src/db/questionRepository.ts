@@ -4,7 +4,6 @@ import { db } from '../server'
 import { CreateQuestion, InsertQuestionComment, Question, QuestionTag } from './types'
 import { QueryResultType } from '../utils/typeUtils'
 import { UpdateQuestionRequest, UUID } from '../shared/types'
-import { createQuestion } from '../controller/questionController'
 
 export const createQuestionQuery = async (createQuestion: CreateQuestion) => {
     const questionColumns = getTableColumns(question)
@@ -78,6 +77,10 @@ export const updateQuestionQuery = async (
             await tx.insert(question_tag).values(questionTags)
         }
     })
+}
+
+export const deleteQuestionQuery = async (questionId: UUID) => {
+    await db.delete(question).where(eq(question.id, questionId)).execute()
 }
 
 const questionPreviewQuery = () =>
