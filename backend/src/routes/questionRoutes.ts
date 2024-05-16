@@ -141,7 +141,6 @@ export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any
             const answerId = (req.params as { answerId: string }).answerId
             //ToDo If authentication is etablished: Use real userId, this is only for testing purposes
             const userId = 'da7cbcff-a968-4f99-bd9b-0bf0567fc4e5'
-
             await createAnswerComment(req.body as CreateAnswerCommentRequest, answerId, userId)
             resp.status(201)
         },

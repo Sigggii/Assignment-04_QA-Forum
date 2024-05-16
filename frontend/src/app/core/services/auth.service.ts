@@ -12,6 +12,23 @@ export class AuthService {
     private backendService = inject(BackendService)
     private userInfo = this.backendService.fetchUserInformation()
 
+    isQueryFinished = async (): Promise<boolean> => {
+        return new Promise((resolve, reject) => {
+            const intervalId = setInterval(() => {
+                const status = this.userInfo.status()
+                if (status !== 'pending') {
+                    clearInterval(intervalId)
+                    resolve(true)
+                }
+            }, 100)
+
+            setTimeout(() => {
+                clearInterval(intervalId)
+                reject(new Error('Timeout waiting for status change'))
+            }, 5000) // Adjust timeout as needed
+        })
+    }
+
     isLoggedIn = () => {
         return !!this.userInfo.data()
     }

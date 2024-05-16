@@ -11,6 +11,7 @@ import {
 } from '@angular/forms'
 import { BackendService } from '../../core/services/backend.service'
 import { NavigationService } from '../../core/services/navigation.service'
+import { AuthService } from '../../core/services/auth.service'
 
 @Component({
     selector: 'app-login',
@@ -39,6 +40,7 @@ export class LoginComponent {
 
     backendService = inject(BackendService)
     navService = inject(NavigationService)
+    authService = inject(AuthService)
     loginUser = this.backendService.loginUser()
 
     handleLoginUser = async () => {
