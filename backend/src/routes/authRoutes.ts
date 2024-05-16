@@ -69,6 +69,7 @@ export const authRoutes = async (fastify: BaseFastifyInstance) => {
 
     fastify.get('/me', async (req) => {
         if (!req.authUser) return undefined
+        console.log(req.authUser)
         return req.authUser
     })
 }

@@ -96,7 +96,6 @@ export type DetailQuestion = {
     answers: Answer[]
 }
 
-
 export type LoginUser = { username: string; password: string }
 
 export type JWTPayload = {

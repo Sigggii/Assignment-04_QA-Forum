@@ -22,4 +22,12 @@ export class NavigationService {
     openHome = async () => {
         await this.router.navigate(['/'])
     }
+
+    openSignUpPro = async () => {
+        await this.router.navigate(['/sign-up/pro'])
+    }
+
+    openSignUpNoob = async () => {
+        await this.router.navigate(['/sign-up/noob'])
+    }
 }

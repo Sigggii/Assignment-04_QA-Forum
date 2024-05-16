@@ -1,26 +1,59 @@
-<form [formGroup]="loginForm" class="mt-36 gap-4 flex flex-col items-center justify-items-center">
-    <img
-        ngSrc="assets/logo-pro.png"
-        title="logo"
-        alt="logo"
-        height="40"
-        width="40"
-    />
-    <h1 class="text-xl font-bold">Login</h1>
-    <div class="flex-col flex gap-2 ">
-        <label hlmLabel>Username
-            <input formControlName="username" class='w-80' hlmInput placeholder='Username' />
-        </label>
-        <label hlmLabel>Password
-            <input formControlName="password" class='w-80' hlmInput type='password' placeholder='Password' />
-        </label>
-        <button [disabled]="!this.loginForm.valid" (click)="handleLoginUser()" hlmBtn class="w-full">Login</button>
+<form
+    [formGroup]="loginForm"
+    class="mx-auto mt-6 flex w-full max-w-sm flex-col items-center justify-center gap-8"
+>
+    <div class="flex flex-col items-center gap-2">
+        <img
+            ngSrc="assets/logo-noob.png"
+            title="logo"
+            alt="logo"
+            height="40"
+            width="40"
+        />
+        <h1 class="text-xl font-bold">Login</h1>
     </div>
-    <div>
-        <span>Don't have an account?</span>
-        <ul class="text-sm">
-            <li><a class="text-noob" href="/sign-up-noob">Signup as Noob</a></li>
-            <li><a class="text-pro" href="/sign-up-pro">Signup as Pro</a></li>
-        </ul>
+
+    <div class="flex w-full flex-col gap-4">
+        <label hlmLabel
+            >Username
+            <input formControlName="username" class="w-full" hlmInput />
+        </label>
+        <label hlmLabel class="w-full"
+            >Password
+            <input
+                formControlName="password"
+                class="w-full"
+                hlmInput
+                type="password"
+            />
+        </label>
+        <button
+            [disabled]="!this.loginForm.valid"
+            (click)="handleLoginUser()"
+            hlmBtn
+            class="w-full"
+        >
+            Login
+        </button>
+    </div>
+
+    <div class="flex flex-col justify-center gap-2">
+        <span class="mx-auto text-foreground/80">Don't have an account?</span>
+
+        <div class="mx-auto flex gap-1">
+            <button
+                class="font-semibold text-noob hover:underline"
+                (click)="navService.openSignUpNoob()"
+            >
+                Sign up as Noob
+            </button>
+            <span> / </span>
+            <button
+                class="font-semibold text-pro hover:underline"
+                (click)="navService.openSignUpPro()"
+            >
+                Sign up as Pro
+            </button>
+        </div>
     </div>
 </form>

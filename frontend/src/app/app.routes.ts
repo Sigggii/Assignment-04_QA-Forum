@@ -23,6 +23,6 @@ export const routes: Routes = [
         component: LoginComponent,
         canActivate: [loginGuard],
     },
-    { path: 'sign-up-pro', component: SignUpProComponent },
-    { path: 'sign-up-noob', component: SignUpNoobComponent },
+    { path: 'sign-up/pro', component: SignUpProComponent },
+    { path: 'sign-up/noob', component: SignUpNoobComponent },
 ]
