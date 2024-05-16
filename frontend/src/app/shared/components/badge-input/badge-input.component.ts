@@ -67,8 +67,8 @@ export class BadgeInputComponent implements ControlValueAccessor {
      * @param value
      */
     writeValue(value: string[]) {
-        this.value = value
-        this.internalTags = value
+        this.value = [...value]
+        this.internalTags = [...value]
         this.internalTags.push('')
     }
 
@@ -77,7 +77,6 @@ export class BadgeInputComponent implements ControlValueAccessor {
      * @param value
      */
     _writeValue(value: string[]): void {
-        console.log(value)
         this.value = value.filter(val => val.trim() !== '')
     }
     registerOnChange(onChange: any): void {

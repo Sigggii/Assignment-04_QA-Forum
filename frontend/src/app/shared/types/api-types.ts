@@ -19,6 +19,11 @@ export type CreateQuestionRequest = {
     tags: { name: string }[]
 }
 
+export type UpdateQuestionRequest = {
+    question: { title: string; content: string; authorId: string }
+    tags: { name: string }[]
+}
+
 export type CreateQuestionComment = {
     content: string
 }

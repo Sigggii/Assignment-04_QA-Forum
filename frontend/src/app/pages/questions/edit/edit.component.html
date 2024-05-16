@@ -1,2 +1,2 @@
 <h1 class="text-3xl font-bold">Edit your Question</h1>
-<app-question-editor [editQuestion]="questionQuery.data()" />
+<app-question-editor (submitQuestion)="handleUpdateQuestion($event)" [editQuestion]="questionQuery.data()" [cancelHandler]="handleCancelEdit" />

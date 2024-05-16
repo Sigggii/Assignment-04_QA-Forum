@@ -6,6 +6,7 @@ import {
     CreateQuestionRequest,
     DetailQuestion,
     QuestionPreviewData,
+    UpdateQuestionRequest,
     UUID,
 } from '../shared/types'
 import {
@@ -13,6 +14,7 @@ import {
     createQuestionQuery,
     queryQuestionById,
     queryQuestions,
+    updateQuestionQuery,
 } from '../db/questionRepository'
 import {
     calculateAnswerRating,
@@ -30,6 +32,13 @@ export const createQuestion = async (
         ...createQuestion,
         question: { ...createQuestion.question, authorId: authorId },
     })
+}
+
+export const updateQuestion = async (
+    updateQuestion: UpdateQuestionRequest,
+    questionId: Question['id'],
+) => {
+    await updateQuestionQuery(updateQuestion, questionId)
 }
 
 export const getQuestions = async (): Promise<QuestionPreviewData[]> => {

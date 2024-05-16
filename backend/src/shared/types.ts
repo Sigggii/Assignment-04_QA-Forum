@@ -10,13 +10,21 @@ import {
     InsertUser,
     InsertUserSchema,
 } from '../db/types'
+
+const tagsSchema = z.array(CreateTagSchema.pick({ name: true })).max(5, 'Maximum 5 Tags')
 export const CreateQuestionRequestSchema = z.object({
     question: InsertQuestionSchema.pick({ title: true, content: true }),
-    tags: z.array(CreateTagSchema.pick({ name: true })).max(5, 'Maximum 5 Tags'),
+    tags: tagsSchema,
 })
 
 export type CreateQuestionRequest = z.infer<typeof CreateQuestionRequestSchema>
 
+export const UpdateQuestionRequestSchema = z.object({
+    question: InsertQuestionSchema.pick({ title: true, content: true, authorId: true }),
+    tags: tagsSchema,
+})
+
+export type UpdateQuestionRequest = z.infer<typeof UpdateQuestionRequestSchema>
 export const CreateQuestionCommentRequestSchema = InsertQuestionCommentSchema.pick({
     content: true,
 })

@@ -65,6 +65,7 @@ export class QuestionEditorComponent implements OnChanges {
     maxTags = 5
     maxTagLength = 20
     @Input() editQuestion: QuestionWithTags | undefined
+    @Input() cancelHandler: (() => Promise<void>) | undefined
     @Output() submitQuestion: EventEmitter<CreateQuestionRequest> =
         new EventEmitter()
 
@@ -100,7 +101,10 @@ export class QuestionEditorComponent implements OnChanges {
             this.questionForm.setValue({
                 title: this.editQuestion.title,
                 //ToDo checken ob das probleme macht, dass der Text leer ist
-                content: { html: this.editQuestion.content, text: '' },
+                content: {
+                    html: this.editQuestion.content,
+                    text: this.editQuestion.content,
+                },
                 tags: this.editQuestion.tags.map(tag => tag.name),
             })
         }

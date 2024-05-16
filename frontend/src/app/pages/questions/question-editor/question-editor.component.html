@@ -49,14 +49,17 @@
                 </li>
             </ul>
         </section>
-        <button
-            [disabled]="!questionForm.valid"
-            class="w-fit"
-            type="submit"
-            hlmBtn
-        >
-            Post Question
-        </button>
+        <div class="flex">
+            <button
+                [disabled]="!questionForm.valid"
+                class="w-fit"
+                type="submit"
+                hlmBtn
+            >
+                Post Question
+            </button>
+            <button *ngIf="cancelHandler" (click)="cancelHandler()" variant="ghost" hlmBtn>Cancel</button>
+        </div>
     </form>
 </section>
 

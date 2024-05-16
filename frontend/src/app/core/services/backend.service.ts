@@ -12,6 +12,7 @@ import {
     QuestionPreviewData,
     LoginUser,
     JWTPayload,
+    UpdateQuestionRequest,
 } from '../../shared/types/api-types'
 import {
     injectMutation,
@@ -42,6 +43,31 @@ export class BackendService {
                 })
                 if (redirect) {
                     await redirect(data.id)
+                }
+            },
+        }))
+
+    updateQuestion = (redirect?: () => Promise<void>) =>
+        injectMutation(() => ({
+            mutationFn: async (req: {
+                question: UpdateQuestionRequest
+                questionId: string
+            }) =>
+                lastValueFrom(
+                    this.http.put(
+                        `${environment.apiUrl}questions/${req.questionId}`,
+                        req.question
+                    )
+                ),
+            onSuccess: async () => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['questions'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['question'],
+                })
+                if (redirect) {
+                    await redirect()
                 }
             },
         }))
