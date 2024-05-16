@@ -2,10 +2,10 @@
     <form
         [formGroup]="questionForm"
         (ngSubmit)="handleSubmitQuestion()"
-        class="mt-10 flex max-w-4xl flex-col gap-3"
+        class="mt-10 flex max-w-4xl flex-col gap-4"
     >
-        <label hlmLabel class="font-medium"
-        >Title
+        <label hlmLabel class="font-medium">
+            Title
             <input
                 hlmInput
                 formControlName="title"
@@ -58,8 +58,14 @@
             >
                 Post Question
             </button>
-            <button *ngIf="cancelHandler" (click)="cancelHandler()" variant="ghost" hlmBtn>Cancel</button>
+            <button
+                *ngIf="cancelHandler"
+                (click)="cancelHandler()"
+                variant="ghost"
+                hlmBtn
+            >
+                Cancel
+            </button>
         </div>
     </form>
 </section>
-
