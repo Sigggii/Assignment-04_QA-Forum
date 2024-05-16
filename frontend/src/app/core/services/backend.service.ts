@@ -1,4 +1,4 @@
-import { inject, Injectable, InputSignal } from '@angular/core'
+import { inject, Injectable, InputSignal, Signal } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { environment } from '../../../environments/environment'
 
@@ -63,7 +63,7 @@ export class BackendService {
     fetchQuestion = (questionId: InputSignal<string>) =>
         injectQuery(() => ({
             enabled: !!questionId && questionId().trim() !== '',
-            queryKey: ['question'],
+            queryKey: ['question', questionId()],
             queryFn: () =>
                 lastValueFrom(
                     this.http.get<DetailQuestion>(

@@ -33,8 +33,7 @@ export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any
             onRequest: [fastify.auth([fastify.authorize])],
         },
         async (req, rep) => {
-            //ToDo If authentication is etablished: Use real userId, this is only for testing purposes
-            const userId = 'da7cbcff-a968-4f99-bd9b-0bf0567fc4e5'
+            const userId = req.authUser!.id
             // ToDo fix stupid type cast
             const question = req.body as CreateQuestion
             const createdQuestion = await createQuestion(question, userId)
@@ -86,8 +85,7 @@ export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any
             onRequest: [fastify.auth([fastify.authorize])],
         },
         async (req, resp) => {
-            //ToDo If authentication is etablished: Use real userId, this is only for testing purposes
-            const userId = 'da7cbcff-a968-4f99-bd9b-0bf0567fc4e5'
+            const userId = req.authUser!.id
             const questionId = (req.params as { id: string }).id
             await createQuestionComment(
                 req.body as CreateQuestionCommentRequest,
@@ -114,8 +112,7 @@ export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any
         },
         async (req, resp) => {
             const questionId = (req.params as { id: string }).id
-            //ToDo If authentication is etablished: Use real userId, this is only for testing purposes
-            const userId = 'da7cbcff-a968-4f99-bd9b-0bf0567fc4e5'
+            const userId = req.authUser!.id
             const body = req.body as CreateAnswer
             await createAnswer(body, questionId, userId)
             resp.status(201)
@@ -139,8 +136,7 @@ export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any
         },
         async (req, resp) => {
             const answerId = (req.params as { answerId: string }).answerId
-            //ToDo If authentication is etablished: Use real userId, this is only for testing purposes
-            const userId = 'da7cbcff-a968-4f99-bd9b-0bf0567fc4e5'
+            const userId = req.authUser!.id
             await createAnswerComment(req.body as CreateAnswerCommentRequest, answerId, userId)
             resp.status(201)
         },
