@@ -1,9 +1,14 @@
 import { getConfig } from '../system/EnvManager'
 import jwt from 'jsonwebtoken'
 import { JWTPayload } from '../shared/types'
+import { FastifyReply, FastifyRequest } from 'fastify'
 
-export const authenticationHandler = (req: any, resp: any, done: any) => {
-    const jwtCookie = req.cookies.jwt
+export const authenticationHandler = (
+    req: FastifyRequest,
+    rep: FastifyReply,
+    done: (err?: Error) => void,
+) => {
+    const jwtCookie = req.cookies['jwt']
     if (jwtCookie) {
         const jwtSecret = getConfig().JWT_SECRET
         try {
@@ -15,8 +20,12 @@ export const authenticationHandler = (req: any, resp: any, done: any) => {
     done()
 }
 
-export const authorizationHandler = (req: any, resp: any, done: any) => {
-    const allowedRoles = req.routeOptions.config.rolesAllowed
+export const authorizationHandler = (
+    req: FastifyRequest,
+    rep: FastifyReply,
+    done: (err?: Error) => void,
+) => {
+    const allowedRoles = req.routeOptions.config['rolesAllowed']
 
     if (
         allowedRoles &&
@@ -25,5 +34,6 @@ export const authorizationHandler = (req: any, resp: any, done: any) => {
     ) {
         return done()
     }
-    resp.status(401).send(new Error('Unauthorized'))
+    //TODO: use custom error with 401 code
+    done(new Error('Unauthorized'))
 }

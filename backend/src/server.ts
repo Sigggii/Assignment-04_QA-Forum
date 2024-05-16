@@ -1,4 +1,4 @@
-import Fastify, { FastifyReply, FastifyRequest } from 'fastify'
+import Fastify from 'fastify'
 import dotenv from 'dotenv'
 import postgres from 'postgres'
 import { drizzle } from 'drizzle-orm/postgres-js'
@@ -11,7 +11,6 @@ import * as schema from './db/schema'
 import cookie from '@fastify/cookie'
 import { authRoutes } from './routes/authRoutes'
 import auth from '@fastify/auth'
-import jwt from 'jsonwebtoken'
 import { JWTPayload, Role } from './shared/types'
 import { authenticationHandler, authorizationHandler } from './routes/authHandler'
 
@@ -21,8 +20,8 @@ declare module 'fastify' {
     }
 
     interface FastifyInstance {
-        authenticate: (req: FastifyRequest, resp: FastifyReply, done: any) => void
-        authorize: (req: FastifyRequest, resp: FastifyReply, done: any) => void
+        authenticate: (req: FastifyRequest, resp: FastifyReply, done: (err?: Error) => void) => void
+        authorize: (req: FastifyRequest, resp: FastifyReply, done: (err?: Error) => void) => void
     }
 
     interface FastifyContextConfig {
@@ -75,13 +74,12 @@ fastify.setSerializerCompiler(serializerCompiler)
 
 export type BaseFastifyInstance = typeof fastify
 
-const routes = (fastify: BaseFastifyInstance, opt: any, done: any) => {
+const routes = async (fastify: BaseFastifyInstance) => {
     fastify.register(authRoutes, { prefix: 'auth' })
     fastify.register(questionRoutes, { prefix: 'questions' })
     fastify.get('/', (res, rep) => {
         rep.status(200).send()
     })
-    done()
 }
 
 fastify.register(routes, { prefix: '/api' })
@@ -92,5 +90,4 @@ const start = async () => {
         console.log(err)
     }
 }
-
-start()
+start().then(() => console.log('Server started'))
