@@ -19,6 +19,11 @@ export type CreateQuestionRequest = {
     tags: { name: string }[]
 }
 
+export type UpdateQuestionRequest = {
+    question: { title: string; content: string; authorId: string }
+    tags: { name: string }[]
+}
+
 export type CreateQuestionComment = {
     content: string
 }
@@ -50,6 +55,8 @@ export type Question = {
     content: string
     lastEditedAt: DateAsString | null
 }
+
+export type QuestionWithTags = Question & { tags: Tag[] }
 
 export type QuestionPreviewData = {
     id: string

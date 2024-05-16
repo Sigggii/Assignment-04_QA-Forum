@@ -18,8 +18,9 @@
             <app-tag-badge [tag]="tag.name" />
         }
     </section>
+    <section *ngIf="authService.checkMatchUserId(question.user.id)" class="flex gap-2 text-sm mt-2 underline-offset-2 underline hover:cursor-pointer text-gray-400"><a routerLink="./edit">edit</a><a>delete</a></section>
     <hr
-        class="my-4 h-[1px] border-t-0"
+        class="mb-4 mt-2 h-[1px] border-t-0"
         [ngClass]="question.user.role === 'NOOB' ? 'bg-noob' : 'bg-pro'"
     />
 

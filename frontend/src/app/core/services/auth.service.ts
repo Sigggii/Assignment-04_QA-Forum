@@ -43,4 +43,8 @@ export class AuthService {
     getUserData = (): JWTPayload | undefined => {
         return this.userInfo.data()
     }
+
+    checkMatchUserId = (userId: string): boolean => {
+        return this.userInfo.data()?.id === userId
+    }
 }

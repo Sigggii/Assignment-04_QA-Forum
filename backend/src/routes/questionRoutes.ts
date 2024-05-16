@@ -6,7 +6,11 @@ import {
     CreateAnswerRequestSchema,
     CreateQuestionCommentRequest,
     CreateQuestionCommentRequestSchema,
+    CreateQuestionRequest,
     CreateQuestionRequestSchema,
+    UpdateQuestionRequest,
+    UpdateQuestionRequestSchema,
+    UUID,
     UUIDSchema,
 } from '../shared/types'
 import {
@@ -16,6 +20,7 @@ import {
     createQuestionComment,
     getQuestionById,
     getQuestions,
+    updateQuestion,
 } from '../controller/questionController'
 import { z } from 'zod'
 import { CreateQuestion } from '../db/types'
@@ -35,10 +40,36 @@ export const questionRoutes = async (fastify: BaseFastifyInstance) => {
         async (req, rep) => {
             const userId = req.authUser!.id
             // ToDo fix stupid type cast
-            const question = req.body as CreateQuestion
+            const question = req.body as CreateQuestionRequest
             const createdQuestion = await createQuestion(question, userId)
 
             rep.status(201).send(createdQuestion)
+        },
+    )
+
+    fastify.put(
+        '/:questionId',
+        {
+            schema: {
+                body: UpdateQuestionRequestSchema,
+                params: z.object({
+                    questionId: UUIDSchema,
+                }),
+            },
+            config: {
+                rolesAllowed: 'ALL',
+            },
+            onRequest: [fastify.auth([fastify.authorize])],
+        },
+        async (req, resp) => {
+            const question = req.body as UpdateQuestionRequest
+            const questionId = (req.params as { questionId: UUID }).questionId
+
+            if (question.question.authorId !== req.authUser!.id && req.authUser!.role !== 'ADMIN') {
+                throw new Error('Unauthorized')
+            }
+            await updateQuestion(question, questionId)
+            resp.status(204)
         },
     )
 
@@ -106,7 +137,7 @@ export const questionRoutes = async (fastify: BaseFastifyInstance) => {
                 }),
             },
             config: {
-                rolesAllowed: 'ALL',
+                rolesAllowed: ['PRO'],
             },
             onRequest: [fastify.auth([fastify.authorize])],
         },

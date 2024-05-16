@@ -1,12 +1,12 @@
 import { commentQuestion, question, question_tag, tag } from './schema'
-import { getTableColumns } from 'drizzle-orm'
+import { eq, getTableColumns } from 'drizzle-orm'
 import { db } from '../server'
 import { CreateQuestion, InsertQuestionComment, Question, QuestionTag } from './types'
 import { QueryResultType } from '../utils/typeUtils'
-import { UUID } from '../shared/types'
+import { UpdateQuestionRequest, UUID } from '../shared/types'
+import { createQuestion } from '../controller/questionController'
 
 export const createQuestionQuery = async (createQuestion: CreateQuestion) => {
-    console.log(createQuestion)
     const questionColumns = getTableColumns(question)
     return await db.transaction(async (tx) => {
         const newQuestion: Question = (
@@ -36,6 +36,47 @@ export const createQuestionQuery = async (createQuestion: CreateQuestion) => {
         }
 
         return newQuestion
+    })
+}
+
+export const updateQuestionQuery = async (
+    updateQuestion: UpdateQuestionRequest,
+    questionId: UUID,
+) => {
+    await db.transaction(async (tx) => {
+        console.log(updateQuestion)
+        await tx
+            .update(question)
+            .set({
+                title: updateQuestion.question.title,
+                content: updateQuestion.question.content,
+                lastEditedAt: new Date(),
+            })
+            .where(eq(question.id, questionId))
+            .execute()
+
+        //Insert new Tags, if already exists, do nothing
+        if (updateQuestion.tags.length > 0) {
+            await tx
+                .insert(tag)
+                .values(updateQuestion.tags)
+                .onConflictDoNothing({ target: tag.name })
+
+            const newTags = await tx.query.tag
+                .findMany({
+                    where: (tag, { inArray }) =>
+                        inArray(
+                            tag.name,
+                            updateQuestion.tags.map((tag) => tag.name),
+                        ),
+                })
+                .execute()
+            const questionTags: QuestionTag[] = newTags.map((tag) => {
+                return { questionId: questionId, tagId: tag.id }
+            })
+            await tx.delete(question_tag).where(eq(question_tag.questionId, questionId))
+            await tx.insert(question_tag).values(questionTags)
+        }
     })
 }
 
