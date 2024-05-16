@@ -1,17 +1,14 @@
-//shared types between frontend and backend
-
 import { z } from 'zod'
 import {
-    InsertQuestionSchema,
     CreateTagSchema,
-    InsertQuestionCommentSchema,
-    InsertAnswerSchema,
     InsertAnswerCommentSchema,
-    InsertUser,
-    InsertUserSchema,
+    InsertAnswerSchema,
+    InsertQuestionCommentSchema,
+    InsertQuestionSchema,
 } from '../db/types'
 
 const tagsSchema = z.array(CreateTagSchema.pick({ name: true })).max(5, 'Maximum 5 Tags')
+
 export const CreateQuestionRequestSchema = z.object({
     question: InsertQuestionSchema.pick({ title: true, content: true }),
     tags: tagsSchema,

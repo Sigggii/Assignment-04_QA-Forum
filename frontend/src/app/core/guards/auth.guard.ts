@@ -1,12 +1,11 @@
-import { CanActivateFn, Router, UrlTree } from '@angular/router'
-import { computed, inject } from '@angular/core'
+import { CanActivateFn, Router } from '@angular/router'
+import { inject } from '@angular/core'
 import { AuthService } from '../services/auth.service'
 import { Role } from '../../shared/types/api-types'
-import { Observable } from 'rxjs'
 
 export const authGuard =
     (allowedRoles: Role[]): CanActivateFn =>
-    async (route, state) => {
+    async () => {
         const authService = inject(AuthService)
         const router = inject(Router)
         //ToDo fix this stupid solution

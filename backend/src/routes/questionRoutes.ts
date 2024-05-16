@@ -25,7 +25,7 @@ import {
 import { z } from 'zod'
 import { CreateQuestion } from '../db/types'
 
-export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any) => {
+export const questionRoutes = async (fastify: BaseFastifyInstance) => {
     fastify.post(
         '/',
         {
@@ -73,7 +73,7 @@ export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any
         },
     )
 
-    fastify.get('/', async (req, rep) => {
+    fastify.get('/', async () => {
         try {
             return await getQuestions()
         } catch (err) {
@@ -91,7 +91,7 @@ export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any
             },
         },
 
-        async (req, rep) => {
+        async (req) => {
             try {
                 const { id } = req.params
                 return await getQuestionById(id)
@@ -172,6 +172,4 @@ export const questionRoutes = (fastify: BaseFastifyInstance, opt: any, done: any
             resp.status(201)
         },
     )
-
-    done()
 }

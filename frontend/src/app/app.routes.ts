@@ -16,7 +16,6 @@ export const routes: Routes = [
     {
         path: 'questions/ask',
         component: AskComponent,
-
         canActivate: [authGuard(['NOOB', 'PRO', 'ADMIN'])],
     },
     { path: 'questions/:questionId', component: DetailQuestionComponent },

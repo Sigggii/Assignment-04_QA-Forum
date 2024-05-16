@@ -1,11 +1,8 @@
 import { BaseFastifyInstance } from '../server'
-import { JWTPayload, LoginSchema } from '../shared/types'
+import { LoginSchema } from '../shared/types'
 import { loginUser, registerUser } from '../controller/authController'
-import { getConfig } from '../system/EnvManager'
-import jwt from 'jsonwebtoken'
-import auth from '@fastify/auth'
 
-export const authRoutes = (fastify: BaseFastifyInstance, opt: any, done: any) => {
+export const authRoutes = async (fastify: BaseFastifyInstance) => {
     fastify.post(
         '/register/noob',
         {
@@ -17,8 +14,8 @@ export const authRoutes = (fastify: BaseFastifyInstance, opt: any, done: any) =>
             const newUser = req.body
             const jwt = await registerUser({ ...newUser, role: 'NOOB' })
             resp.setCookie('jwt', jwt, {
-                //Expires in 1 day
-                expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
+                //Expires in 7 days
+                expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
                 httpOnly: true,
                 sameSite: 'none',
                 path: '/',
@@ -37,8 +34,8 @@ export const authRoutes = (fastify: BaseFastifyInstance, opt: any, done: any) =>
             const newUser = req.body
             const jwt = await registerUser({ ...newUser, role: 'PRO' })
             resp.setCookie('jwt', jwt, {
-                //Expires in 1 day
-                expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
+                //Expires in 7 days
+                expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
                 httpOnly: true,
                 sameSite: 'none',
                 path: '/',
@@ -57,8 +54,8 @@ export const authRoutes = (fastify: BaseFastifyInstance, opt: any, done: any) =>
             const user = req.body
             const jwt = await loginUser(user)
             resp.setCookie('jwt', jwt, {
-                //Expires in 1 day
-                expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
+                //Expires in 7 days
+                expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
                 httpOnly: true,
                 sameSite: 'none',
                 path: '/',
@@ -70,10 +67,8 @@ export const authRoutes = (fastify: BaseFastifyInstance, opt: any, done: any) =>
         resp.clearCookie('jwt')
     })
 
-    fastify.get('/me', async (req, resp) => {
+    fastify.get('/me', async (req) => {
         if (!req.authUser) return undefined
         return req.authUser
     })
-
-    done()
 }

@@ -1,6 +1,6 @@
 import { InsertUser, User } from './types'
 import bcrypt from 'bcrypt'
-import { question, user } from './schema'
+import { user } from './schema'
 import { db } from '../server'
 import { getTableColumns } from 'drizzle-orm'
 import { QueryResultType } from '../utils/typeUtils'

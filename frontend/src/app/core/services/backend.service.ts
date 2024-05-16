@@ -1,4 +1,4 @@
-import { inject, Injectable, InputSignal, Signal } from '@angular/core'
+import { inject, Injectable, InputSignal } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { environment } from '../../../environments/environment'
 
