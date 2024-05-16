@@ -18,12 +18,14 @@ import {
     createAnswerComment,
     createQuestion,
     createQuestionComment,
+    deleteQuestion,
     getQuestionById,
     getQuestions,
     updateQuestion,
 } from '../controller/questionController'
 import { z } from 'zod'
 import { CreateQuestion } from '../db/types'
+import { AuthorizedByUserIdGuard } from './authHandler'
 
 export const questionRoutes = async (fastify: BaseFastifyInstance) => {
     fastify.post(
@@ -65,10 +67,30 @@ export const questionRoutes = async (fastify: BaseFastifyInstance) => {
             const question = req.body as UpdateQuestionRequest
             const questionId = (req.params as { questionId: UUID }).questionId
 
-            if (question.question.authorId !== req.authUser!.id && req.authUser!.role !== 'ADMIN') {
-                throw new Error('Unauthorized')
-            }
+            AuthorizedByUserIdGuard(req.authUser!, question.question.authorId, true)
             await updateQuestion(question, questionId)
+            resp.status(204)
+        },
+    )
+
+    fastify.delete(
+        '/:questionId',
+        {
+            schema: {
+                params: z.object({
+                    questionId: UUIDSchema,
+                }),
+            },
+            config: {
+                rolesAllowed: 'ALL',
+            },
+            onRequest: [fastify.auth([fastify.authorize])],
+        },
+        async (req, resp) => {
+            const questionId = (req.params as { questionId: UUID }).questionId
+            const question = await getQuestionById(questionId)
+            AuthorizedByUserIdGuard(req.authUser!, question.authorId, true)
+            await deleteQuestion(questionId)
             resp.status(204)
         },
     )

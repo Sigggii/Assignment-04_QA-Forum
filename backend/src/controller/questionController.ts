@@ -12,6 +12,7 @@ import {
 import {
     createQuestionCommentQuery,
     createQuestionQuery,
+    deleteQuestionQuery,
     queryQuestionById,
     queryQuestions,
     updateQuestionQuery,
@@ -39,6 +40,10 @@ export const updateQuestion = async (
     questionId: Question['id'],
 ) => {
     await updateQuestionQuery(updateQuestion, questionId)
+}
+
+export const deleteQuestion = async (questionId: string) => {
+    await deleteQuestionQuery(questionId)
 }
 
 export const getQuestions = async (): Promise<QuestionPreviewData[]> => {

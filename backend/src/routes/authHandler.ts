@@ -37,3 +37,15 @@ export const authorizationHandler = (
     //TODO: use custom error with 401 code
     done(new Error('Unauthorized'))
 }
+
+export const AuthorizedByUserIdGuard = (
+    jwtPayload: JWTPayload,
+    toCheckId: string,
+    isAdminAllowed: boolean,
+) => {
+    //if admin allowed and user admin, allow
+    if (isAdminAllowed && jwtPayload.role === 'ADMIN') return
+    if (jwtPayload.id !== toCheckId) {
+        throw new Error('Unauthorized')
+    }
+}

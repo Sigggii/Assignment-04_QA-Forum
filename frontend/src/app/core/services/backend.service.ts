@@ -72,6 +72,27 @@ export class BackendService {
             },
         }))
 
+    deleteQuestion = (redirect?: () => Promise<void>) =>
+        injectMutation(() => ({
+            mutationFn: async (questionId: string) =>
+                lastValueFrom(
+                    this.http.delete(
+                        `${environment.apiUrl}questions/${questionId}`
+                    )
+                ),
+            onSuccess: async () => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['questions'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['question'],
+                })
+                if (redirect) {
+                    await redirect()
+                }
+            },
+        }))
+
     fetchQuestions = () =>
         injectQuery(() => ({
             queryKey: ['questions'],
