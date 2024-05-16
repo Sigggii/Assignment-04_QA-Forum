@@ -16,7 +16,7 @@
             }
             </div>
         </section>
-        <section class="mt-10 bg-background bottom-5" [ngClass]="answerEditorSticky? 'sticky' : ''">
+        <section *ngIf="authService.isPro()" class="mt-10 bg-background bottom-5" [ngClass]="answerEditorSticky? 'sticky' : ''">
             <app-answer-editor (sticky)="handleAnswerEditorSticky($event)" (create)="handleCreateAnswer($event)" />
         </section>
     }
