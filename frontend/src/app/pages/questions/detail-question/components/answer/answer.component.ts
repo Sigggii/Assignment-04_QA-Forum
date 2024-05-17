@@ -31,6 +31,7 @@ import {
 } from '@spartan-ng/ui-dialog-helm'
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
 import { provideIcons } from '@ng-icons/core'
+import { AnswerRatingBadgeComponent } from '../../../../../shared/components/answer-rating-badge/answer-rating-badge.component'
 
 @Component({
     selector: 'app-answer',
@@ -52,6 +53,7 @@ import { provideIcons } from '@ng-icons/core'
         HlmDialogHeaderComponent,
         HlmDialogTitleDirective,
         HlmIconComponent,
+        AnswerRatingBadgeComponent,
     ],
     providers: [provideIcons({ lucidePencil, lucideTrash })],
     templateUrl: './answer.component.html',
@@ -65,7 +67,14 @@ export class AnswerComponent implements OnChanges {
     backendService = inject(BackendService)
     deleteAnswer = this.backendService.deleteAnswer()
     createVoteAnswer = this.backendService.createVoteAnswer()
+    createRatingAnswer = this.backendService.createRatingAnswer()
+
     userVoteAnswerQuery = this.backendService.fetchUserVoteForAnswer(
+        this.authService.getUserData()?.id,
+        this.answerId
+    )
+
+    userRatingAnswerQuery = this.backendService.fetchUserRatingForAnswer(
         this.authService.getUserData()?.id,
         this.answerId
     )
@@ -83,6 +92,14 @@ export class AnswerComponent implements OnChanges {
             questionId: this.answer.questionId,
             answerId: this.answer.id,
             vote: { upvote: vote },
+        })
+    }
+
+    handleRate = (rating: number) => {
+        this.createRatingAnswer.mutate({
+            questionId: this.answer.questionId,
+            answerId: this.answer.id,
+            rating: { rating: rating },
         })
     }
 

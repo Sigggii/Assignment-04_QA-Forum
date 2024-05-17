@@ -4,7 +4,7 @@ import { user } from './schema'
 import { db } from '../server'
 import { getTableColumns } from 'drizzle-orm'
 import { QueryResultType } from '../utils/typeUtils'
-import { UUID, Vote } from '../shared/types'
+import { Rating, UUID, Vote } from '../shared/types'
 
 export const insertUser = async (
     createUser: Omit<InsertUser, 'password'>,
@@ -52,4 +52,16 @@ export const getUpvoteForAnswerQuery = async (userId: UUID, answerId: UUID): Pro
             })
             .execute()
     )?.upvote
+}
+
+export const getRatingForAnswerQuery = async (userId: UUID, answerId: UUID): Promise<Rating> => {
+    return (
+        await db.query.ratingAnswer
+            .findFirst({
+                columns: { rating: true },
+                where: (ratingAnswer, { eq, and }) =>
+                    and(eq(ratingAnswer.answerId, answerId), eq(ratingAnswer.userId, userId)),
+            })
+            .execute()
+    )?.rating
 }

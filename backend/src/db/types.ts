@@ -5,6 +5,7 @@ import {
     commentQuestion,
     question,
     question_tag,
+    ratingAnswer,
     tag,
     user,
     votesAnswer,
@@ -70,3 +71,6 @@ export type InsertVoteQuestion = z.infer<typeof InsertVoteQuestionSchema>
 
 export const InsertVoteAnswerSchema = createInsertSchema(votesAnswer)
 export type InsertVoteAnswer = z.infer<typeof InsertVoteAnswerSchema>
+
+export const InsertRatingAnswerSchema = createInsertSchema(ratingAnswer)
+export type InsertRatingAnswer = z.infer<typeof InsertRatingAnswerSchema>

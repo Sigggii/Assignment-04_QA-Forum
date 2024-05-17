@@ -31,6 +31,8 @@ export type CreateQuestionComment = {
 export type CreateVoteQuestion = { upvote?: boolean | undefined }
 export type CreateVoteAnswer = { upvote?: boolean | undefined }
 
+export type CreateRatingAnswer = { rating: number }
+
 export type CreateAnswerComment = {
     content: string
 }
@@ -115,3 +117,4 @@ export type JWTPayload = {
 }
 
 export type Vote = boolean | undefined
+export type Rating = number | undefined

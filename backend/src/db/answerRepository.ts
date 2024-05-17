@@ -1,6 +1,6 @@
-import { InsertAnswer, InsertAnswerComment, InsertVoteAnswer } from './types'
+import { InsertAnswer, InsertAnswerComment, InsertRatingAnswer, InsertVoteAnswer } from './types'
 import { db } from '../server'
-import { answer, commentAnswer, question, votesAnswer } from './schema'
+import { answer, commentAnswer, question, ratingAnswer, votesAnswer } from './schema'
 import { and, eq } from 'drizzle-orm'
 import { Answer, CreateAnswer, UUID } from '../shared/types'
 
@@ -80,4 +80,21 @@ export const deleteVoteAnswerQuery = async (answerId: UUID, userId: UUID) => {
     await db
         .delete(votesAnswer)
         .where(and(eq(votesAnswer.answerId, answerId), eq(votesAnswer.userId, userId)))
+}
+
+export const insertRatingAnswerQuery = async (rating: InsertRatingAnswer) => {
+    await db
+        .insert(ratingAnswer)
+        .values(rating)
+        .onConflictDoUpdate({
+            target: [ratingAnswer.answerId, ratingAnswer.userId],
+            set: { rating: rating.rating },
+        })
+        .execute()
+}
+
+export const deleteRatingAnswerQuery = async (answerId: UUID, userId: UUID) => {
+    await db
+        .delete(ratingAnswer)
+        .where(and(eq(ratingAnswer.answerId, answerId), eq(ratingAnswer.userId, userId)))
 }

@@ -5,6 +5,7 @@ import {
     InsertAnswerSchema,
     InsertQuestionCommentSchema,
     InsertQuestionSchema,
+    InsertRatingAnswerSchema,
     InsertVoteAnswerSchema,
     InsertVoteQuestion,
 } from '../db/types'
@@ -145,3 +146,7 @@ export const CreateVoteAnswerSchema = InsertVoteAnswerSchema.partial({ upvote: t
 export type CreateVoteAnswer = z.infer<typeof CreateVoteAnswerSchema>
 
 export type Vote = boolean | undefined
+export type Rating = number | undefined
+
+export const CreateRatingAnswerSchema = z.object({ rating: z.number().gte(1).lte(5).optional() })
+export type CreateRatingAnswer = z.infer<typeof CreateRatingAnswerSchema>

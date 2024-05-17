@@ -18,7 +18,7 @@ import { NgClass } from '@angular/common'
     providers: [provideIcons({ heroStarSolid, heroStar })],
 })
 export class RateAnswerComponent {
-    @Input() currentRating: number = -1
+    @Input() currentRating: number | undefined
     @Output() rate: EventEmitter<number> = new EventEmitter<number>()
     starIndexes = [1, 2, 3, 4, 5]
     hoverStar = -1
@@ -32,8 +32,7 @@ export class RateAnswerComponent {
     }
 
     handleSetRating = (value: number) => {
-        const newRating = value === this.currentRating ? -1 : value
-        this.currentRating = newRating
+        const newRating = value === this.currentRating ? undefined : value
         this.rate.emit(newRating)
     }
     protected readonly heroStarSolid = heroStarSolid

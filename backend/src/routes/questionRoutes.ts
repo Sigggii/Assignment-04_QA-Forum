@@ -8,6 +8,8 @@ import {
     CreateQuestionCommentRequestSchema,
     CreateQuestionRequest,
     CreateQuestionRequestSchema,
+    CreateRatingAnswer,
+    CreateRatingAnswerSchema,
     CreateVoteAnswer,
     CreateVoteAnswerSchema,
     CreateVoteQuestion,
@@ -22,6 +24,7 @@ import {
     createAnswerComment,
     createQuestion,
     createQuestionComment,
+    createRatingAnswer,
     createVoteAnswer,
     createVoteQuestion,
     deleteAnswer,
@@ -400,6 +403,30 @@ export const questionRoutes = async (fastify: BaseFastifyInstance) => {
             const userId = req.authUser!.id
             const vote = req.body as CreateVoteAnswer
             await createVoteAnswer(answerId, userId, vote)
+            resp.status(204)
+        },
+    )
+
+    fastify.post(
+        '/:questionId/answers/:answerId/rate',
+        {
+            schema: {
+                body: CreateRatingAnswerSchema,
+                params: z.object({
+                    questionId: UUIDSchema,
+                    answerId: UUIDSchema,
+                }),
+            },
+            config: {
+                rolesAllowed: 'ALL',
+            },
+            onRequest: [fastify.auth([fastify.authorize])],
+        },
+        async (req, resp) => {
+            const answerId = (req.params as { questionId: UUID; answerId: UUID }).answerId
+            const userId = req.authUser!.id
+            const rating = req.body as CreateRatingAnswer
+            await createRatingAnswer(answerId, userId, rating)
             resp.status(204)
         },
     )

@@ -4,6 +4,7 @@ import {
     CreateAnswerCommentRequest,
     CreateQuestionCommentRequest,
     CreateQuestionRequest,
+    CreateRatingAnswer,
     CreateVoteAnswer,
     CreateVoteQuestion,
     DetailQuestion,
@@ -34,12 +35,15 @@ import {
     createAnswerQuery,
     deleteAnswerCommentQuery,
     deleteAnswerQuery,
+    deleteRatingAnswerQuery,
     deleteVoteAnswerQuery,
     getAnswerCommentByIdQuery,
+    insertRatingAnswerQuery,
     insertVoteAnswerQuery,
     updateAnswerCommentQuery,
     updateAnswerQuery,
 } from '../db/answerRepository'
+import { votesAnswer } from '../db/schema'
 
 export const createQuestion = async (
     createQuestion: CreateQuestionRequest,
@@ -203,5 +207,17 @@ export const createVoteAnswer = async (
         })
     } else {
         await deleteVoteAnswerQuery(answerId, userId)
+    }
+}
+
+export const createRatingAnswer = async (
+    answerId: UUID,
+    userId: UUID,
+    rating: CreateRatingAnswer,
+) => {
+    if (rating.rating) {
+        await insertRatingAnswerQuery({ answerId: answerId, userId: userId, rating: rating.rating })
+    } else {
+        await deleteRatingAnswerQuery(answerId, userId)
     }
 }

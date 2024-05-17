@@ -2,7 +2,11 @@
     <section class="flex gap-4">
         <app-score-post [disabled]="!authService.isLoggedIn()" [score]="answer.score" [upvoted]="userVoteAnswerQuery.data()" (vote)="handleUpvote($event)" />
         <div class="flex flex-col justify-between pb-2">
-            <app-rate-answer />
+            <span class="flex gap-2 items-center">
+                <app-rate-answer [currentRating]="userRatingAnswerQuery.data()" (rate)="handleRate($event)" /> |
+                <app-answer-rating-badge [rating]="answer.rating" />
+            </span>
+
             <span class="flex items-center gap-1">
                 <app-user-badge [user]="answer.user"></app-user-badge>
                 <span class="font-bold">·</span>

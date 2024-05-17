@@ -16,6 +16,8 @@ import {
     CreateVoteQuestion,
     CreateVoteAnswer,
     Vote,
+    CreateRatingAnswer,
+    Rating,
 } from '../../shared/types/api-types'
 import {
     injectMutation,
@@ -371,6 +373,32 @@ export class BackendService {
             },
         }))
 
+    createRatingAnswer = () =>
+        injectMutation(() => ({
+            mutationFn: async (req: {
+                questionId: string
+                answerId: string
+                rating: CreateRatingAnswer
+            }) =>
+                lastValueFrom(
+                    this.http.post(
+                        `${environment.apiUrl}questions/${req.questionId}/answers/${req.answerId}/rate`,
+                        req.rating
+                    )
+                ),
+            onSuccess: async () => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['questions'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['question'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['userRatingAnswer'],
+                })
+            },
+        }))
+
     registerUser = () =>
         injectMutation(() => ({
             mutationFn: async (req: {
@@ -432,7 +460,7 @@ export class BackendService {
         questionId: Signal<string>
     ) =>
         injectQuery<Vote>(() => ({
-            queryKey: ['userVoteQuestion', userId, questionId],
+            queryKey: ['userVoteQuestion', userId, questionId()],
             enabled:
                 questionId().trim() !== '' && !!userId && userId.trim() !== '',
             queryFn: async () =>
@@ -448,13 +476,29 @@ export class BackendService {
         answerId: Signal<string>
     ) =>
         injectQuery<Vote>(() => ({
-            queryKey: ['userVoteAnswer', userId, answerId],
+            queryKey: ['userVoteAnswer', userId, answerId()],
             enabled:
                 answerId().trim() !== '' && !!userId && userId.trim() !== '',
             queryFn: async () =>
                 lastValueFrom(
                     this.http.get<Vote>(
                         `${environment.apiUrl}users/${userId}/vote-answer?answerId=${answerId()}`
+                    )
+                ),
+        }))
+
+    fetchUserRatingForAnswer = (
+        userId: string | undefined,
+        answerId: Signal<string>
+    ) =>
+        injectQuery<Rating>(() => ({
+            queryKey: ['userRatingAnswer', userId, answerId],
+            enabled:
+                answerId().trim() !== '' && !!userId && userId.trim() !== '',
+            queryFn: async () =>
+                lastValueFrom(
+                    this.http.get<Rating>(
+                        `${environment.apiUrl}users/${userId}/rating-answer?answerId=${answerId()}`
                     )
                 ),
         }))
