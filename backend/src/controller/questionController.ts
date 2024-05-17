@@ -4,6 +4,8 @@ import {
     CreateAnswerCommentRequest,
     CreateQuestionCommentRequest,
     CreateQuestionRequest,
+    CreateVoteAnswer,
+    CreateVoteQuestion,
     DetailQuestion,
     QuestionPreviewData,
     UpdateQuestionRequest,
@@ -14,6 +16,8 @@ import {
     createQuestionQuery,
     deleteQuestionCommentQuery,
     deleteQuestionQuery,
+    deleteVoteQuestionQuery,
+    insertVoteQuestionQuery,
     queryQuestionById,
     queryQuestions,
     updateQuestionCommentQuery,
@@ -30,7 +34,9 @@ import {
     createAnswerQuery,
     deleteAnswerCommentQuery,
     deleteAnswerQuery,
+    deleteVoteAnswerQuery,
     getAnswerCommentByIdQuery,
+    insertVoteAnswerQuery,
     updateAnswerCommentQuery,
     updateAnswerQuery,
 } from '../db/answerRepository'
@@ -135,6 +141,23 @@ export const updateQuestionComment = async (
 export const deleteQuestionComment = async (commentId: UUID) => {
     await deleteQuestionCommentQuery(commentId)
 }
+
+export const createVoteQuestion = async (
+    questionId: UUID,
+    userId: UUID,
+    voteQuestion: CreateVoteQuestion,
+) => {
+    if (voteQuestion.upvote !== undefined) {
+        await insertVoteQuestionQuery({
+            questionId: questionId,
+            userId: userId,
+            upvote: voteQuestion.upvote,
+        })
+    } else {
+        await deleteVoteQuestionQuery(questionId, userId)
+    }
+}
+
 export const createAnswer = async (
     answerContent: CreateAnswer,
     questionId: UUID,
@@ -165,4 +188,20 @@ export const updateAnswerComment = async (comment: CreateAnswerCommentRequest, c
 
 export const deleteAnswerComment = async (commentId: UUID) => {
     await deleteAnswerCommentQuery(commentId)
+}
+
+export const createVoteAnswer = async (
+    answerId: UUID,
+    userId: UUID,
+    voteAnswer: CreateVoteAnswer,
+) => {
+    if (voteAnswer.upvote !== undefined) {
+        await insertVoteAnswerQuery({
+            answerId: answerId,
+            userId: userId,
+            upvote: voteAnswer.upvote,
+        })
+    } else {
+        await deleteVoteAnswerQuery(answerId, userId)
+    }
 }

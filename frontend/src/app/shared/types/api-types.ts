@@ -28,6 +28,9 @@ export type CreateQuestionComment = {
     content: string
 }
 
+export type CreateVoteQuestion = { upvote?: boolean | undefined }
+export type CreateVoteAnswer = { upvote?: boolean | undefined }
+
 export type CreateAnswerComment = {
     content: string
 }
@@ -110,3 +113,5 @@ export type JWTPayload = {
     role: 'NOOB' | 'PRO' | 'ADMIN'
     username: string
 }
+
+export type Vote = boolean | undefined

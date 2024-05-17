@@ -1,4 +1,4 @@
-import { inject, Injectable, InputSignal } from '@angular/core'
+import { inject, Injectable, InputSignal, Signal } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { environment } from '../../../environments/environment'
 
@@ -13,6 +13,9 @@ import {
     LoginUser,
     JWTPayload,
     UpdateQuestionRequest,
+    CreateVoteQuestion,
+    CreateVoteAnswer,
+    Vote,
 } from '../../shared/types/api-types'
 import {
     injectMutation,
@@ -185,6 +188,31 @@ export class BackendService {
             },
         }))
 
+    createVoteQuestion = () =>
+        injectMutation(() => ({
+            mutationFn: async (req: {
+                questionId: string
+                vote: CreateVoteQuestion
+            }) =>
+                lastValueFrom(
+                    this.http.post(
+                        `${environment.apiUrl}questions/${req.questionId}/vote`,
+                        req.vote
+                    )
+                ),
+            onSuccess: async () => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['questions'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['question'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['userVoteQuestion'],
+                })
+            },
+        }))
+
     createAnswerComment = () =>
         injectMutation(() => ({
             mutationFn: async (req: {
@@ -317,6 +345,32 @@ export class BackendService {
             },
         }))
 
+    createVoteAnswer = () =>
+        injectMutation(() => ({
+            mutationFn: async (req: {
+                questionId: string
+                answerId: string
+                vote: CreateVoteAnswer
+            }) =>
+                lastValueFrom(
+                    this.http.post(
+                        `${environment.apiUrl}questions/${req.questionId}/answers/${req.answerId}/vote`,
+                        req.vote
+                    )
+                ),
+            onSuccess: async () => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['questions'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['question'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['userVoteAnswer'],
+                })
+            },
+        }))
+
     registerUser = () =>
         injectMutation(() => ({
             mutationFn: async (req: {
@@ -369,6 +423,38 @@ export class BackendService {
                 lastValueFrom(
                     this.http.get<JWTPayload | undefined>(
                         `${environment.apiUrl}auth/me`
+                    )
+                ),
+        }))
+
+    fetchUserVoteForQuestion = (
+        userId: string | undefined,
+        questionId: Signal<string>
+    ) =>
+        injectQuery<Vote>(() => ({
+            queryKey: ['userVoteQuestion', userId, questionId],
+            enabled:
+                questionId().trim() !== '' && !!userId && userId.trim() !== '',
+            queryFn: async () =>
+                lastValueFrom(
+                    this.http.get<Vote>(
+                        `${environment.apiUrl}users/${userId}/vote-question?questionId=${questionId()}`
+                    )
+                ),
+        }))
+
+    fetchUserVoteForAnswer = (
+        userId: string | undefined,
+        answerId: Signal<string>
+    ) =>
+        injectQuery<Vote>(() => ({
+            queryKey: ['userVoteAnswer', userId, answerId],
+            enabled:
+                answerId().trim() !== '' && !!userId && userId.trim() !== '',
+            queryFn: async () =>
+                lastValueFrom(
+                    this.http.get<Vote>(
+                        `${environment.apiUrl}users/${userId}/vote-answer?answerId=${answerId()}`
                     )
                 ),
         }))

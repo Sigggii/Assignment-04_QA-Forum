@@ -1,10 +1,19 @@
-import { commentAnswer, commentQuestion, question, question_tag, tag } from './schema'
-import { eq, getTableColumns } from 'drizzle-orm'
+import {
+    commentAnswer,
+    commentQuestion,
+    question,
+    question_tag,
+    tag,
+    votesAnswer,
+    votesQuestion,
+} from './schema'
+import { and, eq, getTableColumns } from 'drizzle-orm'
 import { db } from '../server'
 import {
     CreateQuestion,
     InsertAnswerComment,
     InsertQuestionComment,
+    InsertVoteQuestion,
     Question,
     QuestionTag,
 } from './types'
@@ -210,4 +219,21 @@ export const getQuestionCommentByIdQuery = async (commentId: UUID) => {
         throw new Error('No QuestionComment with this Id')
     }
     return commentQuestion
+}
+
+export const insertVoteQuestionQuery = async (voteQuestion: InsertVoteQuestion) => {
+    await db
+        .insert(votesQuestion)
+        .values(voteQuestion)
+        .onConflictDoUpdate({
+            target: [votesQuestion.questionId, votesAnswer.userId],
+            set: { upvote: voteQuestion.upvote },
+        })
+        .execute()
+}
+
+export const deleteVoteQuestionQuery = async (questionId: UUID, userId: UUID) => {
+    await db
+        .delete(votesQuestion)
+        .where(and(eq(votesQuestion.questionId, questionId), eq(votesQuestion.userId, userId)))
 }

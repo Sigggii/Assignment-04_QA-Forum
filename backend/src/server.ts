@@ -13,6 +13,7 @@ import { authRoutes } from './routes/authRoutes'
 import auth from '@fastify/auth'
 import { JWTPayload, Role } from './shared/types'
 import { authenticationHandler, authorizationHandler } from './routes/authHandler'
+import { userRoutes } from './routes/userRoutes'
 
 declare module 'fastify' {
     interface FastifyRequest {
@@ -76,6 +77,7 @@ export type BaseFastifyInstance = typeof fastify
 
 const routes = async (fastify: BaseFastifyInstance) => {
     fastify.register(authRoutes, { prefix: 'auth' })
+    fastify.register(userRoutes, { prefix: 'users' })
     fastify.register(questionRoutes, { prefix: 'questions' })
     fastify.get('/', (res, rep) => {
         rep.status(200).send()

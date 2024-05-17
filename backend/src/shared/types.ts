@@ -5,6 +5,8 @@ import {
     InsertAnswerSchema,
     InsertQuestionCommentSchema,
     InsertQuestionSchema,
+    InsertVoteAnswerSchema,
+    InsertVoteQuestion,
 } from '../db/types'
 
 const tagsSchema = z.array(CreateTagSchema.pick({ name: true })).max(5, 'Maximum 5 Tags')
@@ -129,3 +131,17 @@ export const LoginSchema = z.object({
         .max(265, 'Password can be no longer than 256 characters'),
 })
 export type LoginUser = z.infer<typeof LoginSchema>
+
+// upvote is optional, if upvote is undefined, corresponding vote should be deleted
+export const CreateVoteQuestionSchema = InsertVoteAnswerSchema.partial({ upvote: true }).pick({
+    upvote: true,
+})
+export type CreateVoteQuestion = z.infer<typeof CreateVoteQuestionSchema>
+
+// upvote is optional, if upvote is undefined, corresponding vote should be deleted
+export const CreateVoteAnswerSchema = InsertVoteAnswerSchema.partial({ upvote: true }).pick({
+    upvote: true,
+})
+export type CreateVoteAnswer = z.infer<typeof CreateVoteAnswerSchema>
+
+export type Vote = boolean | undefined

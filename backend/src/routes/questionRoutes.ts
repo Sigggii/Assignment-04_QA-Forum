@@ -8,6 +8,10 @@ import {
     CreateQuestionCommentRequestSchema,
     CreateQuestionRequest,
     CreateQuestionRequestSchema,
+    CreateVoteAnswer,
+    CreateVoteAnswerSchema,
+    CreateVoteQuestion,
+    CreateVoteQuestionSchema,
     UpdateQuestionRequest,
     UpdateQuestionRequestSchema,
     UUID,
@@ -18,6 +22,8 @@ import {
     createAnswerComment,
     createQuestion,
     createQuestionComment,
+    createVoteAnswer,
+    createVoteQuestion,
     deleteAnswer,
     deleteAnswerComment,
     deleteQuestion,
@@ -206,6 +212,29 @@ export const questionRoutes = async (fastify: BaseFastifyInstance) => {
     )
 
     fastify.post(
+        '/:questionId/vote',
+        {
+            schema: {
+                body: CreateVoteQuestionSchema,
+                params: z.object({
+                    questionId: UUIDSchema,
+                }),
+            },
+            config: {
+                rolesAllowed: 'ALL',
+            },
+            onRequest: [fastify.auth([fastify.authorize])],
+        },
+        async (req, resp) => {
+            const questionId = (req.params as { questionId: UUID }).questionId
+            const userId = req.authUser!.id
+            const vote = req.body as CreateVoteQuestion
+            await createVoteQuestion(questionId, userId, vote)
+            resp.status(204)
+        },
+    )
+
+    fastify.post(
         '/:id/answers',
         {
             schema: {
@@ -347,6 +376,30 @@ export const questionRoutes = async (fastify: BaseFastifyInstance) => {
             const commentToCheck = await getAnswerCommentByIdQuery(commentId)
             AuthorizedByUserIdGuard(req.authUser!, commentToCheck.authorId, true)
             await deleteAnswerComment(commentId)
+            resp.status(204)
+        },
+    )
+
+    fastify.post(
+        '/:questionId/answers/:answerId/vote',
+        {
+            schema: {
+                body: CreateVoteAnswerSchema,
+                params: z.object({
+                    questionId: UUIDSchema,
+                    answerId: UUIDSchema,
+                }),
+            },
+            config: {
+                rolesAllowed: 'ALL',
+            },
+            onRequest: [fastify.auth([fastify.authorize])],
+        },
+        async (req, resp) => {
+            const answerId = (req.params as { questionId: UUID; answerId: UUID }).answerId
+            const userId = req.authUser!.id
+            const vote = req.body as CreateVoteAnswer
+            await createVoteAnswer(answerId, userId, vote)
             resp.status(204)
         },
     )

@@ -1,5 +1,15 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
-import { answer, commentAnswer, commentQuestion, question, question_tag, tag, user } from './schema'
+import {
+    answer,
+    commentAnswer,
+    commentQuestion,
+    question,
+    question_tag,
+    tag,
+    user,
+    votesAnswer,
+    votesQuestion,
+} from './schema'
 import { z } from 'zod'
 
 export const InsertQuestionSchema = createInsertSchema(question)
@@ -54,3 +64,9 @@ export type InsertUser = z.infer<typeof InsertUserSchema>
 export const SelectUserSchema = createSelectSchema(user).omit({ password: true })
 
 export type User = z.infer<typeof SelectUserSchema>
+
+export const InsertVoteQuestionSchema = createInsertSchema(votesQuestion)
+export type InsertVoteQuestion = z.infer<typeof InsertVoteQuestionSchema>
+
+export const InsertVoteAnswerSchema = createInsertSchema(votesAnswer)
+export type InsertVoteAnswer = z.infer<typeof InsertVoteAnswerSchema>
