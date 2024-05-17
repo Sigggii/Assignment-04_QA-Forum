@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, inject, Input, signal } from '@angular/core'
 import { NgIf } from '@angular/common'
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm'
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm'
@@ -10,6 +10,19 @@ import {
     CommentOnAnswer,
     CommentOnQuestion,
 } from '../../../../../shared/types/api-types'
+import { AuthService } from '../../../../../core/services/auth.service'
+import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
+import { RouterLink } from '@angular/router'
+import { provideIcons } from '@ng-icons/core'
+import { lucidePencil, lucideTrash } from '@ng-icons/lucide'
+import { BrnDialogContentDirective } from '@spartan-ng/ui-dialog-brain'
+import {
+    HlmDialogComponent,
+    HlmDialogContentComponent,
+    HlmDialogFooterComponent,
+    HlmDialogHeaderComponent,
+    HlmDialogTitleDirective,
+} from '@spartan-ng/ui-dialog-helm'
 
 export type CommentSectionType = 'QUESTION' | 'ANSWER'
 
@@ -23,11 +36,21 @@ export type CommentSectionType = 'QUESTION' | 'ANSWER'
         FormsModule,
         AutosizeModule,
         UserBadgeComponent,
+        HlmIconComponent,
+        RouterLink,
+        BrnDialogContentDirective,
+        HlmDialogComponent,
+        HlmDialogContentComponent,
+        HlmDialogFooterComponent,
+        HlmDialogHeaderComponent,
+        HlmDialogTitleDirective,
     ],
+    providers: [provideIcons({ lucidePencil, lucideTrash })],
     templateUrl: './comments.component.html',
     styleUrl: './comments.component.css',
 })
 export class CommentsComponent {
+    authService = inject(AuthService)
     @Input({ required: true }) comments: (
         | CommentOnAnswer
         | CommentOnQuestion
@@ -35,6 +58,16 @@ export class CommentsComponent {
     @Input({ required: true }) type!: CommentSectionType
     @Input({ required: true }) questionId!: string
     @Input() answerId: string | undefined = undefined
+
+    deleteDialogOpen = signal<'open' | 'closed'>('closed')
+    deleteCommentId: string = ''
+    deleteQuestionComment = this.backendService.deleteQuestionComment()
+    deleteAnswerComment = this.backendService.deleteAnswerComment()
+
+    editCommentId: string = ''
+    editComment: string = ''
+    updateQuestionComment = this.backendService.updateQuestionComment()
+    updateAnswerComment = this.backendService.updateAnswerComment()
 
     newComment: string = ''
 
@@ -46,8 +79,7 @@ export class CommentsComponent {
     handleNewCommentInput = (event: Event) => {
         const textArea = event.target as HTMLTextAreaElement
         const value = textArea.value
-        const newText = value.replaceAll('\n', '').replaceAll('\r', '')
-        this.newComment = newText
+        this.newComment = value.replaceAll('\n', '').replaceAll('\r', '')
     }
 
     handleCreateNewComment = () => {
@@ -66,5 +98,63 @@ export class CommentsComponent {
         }
 
         this.newComment = ''
+    }
+
+    handleSetEditComment = (comment: { id: string; content: string }) => {
+        this.editCommentId = comment.id
+        this.editComment = comment.content
+    }
+
+    handleCancelEditComment = () => {
+        this.editCommentId = ''
+        this.editComment = ''
+    }
+
+    handleEditCommentInput = (event: Event) => {
+        const textArea = event.target as HTMLTextAreaElement
+        const value = textArea.value
+        this.editComment = value.replaceAll('\n', '').replaceAll('\r', '')
+    }
+
+    handleUpdateComment = () => {
+        if (this.type === 'QUESTION') {
+            this.updateQuestionComment.mutate({
+                questionId: this.questionId,
+                commentId: this.editCommentId,
+                comment: { content: this.editComment },
+            })
+        } else {
+            if (!this.answerId) throw new Error('No answerId set for comment')
+            this.updateAnswerComment.mutate({
+                questionId: this.questionId,
+                answerId: this.answerId,
+                commentId: this.editCommentId,
+                comment: { content: this.editComment },
+            })
+        }
+        this.editComment = ''
+        this.editCommentId = ''
+    }
+
+    handleOpenDeleteDialog = (commentId: string) => {
+        this.deleteCommentId = commentId
+        this.deleteDialogOpen.set('open')
+    }
+
+    handleDeleteComment = () => {
+        if (this.type === 'QUESTION') {
+            this.deleteQuestionComment.mutate({
+                questionId: this.questionId,
+                commentId: this.deleteCommentId,
+            })
+        } else {
+            if (!this.answerId) throw new Error('No answerId set for comment')
+            this.deleteAnswerComment.mutate({
+                questionId: this.questionId,
+                answerId: this.answerId,
+                commentId: this.deleteCommentId,
+            })
+        }
+        this.deleteDialogOpen.set('closed')
     }
 }

@@ -141,6 +141,50 @@ export class BackendService {
             },
         }))
 
+    updateQuestionComment = () =>
+        injectMutation(() => ({
+            mutationFn: async (req: {
+                questionId: string
+                commentId: string
+                comment: CreateQuestionComment
+            }) =>
+                lastValueFrom(
+                    this.http.put(
+                        `${environment.apiUrl}questions/${req.questionId}/comments/${req.commentId}`,
+                        req.comment
+                    )
+                ),
+            onSuccess: async () => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['questions'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['question'],
+                })
+            },
+        }))
+
+    deleteQuestionComment = () =>
+        injectMutation(() => ({
+            mutationFn: async (req: {
+                questionId: string
+                commentId: string
+            }) =>
+                lastValueFrom(
+                    this.http.delete(
+                        `${environment.apiUrl}questions/${req.questionId}/comments/${req.commentId}`
+                    )
+                ),
+            onSuccess: async () => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['questions'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['question'],
+                })
+            },
+        }))
+
     createAnswerComment = () =>
         injectMutation(() => ({
             mutationFn: async (req: {
@@ -152,6 +196,52 @@ export class BackendService {
                     this.http.post(
                         `${environment.apiUrl}questions/${req.questionId}/answers/${req.answerId}/comments`,
                         req.comment
+                    )
+                ),
+            onSuccess: async () => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['questions'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['question'],
+                })
+            },
+        }))
+
+    updateAnswerComment = () =>
+        injectMutation(() => ({
+            mutationFn: async (req: {
+                questionId: string
+                answerId: string
+                commentId: string
+                comment: CreateAnswerComment
+            }) =>
+                lastValueFrom(
+                    this.http.put(
+                        `${environment.apiUrl}questions/${req.questionId}/answers/${req.answerId}/comments/${req.commentId}`,
+                        req.comment
+                    )
+                ),
+            onSuccess: async () => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['questions'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['question'],
+                })
+            },
+        }))
+
+    deleteAnswerComment = () =>
+        injectMutation(() => ({
+            mutationFn: async (req: {
+                questionId: string
+                answerId: string
+                commentId: string
+            }) =>
+                lastValueFrom(
+                    this.http.delete(
+                        `${environment.apiUrl}questions/${req.questionId}/answers/${req.answerId}/comments/${req.commentId}`
                     )
                 ),
             onSuccess: async () => {

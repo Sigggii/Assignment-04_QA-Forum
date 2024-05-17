@@ -1,7 +1,13 @@
-import { commentQuestion, question, question_tag, tag } from './schema'
+import { commentAnswer, commentQuestion, question, question_tag, tag } from './schema'
 import { eq, getTableColumns } from 'drizzle-orm'
 import { db } from '../server'
-import { CreateQuestion, InsertQuestionComment, Question, QuestionTag } from './types'
+import {
+    CreateQuestion,
+    InsertAnswerComment,
+    InsertQuestionComment,
+    Question,
+    QuestionTag,
+} from './types'
 import { QueryResultType } from '../utils/typeUtils'
 import { UpdateQuestionRequest, UUID } from '../shared/types'
 
@@ -176,4 +182,32 @@ export const queryQuestionById = async (id: UUID): Promise<QuestionQueryResult> 
 
 export const createQuestionCommentQuery = async (comment: InsertQuestionComment) => {
     await db.insert(commentQuestion).values(comment).execute()
+}
+
+export const updateQuestionCommentQuery = async (
+    content: InsertQuestionComment['content'],
+    commentId: UUID,
+) => {
+    await db
+        .update(commentQuestion)
+        .set({ content: content })
+        .where(eq(commentQuestion.id, commentId))
+        .execute()
+}
+
+export const deleteQuestionCommentQuery = async (commentId: UUID) => {
+    await db.delete(commentQuestion).where(eq(commentQuestion.id, commentId)).execute()
+}
+
+export const getQuestionCommentByIdQuery = async (commentId: UUID) => {
+    const commentQuestion = await db.query.commentQuestion
+        .findFirst({
+            where: (commentQuestion, { eq }) => eq(commentQuestion.id, commentId),
+        })
+        .execute()
+
+    if (!commentQuestion) {
+        throw new Error('No QuestionComment with this Id')
+    }
+    return commentQuestion
 }

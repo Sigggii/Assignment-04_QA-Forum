@@ -66,6 +66,7 @@ export class AnswerEditorComponent implements OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['editAnswer']) {
             const editAnswer = this.editAnswer()
+            this.createAnswerForm.markAsUntouched()
             this.createAnswerForm.setValue({
                 content: {
                     html: editAnswer?.content || '',

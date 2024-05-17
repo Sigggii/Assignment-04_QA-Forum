@@ -1,4 +1,4 @@
-import { Question } from '../db/types'
+import { CreateQuestion, Question } from '../db/types'
 import {
     CreateAnswer,
     CreateAnswerCommentRequest,
@@ -12,9 +12,11 @@ import {
 import {
     createQuestionCommentQuery,
     createQuestionQuery,
+    deleteQuestionCommentQuery,
     deleteQuestionQuery,
     queryQuestionById,
     queryQuestions,
+    updateQuestionCommentQuery,
     updateQuestionQuery,
 } from '../db/questionRepository'
 import {
@@ -26,7 +28,10 @@ import {
 import {
     createAnswerCommentQuery,
     createAnswerQuery,
+    deleteAnswerCommentQuery,
     deleteAnswerQuery,
+    getAnswerCommentByIdQuery,
+    updateAnswerCommentQuery,
     updateAnswerQuery,
 } from '../db/answerRepository'
 
@@ -120,6 +125,16 @@ export const createQuestionComment = async (
     })
 }
 
+export const updateQuestionComment = async (
+    comment: CreateQuestionCommentRequest,
+    commentId: UUID,
+) => {
+    await updateQuestionCommentQuery(comment.content, commentId)
+}
+
+export const deleteQuestionComment = async (commentId: UUID) => {
+    await deleteQuestionCommentQuery(commentId)
+}
 export const createAnswer = async (
     answerContent: CreateAnswer,
     questionId: UUID,
@@ -142,4 +157,12 @@ export const createAnswerComment = async (
     authorId: UUID,
 ) => {
     await createAnswerCommentQuery({ ...comment, answerId: answerId, authorId: authorId })
+}
+
+export const updateAnswerComment = async (comment: CreateAnswerCommentRequest, commentId: UUID) => {
+    await updateAnswerCommentQuery(comment.content, commentId)
+}
+
+export const deleteAnswerComment = async (commentId: UUID) => {
+    await deleteAnswerCommentQuery(commentId)
 }

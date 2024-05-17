@@ -22,6 +22,9 @@ import {
     BrnDialogContentDirective,
     BrnDialogTriggerDirective,
 } from '@spartan-ng/ui-dialog-brain'
+import { provideIcons } from '@ng-icons/core'
+import { lucidePencil, lucideTrash } from '@ng-icons/lucide'
+import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
 
 @Component({
     selector: 'app-question',
@@ -42,7 +45,9 @@ import {
         BrnDialogTriggerDirective,
         BrnDialogContentDirective,
         HlmDialogTitleDirective,
+        HlmIconComponent,
     ],
+    providers: [provideIcons({ lucidePencil, lucideTrash })],
     templateUrl: './question.component.html',
     styleUrl: './question.component.css',
 })

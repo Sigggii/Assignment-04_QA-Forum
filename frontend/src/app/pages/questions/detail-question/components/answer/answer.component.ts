@@ -19,6 +19,7 @@ import { AuthService } from '../../../../../core/services/auth.service'
 import { BackendService } from '../../../../../core/services/backend.service'
 import { BrnDialogContentDirective } from '@spartan-ng/ui-dialog-brain'
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm'
+import { lucidePencil, lucideTrash } from '@ng-icons/lucide'
 import {
     HlmDialogComponent,
     HlmDialogContentComponent,
@@ -26,6 +27,8 @@ import {
     HlmDialogHeaderComponent,
     HlmDialogTitleDirective,
 } from '@spartan-ng/ui-dialog-helm'
+import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
+import { provideIcons } from '@ng-icons/core'
 
 @Component({
     selector: 'app-answer',
@@ -46,7 +49,9 @@ import {
         HlmDialogFooterComponent,
         HlmDialogHeaderComponent,
         HlmDialogTitleDirective,
+        HlmIconComponent,
     ],
+    providers: [provideIcons({ lucidePencil, lucideTrash })],
     templateUrl: './answer.component.html',
     styleUrl: './answer.component.css',
 })
@@ -63,6 +68,7 @@ export class AnswerComponent {
             questionId: this.answer.questionId,
             answerId: this.answer.id,
         })
+        this.deleteDialogOpen.set('closed')
     }
     protected readonly formatDateXTimeAgo = formatDateXTimeAgo
 }

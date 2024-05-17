@@ -7,15 +7,17 @@
                 <app-user-badge [user]="answer.user"></app-user-badge>
                 <span class="font-bold">·</span>
                 <span class="text-sm text-foreground/80">{{
-                    formatDateXTimeAgo(answer.createdAt)
-                }}</span>
+                        formatDateXTimeAgo(answer.createdAt)
+                    }}</span>
+                   <span *ngIf="authService.checkMatchUserId(answer.user.id)"
+                         class="flex text-sm underline-offset-2 underline hover:cursor-pointer text-gray-400"><button
+                       hlmBtn size="icon" variant="ghost"
+                       (click)="edit.emit(answer)"><hlm-icon size="sm" name="lucidePencil" /></button>
+                       <button hlmBtn size="icon" variant="ghost" (click)="deleteDialogOpen.set('open')"><hlm-icon size="sm" name="lucideTrash" /></button></span>
             </span>
         </div>
     </section>
     <section [innerHTML]="answer.content" class="mt-3 leading-6"></section>
-    <section *ngIf="authService.checkMatchUserId(answer.user.id)"
-             class="flex gap-2 text-sm mt-2 underline-offset-2 underline hover:cursor-pointer text-gray-400"><a
-        (click)="edit.emit(answer)">edit</a><a (click)="deleteDialogOpen.set('open')">delete</a></section>
     <hr
         class="mb-4 mt-2 h-[1px] border-t-0"
         [ngClass]="answer.user.role === 'NOOB' ? 'bg-noob' : 'bg-pro'"
@@ -28,7 +30,7 @@
         [answerId]="answer.id"
     />
 </section>
-<hlm-dialog [state]="deleteDialogOpen()" (closed)="deleteDialogOpen.set('closed')" >
+<hlm-dialog [state]="deleteDialogOpen()" (closed)="deleteDialogOpen.set('closed')">
     <hlm-dialog-content *brnDialogContent="let ctx">
         <hlm-dialog-header class="w-[250px]">
             <h3 hlmDialogTitle>Delete Answer?</h3>

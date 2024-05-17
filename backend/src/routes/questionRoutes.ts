@@ -19,16 +19,21 @@ import {
     createQuestion,
     createQuestionComment,
     deleteAnswer,
+    deleteAnswerComment,
     deleteQuestion,
+    deleteQuestionComment,
     getQuestionById,
     getQuestions,
     updateAnswer,
+    updateAnswerComment,
     updateQuestion,
+    updateQuestionComment,
 } from '../controller/questionController'
 import { z } from 'zod'
 import { CreateQuestion } from '../db/types'
 import { AuthorizedByUserIdGuard } from './authHandler'
-import { getAnswerByIdQuery } from '../db/answerRepository'
+import { getAnswerByIdQuery, getAnswerCommentByIdQuery } from '../db/answerRepository'
+import { getQuestionCommentByIdQuery, updateQuestionCommentQuery } from '../db/questionRepository'
 
 export const questionRoutes = async (fastify: BaseFastifyInstance) => {
     fastify.post(
@@ -152,6 +157,54 @@ export const questionRoutes = async (fastify: BaseFastifyInstance) => {
         },
     )
 
+    fastify.put(
+        '/:questionId/comments/:commentId',
+        {
+            schema: {
+                body: CreateQuestionCommentRequestSchema,
+                params: z.object({
+                    questionId: UUIDSchema,
+                    commentId: UUIDSchema,
+                }),
+            },
+            config: {
+                rolesAllowed: 'ALL',
+            },
+            onRequest: [fastify.auth([fastify.authorize])],
+        },
+        async (req, resp) => {
+            const commentId = (req.params as { questionId: UUID; commentId: UUID }).commentId
+            const commentToCheck = await getQuestionCommentByIdQuery(commentId)
+            AuthorizedByUserIdGuard(req.authUser!, commentToCheck.authorId, true)
+            const comment = req.body as CreateQuestionCommentRequest
+            await updateQuestionComment(comment, commentId)
+            resp.status(204)
+        },
+    )
+
+    fastify.delete(
+        '/:questionId/comments/:commentId',
+        {
+            schema: {
+                params: z.object({
+                    questionId: UUIDSchema,
+                    commentId: UUIDSchema,
+                }),
+            },
+            config: {
+                rolesAllowed: 'ALL',
+            },
+            onRequest: [fastify.auth([fastify.authorize])],
+        },
+        async (req, resp) => {
+            const commentId = (req.params as { questionId: UUID; commentId: UUID }).commentId
+            const commentToCheck = await getQuestionCommentByIdQuery(commentId)
+            AuthorizedByUserIdGuard(req.authUser!, commentToCheck.authorId, true)
+            await deleteQuestionComment(commentId)
+            resp.status(204)
+        },
+    )
+
     fastify.post(
         '/:id/answers',
         {
@@ -243,6 +296,58 @@ export const questionRoutes = async (fastify: BaseFastifyInstance) => {
             const userId = req.authUser!.id
             await createAnswerComment(req.body as CreateAnswerCommentRequest, answerId, userId)
             resp.status(201)
+        },
+    )
+
+    fastify.put(
+        '/:questionId/answers/:answerId/comments/:commentId',
+        {
+            schema: {
+                body: CreateAnswerCommentRequestSchema,
+                params: z.object({
+                    questionId: UUIDSchema,
+                    answerId: UUIDSchema,
+                    commentId: UUIDSchema,
+                }),
+            },
+            config: {
+                rolesAllowed: 'ALL',
+            },
+            onRequest: [fastify.auth([fastify.authorize])],
+        },
+        async (req, resp) => {
+            const commentId = (req.params as { questionId: UUID; answerId: UUID; commentId: UUID })
+                .commentId
+            const commentToCheck = await getAnswerCommentByIdQuery(commentId)
+            AuthorizedByUserIdGuard(req.authUser!, commentToCheck.authorId, true)
+            const comment = req.body as CreateAnswerCommentRequest
+            await updateAnswerComment(comment, commentId)
+            resp.status(204)
+        },
+    )
+
+    fastify.delete(
+        '/:questionId/answers/:answerId/comments/:commentId',
+        {
+            schema: {
+                params: z.object({
+                    questionId: UUIDSchema,
+                    answerId: UUIDSchema,
+                    commentId: UUIDSchema,
+                }),
+            },
+            config: {
+                rolesAllowed: 'ALL',
+            },
+            onRequest: [fastify.auth([fastify.authorize])],
+        },
+        async (req, resp) => {
+            const commentId = (req.params as { questionId: UUID; answerId: UUID; commentId: UUID })
+                .commentId
+            const commentToCheck = await getAnswerCommentByIdQuery(commentId)
+            AuthorizedByUserIdGuard(req.authUser!, commentToCheck.authorId, true)
+            await deleteAnswerComment(commentId)
+            resp.status(204)
         },
     )
 }
