@@ -26,6 +26,7 @@ import {
 import {
     createAnswerCommentQuery,
     createAnswerQuery,
+    deleteAnswerQuery,
     updateAnswerQuery,
 } from '../db/answerRepository'
 
@@ -129,6 +130,10 @@ export const createAnswer = async (
 
 export const updateAnswer = async (answerContent: CreateAnswer, answerId: UUID) => {
     await updateAnswerQuery(answerContent, answerId)
+}
+
+export const deleteAnswer = async (answerId: UUID) => {
+    await deleteAnswerQuery(answerId)
 }
 
 export const createAnswerComment = async (

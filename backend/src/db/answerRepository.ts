@@ -16,6 +16,10 @@ export const updateAnswerQuery = async (updateAnswer: CreateAnswer, answerId: UU
         .execute()
 }
 
+export const deleteAnswerQuery = async (answerId: UUID) => {
+    await db.delete(answer).where(eq(answer.id, answerId)).execute()
+}
+
 export const getAnswerByIdQuery = async (id: UUID) => {
     const answer = await db.query.answer
         .findFirst({

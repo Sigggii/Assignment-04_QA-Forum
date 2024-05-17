@@ -18,6 +18,7 @@ import {
     createAnswerComment,
     createQuestion,
     createQuestionComment,
+    deleteAnswer,
     deleteQuestion,
     getQuestionById,
     getQuestions,
@@ -195,6 +196,29 @@ export const questionRoutes = async (fastify: BaseFastifyInstance) => {
             AuthorizedByUserIdGuard(req.authUser!, answerToCheck.authorId, true)
             const answer = req.body as CreateAnswer
             await updateAnswer(answer, answerId)
+            resp.status(204)
+        },
+    )
+
+    fastify.delete(
+        '/:questionId/answers/:answerId',
+        {
+            schema: {
+                params: z.object({
+                    questionId: UUIDSchema,
+                    answerId: UUIDSchema,
+                }),
+            },
+            config: {
+                rolesAllowed: 'ALL',
+            },
+            onRequest: [fastify.auth([fastify.authorize])],
+        },
+        async (req, resp) => {
+            const answerId = (req.params as { questionId: UUID; answerId: UUID }).answerId
+            const answerToCheck = await getAnswerByIdQuery(answerId)
+            AuthorizedByUserIdGuard(req.authUser!, answerToCheck.authorId, true)
+            await deleteAnswer(answerId)
             resp.status(204)
         },
     )

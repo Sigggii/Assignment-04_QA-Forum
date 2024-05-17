@@ -209,6 +209,24 @@ export class BackendService {
             },
         }))
 
+    deleteAnswer = () =>
+        injectMutation(() => ({
+            mutationFn: async (req: { answerId: string; questionId: string }) =>
+                lastValueFrom(
+                    this.http.delete(
+                        `${environment.apiUrl}questions/${req.questionId}/answers/${req.answerId}`
+                    )
+                ),
+            onSuccess: async () => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['questions'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['question'],
+                })
+            },
+        }))
+
     registerUser = () =>
         injectMutation(() => ({
             mutationFn: async (req: {
