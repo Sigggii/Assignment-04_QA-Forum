@@ -1,5 +1,11 @@
-<div class="flex w-full items-center justify-between">
+@if (!authService.isLoggedIn()) {
+    <app-hero-section />
+}
+
+<div class="mt-12 flex w-full items-center justify-between">
     <h1 class="text-3xl font-semibold">Top Questions</h1>
 
-    <button *ngIf="authService.isLoggedIn()" (click)="this.navigationService.openAskQuestion()" hlmBtn>Ask Question</button>
+    <button (click)="this.navigationService.openAskQuestion()" hlmBtn>
+        Ask Question
+    </button>
 </div>

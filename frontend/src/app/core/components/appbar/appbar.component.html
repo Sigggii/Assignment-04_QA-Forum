@@ -41,11 +41,11 @@
         <hlm-icon name="lucideSearch" />
     </button>
 
-    <button hlmBtn size="icon" variant="ghost">
-        <hlm-icon name="lucideBell" />
-    </button>
-
     @if (authService.isLoggedIn()) {
+        <button hlmBtn size="icon" variant="ghost">
+            <hlm-icon name="lucideBell" />
+        </button>
+
         <hlm-avatar class="h-9 w-9 cursor-pointer" [brnMenuTriggerFor]="menu">
             <span
                 [ngClass]="

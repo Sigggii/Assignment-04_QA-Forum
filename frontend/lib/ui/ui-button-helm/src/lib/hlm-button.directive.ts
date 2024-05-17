@@ -20,6 +20,8 @@ export const buttonVariants = cva(
                 link: 'underline-offset-4 hover:underline text-primary',
                 pro: 'bg-pro text-pro-foreground hover:bg-pro/90', // custom
                 noob: 'bg-noob text-noob-foreground hover:bg-noob/90', // custom
+                proInverse: 'bg-white text-black hover:bg-white/90', // custom
+                noobInverse: 'bg-black text-white hover:bg-black/90', // custom
             },
             size: {
                 default: 'h-10 py-2 px-4',

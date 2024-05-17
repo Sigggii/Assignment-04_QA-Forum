@@ -1,0 +1,47 @@
+<section class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
+    <div
+        class="grid grid-cols-[auto_1fr] gap-4 rounded-lg bg-noob/90 p-6 text-noob-foreground"
+    >
+        <span class="my-auto px-4 text-[120px]/[110px] font-semibold">?</span>
+
+        <div
+            class="flex h-full w-full flex-col flex-wrap justify-between gap-4"
+        >
+            <span class="w-full text-right text-4xl font-semibold"
+                >Have any DIY Questions?</span
+            >
+
+            <button
+                hlmBtn
+                (click)="navService.openSignUpNoob()"
+                variant="noobInverse"
+                class="ml-auto"
+            >
+                Sign up as Noob
+            </button>
+        </div>
+    </div>
+
+    <div
+        class="grid grid-cols-[1fr_auto] gap-4 rounded-lg bg-pro/90 p-6 text-pro-foreground"
+    >
+        <div
+            class="flex h-full w-full flex-col flex-wrap justify-between gap-4"
+        >
+            <span class="w-full text-4xl font-semibold"
+                >Want to share your knowledge?</span
+            >
+
+            <button
+                hlmBtn
+                (click)="navService.openSignUpPro()"
+                variant="proInverse"
+                class="mr-auto"
+            >
+                Sign up as Pro
+            </button>
+        </div>
+
+        <span class="my-auto px-4 text-[120px]/[110px] font-semibold">!</span>
+    </div>
+</section>
