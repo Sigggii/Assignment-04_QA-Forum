@@ -18,14 +18,17 @@ import {
     createAnswerComment,
     createQuestion,
     createQuestionComment,
+    deleteAnswer,
     deleteQuestion,
     getQuestionById,
     getQuestions,
+    updateAnswer,
     updateQuestion,
 } from '../controller/questionController'
 import { z } from 'zod'
 import { CreateQuestion } from '../db/types'
 import { AuthorizedByUserIdGuard } from './authHandler'
+import { getAnswerByIdQuery } from '../db/answerRepository'
 
 export const questionRoutes = async (fastify: BaseFastifyInstance) => {
     fastify.post(
@@ -66,8 +69,8 @@ export const questionRoutes = async (fastify: BaseFastifyInstance) => {
         async (req, resp) => {
             const question = req.body as UpdateQuestionRequest
             const questionId = (req.params as { questionId: UUID }).questionId
-
-            AuthorizedByUserIdGuard(req.authUser!, question.question.authorId, true)
+            const editCheckQuestion = await getQuestionById(questionId)
+            AuthorizedByUserIdGuard(req.authUser!, editCheckQuestion.authorId, true)
             await updateQuestion(question, questionId)
             resp.status(204)
         },
@@ -169,6 +172,54 @@ export const questionRoutes = async (fastify: BaseFastifyInstance) => {
             const body = req.body as CreateAnswer
             await createAnswer(body, questionId, userId)
             resp.status(201)
+        },
+    )
+
+    fastify.put(
+        '/:questionId/answers/:answerId',
+        {
+            schema: {
+                body: CreateAnswerRequestSchema,
+                params: z.object({
+                    questionId: UUIDSchema,
+                    answerId: UUIDSchema,
+                }),
+            },
+            config: {
+                rolesAllowed: 'ALL',
+            },
+            onRequest: [fastify.auth([fastify.authorize])],
+        },
+        async (req, resp) => {
+            const answerId = (req.params as { questionId: UUID; answerId: UUID }).answerId
+            const answerToCheck = await getAnswerByIdQuery(answerId)
+            AuthorizedByUserIdGuard(req.authUser!, answerToCheck.authorId, true)
+            const answer = req.body as CreateAnswer
+            await updateAnswer(answer, answerId)
+            resp.status(204)
+        },
+    )
+
+    fastify.delete(
+        '/:questionId/answers/:answerId',
+        {
+            schema: {
+                params: z.object({
+                    questionId: UUIDSchema,
+                    answerId: UUIDSchema,
+                }),
+            },
+            config: {
+                rolesAllowed: 'ALL',
+            },
+            onRequest: [fastify.auth([fastify.authorize])],
+        },
+        async (req, resp) => {
+            const answerId = (req.params as { questionId: UUID; answerId: UUID }).answerId
+            const answerToCheck = await getAnswerByIdQuery(answerId)
+            AuthorizedByUserIdGuard(req.authUser!, answerToCheck.authorId, true)
+            await deleteAnswer(answerId)
+            resp.status(204)
         },
     )
 

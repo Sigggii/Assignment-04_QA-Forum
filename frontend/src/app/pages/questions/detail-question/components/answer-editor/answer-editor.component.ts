@@ -1,9 +1,10 @@
 import {
     Component,
     EventEmitter,
-    Input,
+    input,
+    OnChanges,
     Output,
-    ViewChild,
+    SimpleChanges,
 } from '@angular/core'
 import {
     QuillEditorValue,
@@ -33,9 +34,11 @@ import { CreateAnswer } from '../../../../../shared/types/api-types'
     templateUrl: './answer-editor.component.html',
     styleUrl: './answer-editor.component.css',
 })
-export class AnswerEditorComponent {
+export class AnswerEditorComponent implements OnChanges {
+    editAnswer = input<CreateAnswer | undefined>()
     @Output() create: EventEmitter<CreateAnswer> =
         new EventEmitter<CreateAnswer>()
+    @Output() cancel: EventEmitter<void> = new EventEmitter()
     @Output() sticky: EventEmitter<boolean> = new EventEmitter<boolean>()
 
     createAnswerForm = new FormGroup({
@@ -58,6 +61,18 @@ export class AnswerEditorComponent {
             [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
             ['blockquote', 'code-block', 'link', 'image'], // link and image, video
         ],
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['editAnswer']) {
+            const editAnswer = this.editAnswer()
+            this.createAnswerForm.setValue({
+                content: {
+                    html: editAnswer?.content || '',
+                    text: editAnswer?.content || '',
+                },
+            })
+        }
     }
 
     handleSubmitForm = () => {

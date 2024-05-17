@@ -4,6 +4,7 @@ import {
     Input,
     OnChanges,
     Output,
+    SimpleChanges,
 } from '@angular/core'
 import { BadgeInputComponent } from '../../../shared/components/badge-input/badge-input.component'
 
@@ -96,8 +97,8 @@ export class QuestionEditorComponent implements OnChanges {
         private navService: NavigationService
     ) {}
 
-    ngOnChanges() {
-        if (this.editQuestion) {
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['editQuestion'] && this.editQuestion) {
             this.questionForm.setValue({
                 title: this.editQuestion.title,
                 //ToDo checken ob das probleme macht, dass der Text leer ist

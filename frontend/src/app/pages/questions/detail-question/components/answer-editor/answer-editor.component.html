@@ -9,6 +9,11 @@
     </span>
     <form [formGroup]="createAnswerForm" (ngSubmit)="handleSubmitForm()">
         <app-quill-js formControlName="content" classes="h-[200px]" [modules]="modules" theme="snow" placeholder="" />
-        <button class="mt-1" type="submit" *ngIf="createAnswerForm.valid" hlmBtn>Create Answer</button>
+        <div class="flex gap-2">
+            <button class="mt-1" type="submit" [disabled]="!createAnswerForm.valid"
+                    hlmBtn>{{ editAnswer() ? 'Update Answer' : 'Create Answer' }}
+            </button>
+            <button class="mt-1" *ngIf="editAnswer()" (click)="cancel.emit()" variant="ghost" hlmBtn>Cancel Update</button>
+        </div>
     </form>
 </section>
