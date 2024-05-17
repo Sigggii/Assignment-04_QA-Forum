@@ -43,6 +43,9 @@
       "@spartan-ng/ui-checkbox-helm": [
         "./lib/ui/ui-checkbox-helm/src/index.ts"
       ],
+      "@spartan-ng/ui-menu-helm": [
+        "./lib/ui/ui-menu-helm/src/index.ts"
+      ],
       "@spartan-ng/ui-dialog-helm": [
         "./lib/ui/ui-dialog-helm/src/index.ts"
       ]

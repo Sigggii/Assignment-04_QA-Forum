@@ -1,6 +1,14 @@
 import { Component, EventEmitter, inject, Output } from '@angular/core'
 import { provideIcons } from '@ng-icons/core'
-import { lucideMenu, lucideBell, lucideSearch } from '@ng-icons/lucide'
+import {
+    lucideMenu,
+    lucideBell,
+    lucideSearch,
+    lucideLogOut,
+    lucideSunMoon,
+    lucideSun,
+    lucideMoon,
+} from '@ng-icons/lucide'
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm'
 import {
@@ -13,6 +21,16 @@ import { RouterLink } from '@angular/router'
 import { AuthService } from '../../services/auth.service'
 import { NavigationService } from '../../services/navigation.service'
 import { BackendService } from '../../services/backend.service'
+import {
+    HlmMenuComponent,
+    HlmMenuGroupComponent,
+    HlmMenuItemDirective,
+    HlmMenuItemIconDirective,
+    HlmMenuLabelComponent,
+    HlmMenuSeparatorComponent,
+} from '@spartan-ng/ui-menu-helm'
+import { BrnMenuTriggerDirective } from '@spartan-ng/ui-menu-brain'
+import { ThemeService } from '../../services/theme.service'
 
 @Component({
     selector: 'app-appbar',
@@ -27,14 +45,32 @@ import { BackendService } from '../../services/backend.service'
         RouterLink,
         NgIf,
         NgClass,
+        HlmMenuComponent,
+        HlmMenuLabelComponent,
+        HlmMenuSeparatorComponent,
+        HlmMenuGroupComponent,
+        HlmMenuItemDirective,
+        HlmMenuItemIconDirective,
+        BrnMenuTriggerDirective,
     ],
     templateUrl: './appbar.component.html',
     styleUrl: './appbar.component.css',
-    providers: [provideIcons({ lucideMenu, lucideBell, lucideSearch })],
+    providers: [
+        provideIcons({
+            lucideMenu,
+            lucideBell,
+            lucideSearch,
+            lucideLogOut,
+            lucideSunMoon,
+            lucideSun,
+            lucideMoon,
+        }),
+    ],
 })
 export class AppbarComponent {
     @Output() toggleSidebar = new EventEmitter<void>()
 
+    themeService = inject(ThemeService)
     authService = inject(AuthService)
     navService = inject(NavigationService)
     backendService = inject(BackendService)

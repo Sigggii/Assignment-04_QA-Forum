@@ -46,7 +46,7 @@
     </button>
 
     @if (authService.isLoggedIn()) {
-        <hlm-avatar class="h-9 w-9 cursor-pointer">
+        <hlm-avatar class="h-9 w-9 cursor-pointer" [brnMenuTriggerFor]="menu">
             <span
                 [ngClass]="
                     authService.isPro()
@@ -59,13 +59,55 @@
             </span>
         </hlm-avatar>
 
-        <button
-            (click)="handleLogoutUser()"
-            *ngIf="authService.isLoggedIn()"
-            hlmBtn
-        >
-            Logout
-        </button>
+        <ng-template #menu>
+            <hlm-menu class="w-48">
+                <hlm-menu-label class="font-medium">
+                    <span class="font-semibold">Logged in as: </span>
+                    {{ authService.getUserData()?.username }}</hlm-menu-label
+                >
+
+                <hlm-menu-label class="font-medium">
+                    <span class="font-semibold">Role: </span
+                    >{{ authService.getUserData()?.role }}
+                </hlm-menu-label>
+
+                <hlm-menu-separator />
+                <button hlmMenuItem class="hidden">
+                    button to take the autofocus lol
+                </button>
+
+                @if (themeService.getBaseTheme() === 'dark') {
+                    <button
+                        hlmMenuItem
+                        class="cursor-pointer"
+                        (click)="themeService.setTheme('light')"
+                    >
+                        <hlm-icon name="lucideSun" hlmMenuIcon />
+                        <span>Light Theme</span>
+                    </button>
+                } @else {
+                    <button
+                        hlmMenuItem
+                        class="cursor-pointer"
+                        (click)="themeService.setTheme('dark')"
+                    >
+                        <hlm-icon name="lucideMoon" hlmMenuIcon />
+                        <span>Dark Theme</span>
+                    </button>
+                }
+
+                <hlm-menu-separator />
+
+                <button
+                    hlmMenuItem
+                    class="cursor-pointer"
+                    (click)="handleLogoutUser()"
+                >
+                    <hlm-icon name="lucideLogOut" hlmMenuIcon />
+                    <span>Logout</span>
+                </button>
+            </hlm-menu>
+        </ng-template>
     } @else {
         <button (click)="handleLogoutUser()" hlmBtn>Login</button>
     }
