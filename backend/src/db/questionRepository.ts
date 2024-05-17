@@ -38,10 +38,7 @@ export const createQuestionQuery = async (createQuestion: CreateQuestion) => {
     })
 }
 
-export const updateQuestionQuery = async (
-    updateQuestion: UpdateQuestionRequest,
-    questionId: UUID,
-) => {
+export const updateQuestionQuery = async (updateQuestion: CreateQuestion, questionId: UUID) => {
     await db.transaction(async (tx) => {
         console.log(updateQuestion)
         await tx

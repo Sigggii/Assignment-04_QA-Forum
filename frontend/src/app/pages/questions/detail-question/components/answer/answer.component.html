@@ -13,8 +13,11 @@
         </div>
     </section>
     <section [innerHTML]="answer.content" class="mt-3 leading-6"></section>
+    <section *ngIf="authService.checkMatchUserId(answer.user.id)"
+             class="flex gap-2 text-sm mt-2 underline-offset-2 underline hover:cursor-pointer text-gray-400"><a
+        (click)="edit.emit(answer)">edit</a><a >delete</a></section>
     <hr
-        class="my-4 h-[1px] border-t-0"
+        class="mb-4 mt-2 h-[1px] border-t-0"
         [ngClass]="answer.user.role === 'NOOB' ? 'bg-noob' : 'bg-pro'"
     />
 

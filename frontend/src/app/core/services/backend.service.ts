@@ -186,6 +186,29 @@ export class BackendService {
             },
         }))
 
+    updateAnswer = () =>
+        injectMutation(() => ({
+            mutationFn: async (req: {
+                answer: CreateAnswer
+                answerId: string
+                questionId: string
+            }) =>
+                lastValueFrom(
+                    this.http.put(
+                        `${environment.apiUrl}questions/${req.questionId}/answers/${req.answerId}`,
+                        req.answer
+                    )
+                ),
+            onSuccess: async () => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['questions'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['question'],
+                })
+            },
+        }))
+
     registerUser = () =>
         injectMutation(() => ({
             mutationFn: async (req: {

@@ -75,6 +75,19 @@ export type QuestionPreviewData = {
     topAnswerRating: number
 }
 
+export type Answer = {
+    id: string
+    authorId: string
+    user: User
+    createdAt: Date
+    content: string
+    lastEditedAt: Date | null
+    questionId: string
+    comments: CommentOnAnswer[]
+    score: number
+    rating: number
+}
+
 export type DetailQuestion = {
     id: string
     authorId: string
@@ -88,18 +101,7 @@ export type DetailQuestion = {
 
     score: number
     comments: CommentOnQuestion[]
-    answers: {
-        id: string
-        authorId: string
-        user: User
-        createdAt: Date
-        content: string
-        lastEditedAt: Date | null
-        questionId: string
-        comments: CommentOnAnswer[]
-        score: number
-        rating: number
-    }[]
+    answers: Answer[]
 }
 
 export const CreateAnswerRequestSchema = InsertAnswerSchema.pick({

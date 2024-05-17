@@ -23,7 +23,11 @@ import {
     calculateQuestionScore,
     calculateTopAnswerRating,
 } from '../utils/questionUtils'
-import { createAnswerCommentQuery, createAnswerQuery } from '../db/answerRepository'
+import {
+    createAnswerCommentQuery,
+    createAnswerQuery,
+    updateAnswerQuery,
+} from '../db/answerRepository'
 
 export const createQuestion = async (
     createQuestion: CreateQuestionRequest,
@@ -121,6 +125,10 @@ export const createAnswer = async (
     authorId: UUID,
 ) => {
     await createAnswerQuery({ ...answerContent, questionId: questionId, authorId: authorId })
+}
+
+export const updateAnswer = async (answerContent: CreateAnswer, answerId: UUID) => {
+    await updateAnswerQuery(answerContent, answerId)
 }
 
 export const createAnswerComment = async (
