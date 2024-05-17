@@ -4,11 +4,12 @@ import { NavigationService } from '../../core/services/navigation.service'
 import { RouterLink } from '@angular/router'
 import { NgIf } from '@angular/common'
 import { AuthService } from '../../core/services/auth.service'
+import { HeroSectionComponent } from './components/hero-section/hero-section.component'
 
 @Component({
     selector: 'app-home',
     standalone: true,
-    imports: [HlmButtonDirective, RouterLink, NgIf],
+    imports: [HlmButtonDirective, RouterLink, NgIf, HeroSectionComponent],
     templateUrl: './home.component.html',
     styleUrl: './home.component.css',
 })
