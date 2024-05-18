@@ -6,12 +6,14 @@ import { HlmButtonDirective } from '@spartan-ng/ui-button-helm'
 import {
     FormControl,
     FormGroup,
+    FormsModule,
     ReactiveFormsModule,
     Validators,
 } from '@angular/forms'
 import { BackendService } from '../../core/services/backend.service'
 import { NavigationService } from '../../core/services/navigation.service'
 import { AuthService } from '../../core/services/auth.service'
+import { BadgeInputComponent } from '../../shared/components/badge-input/badge-input.component'
 
 @Component({
     selector: 'app-login',
@@ -22,6 +24,8 @@ import { AuthService } from '../../core/services/auth.service'
         HlmLabelDirective,
         HlmButtonDirective,
         ReactiveFormsModule,
+        BadgeInputComponent,
+        FormsModule,
     ],
     templateUrl: './login.component.html',
     styleUrl: './login.component.css',
@@ -41,13 +45,14 @@ export class LoginComponent {
     backendService = inject(BackendService)
     navService = inject(NavigationService)
     authService = inject(AuthService)
-    loginUser = this.backendService.loginUser()
+    loginUser = this.backendService.loginUser(async () => {
+        await this.navService.openHome()
+    })
 
     handleLoginUser = async () => {
         const username = this.loginForm.controls.username.value
         const password = this.loginForm.controls.password.value
 
         this.loginUser.mutate({ username: username, password: password })
-        await this.navService.openHome()
     }
 }

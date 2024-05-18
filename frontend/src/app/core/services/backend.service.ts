@@ -428,7 +428,7 @@ export class BackendService {
             },
         }))
 
-    registerUser = () =>
+    registerUser = (onSuccess?: () => Promise<void>) =>
         injectMutation(() => ({
             mutationFn: async (req: {
                 user: LoginUser
@@ -444,10 +444,13 @@ export class BackendService {
                 await this.queryClient.invalidateQueries({
                     queryKey: ['userInfo'],
                 })
+                if (onSuccess) {
+                    await onSuccess()
+                }
             },
         }))
 
-    loginUser = () =>
+    loginUser = (onSuccess?: () => Promise<void>) =>
         injectMutation(() => ({
             mutationFn: async (user: LoginUser) =>
                 lastValueFrom(
@@ -457,6 +460,9 @@ export class BackendService {
                 await this.queryClient.invalidateQueries({
                     queryKey: ['userInfo'],
                 })
+                if (onSuccess) {
+                    await onSuccess()
+                }
             },
         }))
 

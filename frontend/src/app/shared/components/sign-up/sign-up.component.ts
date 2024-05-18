@@ -62,8 +62,11 @@ export class SignUpComponent {
     )
 
     @Input({ required: true }) type: 'noob' | 'pro' = 'noob'
+    navService = inject(NavigationService)
     backendService = inject(BackendService)
-    registerUser = this.backendService.registerUser()
+    registerUser = this.backendService.registerUser(
+        async () => await this.navService.openHome()
+    )
 
     handleRegisterUser = () => {
         const username = this.registerForm.controls.username.value
