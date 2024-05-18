@@ -19,7 +19,13 @@ import { NgClass } from '@angular/common'
 })
 export class RateAnswerComponent {
     @Input() currentRating: number | undefined
-    @Output() rate: EventEmitter<number> = new EventEmitter<number>()
+    @Output() rate: EventEmitter<{
+        currentRating: number | undefined
+        previousRating: number | undefined
+    }> = new EventEmitter<{
+        currentRating: number | undefined
+        previousRating: number | undefined
+    }>()
     starIndexes = [1, 2, 3, 4, 5]
     hoverStar = -1
 
@@ -33,7 +39,12 @@ export class RateAnswerComponent {
 
     handleSetRating = (value: number) => {
         const newRating = value === this.currentRating ? undefined : value
-        this.rate.emit(newRating)
+        const previousRating = this.currentRating
+        this.currentRating = newRating
+        this.rate.emit({
+            currentRating: newRating,
+            previousRating: previousRating,
+        })
     }
     protected readonly heroStarSolid = heroStarSolid
     protected readonly heroStar = heroStar

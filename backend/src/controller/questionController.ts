@@ -99,11 +99,13 @@ export const getQuestionById = async (id: UUID): Promise<DetailQuestion> => {
     const answers = question.answers.map((answer) => {
         const answerScore = calculateAnswerScore(answer.votes)
         const averageRating = calculateAnswerRating(answer.ratings)
+        const ratingsCount = answer.ratings.length
 
         return {
             ...answer,
             score: answerScore,
             rating: averageRating,
+            ratingsCount: ratingsCount,
         }
     })
 

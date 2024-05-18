@@ -89,6 +89,7 @@ export type Answer = {
     comments: CommentOnAnswer[]
     score: number
     rating: number
+    ratingsCount: number
 }
 
 export type DetailQuestion = {

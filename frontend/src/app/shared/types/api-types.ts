@@ -31,7 +31,7 @@ export type CreateQuestionComment = {
 export type CreateVoteQuestion = { upvote?: boolean | undefined }
 export type CreateVoteAnswer = { upvote?: boolean | undefined }
 
-export type CreateRatingAnswer = { rating: number }
+export type CreateRatingAnswer = { rating: number | undefined }
 
 export type CreateAnswerComment = {
     content: string
@@ -90,6 +90,7 @@ export type Answer = {
     comments: CommentOnAnswer[]
     score: number
     rating: number
+    ratingsCount: number
 }
 
 export type DetailQuestion = {

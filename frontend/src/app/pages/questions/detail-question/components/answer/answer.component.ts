@@ -97,11 +97,27 @@ export class AnswerComponent implements OnChanges {
         })
     }
 
-    handleRate = (rating: number) => {
+    handleRate = (rating: {
+        currentRating: number | undefined
+        previousRating: number | undefined
+    }) => {
+        // Optimistic Updates
+        if (rating.currentRating) {
+            this.answer.rating =
+                (this.answer.rating * this.answer.ratingsCount +
+                    rating.currentRating) /
+                (this.answer.ratingsCount + 1)
+        } else {
+            this.answer.rating =
+                (this.answer.rating * this.answer.ratingsCount -
+                    (rating.previousRating ?? 0)) /
+                (this.answer.ratingsCount - 1)
+        }
+
         this.createRatingAnswer.mutate({
             questionId: this.answer.questionId,
             answerId: this.answer.id,
-            rating: { rating: rating },
+            rating: { rating: rating.currentRating },
         })
     }
 
