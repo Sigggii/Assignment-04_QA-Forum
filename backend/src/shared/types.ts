@@ -5,6 +5,9 @@ import {
     InsertAnswerSchema,
     InsertQuestionCommentSchema,
     InsertQuestionSchema,
+    InsertRatingAnswerSchema,
+    InsertVoteAnswerSchema,
+    InsertVoteQuestion,
 } from '../db/types'
 
 const tagsSchema = z.array(CreateTagSchema.pick({ name: true })).max(5, 'Maximum 5 Tags')
@@ -81,11 +84,13 @@ export type Answer = {
     user: User
     createdAt: Date
     content: string
+    approved: boolean
     lastEditedAt: Date | null
     questionId: string
     comments: CommentOnAnswer[]
     score: number
     rating: number
+    ratingsCount: number
 }
 
 export type DetailQuestion = {
@@ -133,3 +138,24 @@ export const LoginSchema = z.object({
         .max(265, 'Password can be no longer than 256 characters'),
 })
 export type LoginUser = z.infer<typeof LoginSchema>
+
+// upvote is optional, if upvote is undefined, corresponding vote should be deleted
+export const CreateVoteQuestionSchema = InsertVoteAnswerSchema.partial({ upvote: true }).pick({
+    upvote: true,
+})
+export type CreateVoteQuestion = z.infer<typeof CreateVoteQuestionSchema>
+
+// upvote is optional, if upvote is undefined, corresponding vote should be deleted
+export const CreateVoteAnswerSchema = InsertVoteAnswerSchema.partial({ upvote: true }).pick({
+    upvote: true,
+})
+export type CreateVoteAnswer = z.infer<typeof CreateVoteAnswerSchema>
+
+export type Vote = boolean | undefined
+export type Rating = number | undefined
+
+export const CreateRatingAnswerSchema = z.object({ rating: z.number().gte(1).lte(5).optional() })
+export type CreateRatingAnswer = z.infer<typeof CreateRatingAnswerSchema>
+
+export const ApproveAnswerRequestSchema = z.object({ isApproved: z.boolean() })
+export type ApproveAnswerRequest = z.infer<typeof ApproveAnswerRequestSchema>

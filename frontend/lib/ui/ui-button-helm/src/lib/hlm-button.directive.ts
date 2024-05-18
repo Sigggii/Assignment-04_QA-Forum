@@ -22,6 +22,8 @@ export const buttonVariants = cva(
                 noob: 'bg-noob text-noob-foreground hover:bg-noob/90', // custom
                 proInverse: 'bg-white text-black hover:bg-white/90', // custom
                 noobInverse: 'bg-black text-white hover:bg-black/90', // custom
+                success: 'bg-success text-white hover:bg-success/90' // custom
+
             },
             size: {
                 default: 'h-10 py-2 px-4',

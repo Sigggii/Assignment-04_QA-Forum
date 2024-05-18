@@ -3,12 +3,30 @@
         <span class="text-lg">{{ comments.length }} Comment(s)</span>
         <div class="mt-3 text-sm">
             @for (comment of comments; track comment) {
-                <div class="">
-                <span class="flex flex-wrap gap-1 items-center">
-                    {{ comment.content }}
-                    <span class="font-bold">·</span>
-                    <app-user-badge [user]="comment.user" />
-            </span>
+                <div>
+                    <span *ngIf="editCommentId !== comment.id" class="flex flex-wrap gap-1 items-center">
+                        {{ comment.content }}
+                        <span class="font-bold">·</span>
+                        <app-user-badge [user]="comment.user" />
+                         <section *ngIf="authService.checkMatchUserId(comment.user.id)"
+                                  class="flex text-sm underline-offset-2 underline hover:cursor-pointer text-gray-400"><button
+                             (click)="handleSetEditComment({id: comment.id, content: comment.content})" size="icon" variant="ghost" hlmBtn
+                         ><hlm-icon name="lucidePencil" size="sm" /></button><button size="icon" variant="ghost"
+                                                                                     (click)="handleOpenDeleteDialog(comment.id)"
+                                                                                     hlmBtn
+                         ><hlm-icon
+                             name="lucideTrash" size="sm" /></button></section>
+                    </span>
+                    <span *ngIf="editCommentId === comment.id" class="flex gap-2">
+                        <textarea (input)="handleEditCommentInput($event)" [value]="editComment"
+                                  placeholder="Edit comment..."
+                                  autosize="true" maxlength="500"
+                                  class="resize-none bg-background w-full pb-1 pt-2 focus:outline-none border-b-2 border-0 rounded-none"
+                                  rows="1">
+                         </textarea>
+                        <button [disabled]="this.editComment.trim() === ''" (click)="handleUpdateComment()" size="sm" hlmBtn>Update</button>
+                        <button size="sm" variant="ghost" (click)="handleCancelEditComment()" hlmBtn>Cancel</button>
+                </span>
                     <hr
                         class="my-2 h-[1px] border-t-0 bg-accent"
                     />
@@ -26,3 +44,13 @@
         <button *ngIf="newComment.trim() !==''" hlmBtn (click)="handleCreateNewComment()" class="mt-2">Comment</button>
     </section>
 </section>
+<hlm-dialog [state]="deleteDialogOpen()" (closed)="deleteDialogOpen.set('closed')">
+    <hlm-dialog-content *brnDialogContent="let ctx">
+        <hlm-dialog-header class="w-[250px]">
+            <h3 hlmDialogTitle>Delete Comment?</h3>
+        </hlm-dialog-header>
+        <hlm-dialog-footer>
+            <button (click)="handleDeleteComment()" hlmBtn variant="destructive">Delete</button>
+        </hlm-dialog-footer>
+    </hlm-dialog-content>
+</hlm-dialog>

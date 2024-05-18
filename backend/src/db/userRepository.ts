@@ -4,6 +4,7 @@ import { user } from './schema'
 import { db } from '../server'
 import { getTableColumns } from 'drizzle-orm'
 import { QueryResultType } from '../utils/typeUtils'
+import { Rating, UUID, Vote } from '../shared/types'
 
 export const insertUser = async (
     createUser: Omit<InsertUser, 'password'>,
@@ -27,4 +28,40 @@ const userByUsernameQuery = (username: string) =>
 export type UserQueryByUsernameResult = QueryResultType<typeof userByUsernameQuery>
 export const queryUserByUsername = async (username: string) => {
     return await userByUsernameQuery(username).execute()
+}
+
+export const getUpvoteForQuestionQuery = async (userId: UUID, questionId: UUID): Promise<Vote> => {
+    return (
+        await db.query.votesQuestion
+            .findFirst({
+                columns: { upvote: true },
+                where: (votesQuestion, { eq, and }) =>
+                    and(eq(votesQuestion.questionId, questionId), eq(votesQuestion.userId, userId)),
+            })
+            .execute()
+    )?.upvote
+}
+
+export const getUpvoteForAnswerQuery = async (userId: UUID, answerId: UUID): Promise<Vote> => {
+    return (
+        await db.query.votesAnswer
+            .findFirst({
+                columns: { upvote: true },
+                where: (votesAnswer, { eq, and }) =>
+                    and(eq(votesAnswer.answerId, answerId), eq(votesAnswer.userId, userId)),
+            })
+            .execute()
+    )?.upvote
+}
+
+export const getRatingForAnswerQuery = async (userId: UUID, answerId: UUID): Promise<Rating> => {
+    return (
+        await db.query.ratingAnswer
+            .findFirst({
+                columns: { rating: true },
+                where: (ratingAnswer, { eq, and }) =>
+                    and(eq(ratingAnswer.answerId, answerId), eq(ratingAnswer.userId, userId)),
+            })
+            .execute()
+    )?.rating
 }

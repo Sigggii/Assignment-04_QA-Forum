@@ -28,6 +28,11 @@ export type CreateQuestionComment = {
     content: string
 }
 
+export type CreateVoteQuestion = { upvote?: boolean | undefined }
+export type CreateVoteAnswer = { upvote?: boolean | undefined }
+
+export type CreateRatingAnswer = { rating: number | undefined }
+
 export type CreateAnswerComment = {
     content: string
 }
@@ -80,11 +85,13 @@ export type Answer = {
     user: User
     createdAt: DateAsString
     content: string
+    approved: boolean
     lastEditedAt: DateAsString | null
     questionId: string
     comments: CommentOnAnswer[]
     score: number
     rating: number
+    ratingsCount: number
 }
 
 export type DetailQuestion = {
@@ -110,3 +117,8 @@ export type JWTPayload = {
     role: 'NOOB' | 'PRO' | 'ADMIN'
     username: string
 }
+
+export type Vote = boolean | undefined
+export type Rating = number | undefined
+
+export type ApproveQuestionRequest = { isApproved: boolean }

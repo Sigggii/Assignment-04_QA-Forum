@@ -6,7 +6,7 @@ import { heroStar } from '@ng-icons/heroicons/outline'
 import { NgClass } from '@angular/common'
 
 /**
- * Returns the rating of a answer (1-5). If -1 is returned, rating was
+ * Returns the rating of a answer (1-5). If undefined is returned, rating was
  * deleted
  */
 @Component({
@@ -18,8 +18,14 @@ import { NgClass } from '@angular/common'
     providers: [provideIcons({ heroStarSolid, heroStar })],
 })
 export class RateAnswerComponent {
-    @Input() currentRating: number = -1
-    @Output() rate: EventEmitter<number> = new EventEmitter<number>()
+    @Input() currentRating: number | undefined
+    @Output() rate: EventEmitter<{
+        currentRating: number | undefined
+        previousRating: number | undefined
+    }> = new EventEmitter<{
+        currentRating: number | undefined
+        previousRating: number | undefined
+    }>()
     starIndexes = [1, 2, 3, 4, 5]
     hoverStar = -1
 
@@ -32,9 +38,13 @@ export class RateAnswerComponent {
     }
 
     handleSetRating = (value: number) => {
-        const newRating = value === this.currentRating ? -1 : value
+        const newRating = value === this.currentRating ? undefined : value
+        const previousRating = this.currentRating
         this.currentRating = newRating
-        this.rate.emit(newRating)
+        this.rate.emit({
+            currentRating: newRating,
+            previousRating: previousRating,
+        })
     }
     protected readonly heroStarSolid = heroStarSolid
     protected readonly heroStar = heroStar
