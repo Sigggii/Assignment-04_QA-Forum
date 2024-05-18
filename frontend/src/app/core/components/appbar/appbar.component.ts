@@ -3,11 +3,10 @@ import { provideIcons } from '@ng-icons/core'
 import {
     lucideMenu,
     lucideBell,
-    lucideSearch,
     lucideLogOut,
-    lucideSunMoon,
     lucideSun,
     lucideMoon,
+    lucideSearch,
 } from '@ng-icons/lucide'
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm'
@@ -31,6 +30,7 @@ import {
 } from '@spartan-ng/ui-menu-helm'
 import { BrnMenuTriggerDirective } from '@spartan-ng/ui-menu-brain'
 import { ThemeService } from '../../services/theme.service'
+import { SearchComponent } from '../../../shared/components/search/search.component'
 
 @Component({
     selector: 'app-appbar',
@@ -52,6 +52,7 @@ import { ThemeService } from '../../services/theme.service'
         HlmMenuItemDirective,
         HlmMenuItemIconDirective,
         BrnMenuTriggerDirective,
+        SearchComponent,
     ],
     templateUrl: './appbar.component.html',
     styleUrl: './appbar.component.css',
@@ -59,11 +60,10 @@ import { ThemeService } from '../../services/theme.service'
         provideIcons({
             lucideMenu,
             lucideBell,
-            lucideSearch,
             lucideLogOut,
-            lucideSunMoon,
             lucideSun,
             lucideMoon,
+            lucideSearch,
         }),
     ],
 })

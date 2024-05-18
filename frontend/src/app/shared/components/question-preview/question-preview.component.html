@@ -1,4 +1,4 @@
-<article class="flex w-full flex-col gap-1 rounded-lg border p-3">
+<article class="flex w-full flex-col gap-1.5 rounded-lg border p-3">
     @if (question.tags.length > 0) {
         <section class="flex flex-wrap gap-1">
             @for (tag of question.tags; track $index) {
@@ -6,7 +6,7 @@
             }
         </section>
     }
-    <a routerLink="/questions/{{question.id}}">
+    <a routerLink="/questions/{{ question.id }}">
         <h2 class="cursor-pointer text-xl font-semibold hover:underline">
             {{ question.title }}
         </h2>
@@ -29,8 +29,8 @@
             <app-user-badge [user]="question.user" />
             <span class="font-bold">·</span>
             <span class="text-sm text-foreground/80">{{
-                    formatDateXTimeAgo(question.createdAt)
-                }}</span>
+                formatDateXTimeAgo(question.createdAt)
+            }}</span>
         </div>
     </section>
 </article>

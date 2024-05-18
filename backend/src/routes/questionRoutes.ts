@@ -16,6 +16,7 @@ import {
     CreateVoteAnswerSchema,
     CreateVoteQuestion,
     CreateVoteQuestionSchema,
+    GetQuestionsParamsSchema,
     UpdateQuestionRequest,
     UpdateQuestionRequestSchema,
     UUID,
@@ -42,14 +43,9 @@ import {
     updateQuestionComment,
 } from '../controller/questionController'
 import { z } from 'zod'
-import { CreateQuestion } from '../db/types'
 import { AuthorizedByUserIdGuard } from './authHandler'
-import {
-    approveAnswerQuery,
-    getAnswerByIdQuery,
-    getAnswerCommentByIdQuery,
-} from '../db/answerRepository'
-import { getQuestionCommentByIdQuery, updateQuestionCommentQuery } from '../db/questionRepository'
+import { getAnswerByIdQuery, getAnswerCommentByIdQuery } from '../db/answerRepository'
+import { getQuestionCommentByIdQuery } from '../db/questionRepository'
 
 export const questionRoutes = async (fastify: BaseFastifyInstance) => {
     fastify.post(
@@ -119,9 +115,11 @@ export const questionRoutes = async (fastify: BaseFastifyInstance) => {
         },
     )
 
-    fastify.get('/', async () => {
+    fastify.get('/', { schema: { querystring: GetQuestionsParamsSchema } }, async (req) => {
         try {
-            return await getQuestions()
+            const query = req.query.query
+
+            return await getQuestions(query)
         } catch (err) {
             console.log(err)
         }

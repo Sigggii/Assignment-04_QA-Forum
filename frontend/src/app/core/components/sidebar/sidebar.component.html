@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-4">
     <a
         class="flex w-full items-center gap-2 rounded-md p-2 text-xl font-semibold hover:underline"
-        routerLink="/"
+        [routerLink]="['']"
         routerLinkActive="bg-accent"
         ariaCurrentWhenActive="page"
         [routerLinkActiveOptions]="{ exact: true }"
@@ -12,10 +12,15 @@
     </a>
     <a
         class="flex w-full items-center gap-2 rounded-md p-2 text-xl font-semibold hover:underline"
-        routerLink="/questions"
+        [routerLink]="['/questions']"
         routerLinkActive="bg-accent"
         ariaCurrentWhenActive="page"
-        [routerLinkActiveOptions]="{ exact: true }"
+        [routerLinkActiveOptions]="{
+            queryParams: 'ignored',
+            matrixParams: 'ignored',
+            paths: 'exact',
+            fragment: 'exact'
+        }"
         (click)="handleClick('/questions')"
     >
         <hlm-icon name="lucideMessageCircleQuestion" />
@@ -26,7 +31,7 @@
         <span class="h-[1px] w-full bg-accent"></span>
         <a
             class="flex w-full items-center gap-2 rounded-md p-2 text-xl font-semibold hover:underline"
-            routerLink="/questions/me"
+            [routerLink]="['/questions/me']"
             routerLinkActive="bg-accent"
             ariaCurrentWhenActive="page"
             [routerLinkActiveOptions]="{ exact: true }"

@@ -48,6 +48,9 @@
       ],
       "@spartan-ng/ui-dialog-helm": [
         "./lib/ui/ui-dialog-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-spinner-helm": [
+        "./lib/ui/ui-spinner-helm/src/index.ts"
       ]
     }
   },

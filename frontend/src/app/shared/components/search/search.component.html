@@ -1,0 +1,17 @@
+<form
+    class="flex items-center space-x-1.5"
+    (submit)="handleSearchSubmit($event)"
+>
+    <input
+        aria-label="Search"
+        class="flex-1"
+        hlmInput
+        type="text"
+        placeholder="Search..."
+        (change)="handleSearchChange($event)"
+        [value]="searchService.query()"
+    />
+    <button hlmBtn variant="outline" size="icon" type="submit">
+        <hlm-icon name="lucideSearch" />
+    </button>
+</form>

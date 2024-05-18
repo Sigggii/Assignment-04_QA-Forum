@@ -99,13 +99,18 @@ export class BackendService {
             },
         }))
 
-    fetchQuestions = () =>
+    fetchQuestions = (query: Signal<string>) =>
         injectQuery(() => ({
-            queryKey: ['questions'],
+            queryKey: ['questions', `questions-${query()}`],
             queryFn: () =>
                 lastValueFrom(
                     this.http.get<QuestionPreviewData[]>(
-                        `${environment.apiUrl}questions`
+                        `${environment.apiUrl}questions`,
+                        {
+                            params: {
+                                query: query(),
+                            },
+                        }
                     )
                 ),
         }))

@@ -1,13 +1,23 @@
-<div class="flex w-full items-center justify-between">
+<section class="flex w-full items-center justify-between">
     <h1 class="text-3xl font-semibold">All Questions</h1>
 
     <button (click)="this.navigationService.openAskQuestion()" hlmBtn>
         Ask Question
     </button>
-</div>
+</section>
 
-<div class="mt-8 flex flex-col gap-4">
-    @for (question of questionQuery.data() || []; track question.id) {
-        <app-question-preview [question]="question" />
+<section class="mt-4">
+    <app-search class="md:hidden" />
+</section>
+
+<section class="mt-8 flex flex-col gap-4">
+    @if (questionQuery.status() === 'pending') {
+        <hlm-spinner class="mx-auto" />
+    } @else {
+        @for (question of questions() ?? []; track question.id) {
+            <app-question-preview [question]="question" />
+        } @empty {
+            <p>No questions found</p>
+        }
     }
-</div>
+</section>
