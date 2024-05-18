@@ -36,6 +36,7 @@
     "clsx": "^1.2.1",
     "ngx-autosize": "^2.0.4",
     "ngx-quill": "^25.3.2",
+    "ngx-sonner": "^0.3.4",
     "quill": "^2.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

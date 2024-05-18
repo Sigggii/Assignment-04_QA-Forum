@@ -14,6 +14,7 @@ import auth from '@fastify/auth'
 import { JWTPayload, Role } from './shared/types'
 import { authenticationHandler, authorizationHandler } from './routes/authHandler'
 import { userRoutes } from './routes/userRoutes'
+import { errorHandler } from './routes/errorHandling/errorHandler'
 
 declare module 'fastify' {
     interface FastifyRequest {
@@ -55,6 +56,7 @@ const queryClient = postgres(connectionString)
 export const db = drizzle(queryClient, { schema })
 
 export const fastify = Fastify({ logger: true }).withTypeProvider<ZodTypeProvider>()
+fastify.setErrorHandler(errorHandler)
 fastify.register(cookie, {
     secret: getConfig().COOKIE_SECRET,
 })

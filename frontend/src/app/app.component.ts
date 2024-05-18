@@ -8,6 +8,8 @@ import { SidebarComponent } from './core/components/sidebar/sidebar.component'
 import { AuthService } from './core/services/auth.service'
 import { ThemeService } from './core/services/theme.service'
 import { SearchService } from './core/services/search.service'
+import { HlmToasterComponent } from '@spartan-ng/ui-sonner-helm'
+import { ErrorAlertComponent } from './core/components/error-alert/error-alert.component'
 
 @Component({
     selector: 'app-root',
@@ -20,6 +22,8 @@ import { SearchService } from './core/services/search.service'
         AppbarComponent,
         NgIf,
         SidebarComponent,
+        HlmToasterComponent,
+        ErrorAlertComponent,
     ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',

@@ -1,6 +1,7 @@
 import { BaseFastifyInstance } from '../server'
-import { LoginSchema } from '../shared/types'
+import { LoginSchema, LoginUser } from '../shared/types'
 import { loginUser, registerUser } from '../controller/authController'
+import { ResponseError } from './errorHandling/ResponseError'
 
 export const authRoutes = async (fastify: BaseFastifyInstance) => {
     fastify.post(
@@ -43,25 +44,27 @@ export const authRoutes = async (fastify: BaseFastifyInstance) => {
         },
     )
 
-    fastify.post(
-        '/login',
-        {
-            schema: {
-                body: LoginSchema,
-            },
-        },
-        async (req, resp) => {
-            const user = req.body
-            const jwt = await loginUser(user)
-            resp.setCookie('jwt', jwt, {
-                //Expires in 7 days
-                expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-                httpOnly: true,
-                sameSite: 'none',
-                path: '/',
+    fastify.post('/login', async (req, resp) => {
+        let user: LoginUser
+        try {
+            user = LoginSchema.parse(req.body)
+        } catch (err) {
+            throw new ResponseError({
+                status: 400,
+                displayMessage: 'No user for this credentials',
+                errors: [],
             })
-        },
-    )
+        }
+
+        const jwt = await loginUser(user)
+        resp.setCookie('jwt', jwt, {
+            //Expires in 7 days
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            httpOnly: true,
+            sameSite: 'none',
+            path: '/',
+        })
+    })
 
     fastify.post('/logout', async (req, resp) => {
         resp.clearCookie('jwt')

@@ -2,6 +2,7 @@ import { getConfig } from '../system/EnvManager'
 import jwt from 'jsonwebtoken'
 import { JWTPayload } from '../shared/types'
 import { FastifyReply, FastifyRequest } from 'fastify'
+import { ResponseError } from './errorHandling/ResponseError'
 
 export const authenticationHandler = (
     req: FastifyRequest,
@@ -34,8 +35,8 @@ export const authorizationHandler = (
     ) {
         return done()
     }
-    //TODO: use custom error with 401 code
-    done(new Error('Unauthorized'))
+
+    throw new ResponseError({ status: 401, displayMessage: 'Not Authenticated', errors: [] })
 }
 
 export const AuthorizedByUserIdGuard = (
@@ -48,4 +49,5 @@ export const AuthorizedByUserIdGuard = (
     if (jwtPayload.id !== toCheckId) {
         throw new Error('Unauthorized')
     }
+    new ResponseError({ status: 403, displayMessage: 'Unauthorized', errors: [] })
 }
