@@ -6,15 +6,19 @@
     </button>
 </section>
 
-<section class="mt-4">
+<section class="mt-6">
     <app-search class="md:hidden" />
+</section>
+
+<section class="mt-3 md:mt-6">
+    <app-filter />
 </section>
 
 <section class="mt-8 flex flex-col gap-4">
     @if (questionQuery.status() === 'pending') {
         <hlm-spinner class="mx-auto" />
     } @else {
-        @for (question of questions() ?? []; track question.id) {
+        @for (question of questions(); track question.id) {
             <app-question-preview [question]="question" />
         } @empty {
             <p>No questions found</p>

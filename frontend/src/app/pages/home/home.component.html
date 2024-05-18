@@ -16,7 +16,7 @@
     @if (questionQuery.status() === 'pending') {
         <hlm-spinner class="mx-auto" />
     } @else {
-        @for (question of questions() ?? []; track question.id) {
+        @for (question of questions(); track question.id) {
             <app-question-preview [question]="question" />
         } @empty {
             <p>No questions found</p>

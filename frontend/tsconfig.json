@@ -51,6 +51,18 @@
       ],
       "@spartan-ng/ui-spinner-helm": [
         "./lib/ui/ui-spinner-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-command-helm": [
+        "./lib/ui/ui-command-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-popover-helm": [
+        "./lib/ui/ui-popover-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-toggle-helm": [
+        "./lib/ui/ui-toggle-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-radiogroup-helm": [
+        "./lib/ui/ui-radiogroup-helm/src/index.ts"
       ]
     }
   },
