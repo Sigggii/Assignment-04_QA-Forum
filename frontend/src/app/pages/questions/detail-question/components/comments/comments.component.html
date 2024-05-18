@@ -19,16 +19,18 @@
                              </section>
                         </span>
                     </span>
-                    <span *ngIf="editCommentId === comment.id" class="flex gap-2">
+                    <span *ngIf="editCommentId === comment.id" class="flex max-md:flex-col gap-2">
                         <textarea (input)="handleEditCommentInput($event)" [value]="editComment"
                                   placeholder="Edit comment..."
                                   autosize="true" maxlength="500"
                                   class="resize-none bg-background w-full pb-1 pt-2 focus:outline-none border-b-2 border-0 rounded-none"
                                   rows="1">
                          </textarea>
-                        <button [disabled]="this.editComment.trim() === ''" (click)="handleUpdateComment()" size="sm"
+                        <span class="flex">
+                            <button [disabled]="this.editComment.trim() === ''" (click)="handleUpdateComment()" size="sm"
                                 hlmBtn>Update</button>
-                        <button size="sm" variant="ghost" (click)="handleCancelEditComment()" hlmBtn>Cancel</button>
+                            <button size="sm" variant="ghost" (click)="handleCancelEditComment()" hlmBtn>Cancel</button>
+                        </span>
                 </span>
                     <hr
                         class="my-2 h-[1px] border-t-0 bg-accent"
