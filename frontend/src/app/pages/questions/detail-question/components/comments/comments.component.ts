@@ -1,5 +1,5 @@
 import { Component, inject, Input, signal } from '@angular/core'
-import { NgIf } from '@angular/common'
+import { NgClass, NgIf } from '@angular/common'
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm'
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm'
 import { FormsModule } from '@angular/forms'
@@ -14,7 +14,7 @@ import { AuthService } from '../../../../../core/services/auth.service'
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
 import { RouterLink } from '@angular/router'
 import { provideIcons } from '@ng-icons/core'
-import { lucidePencil, lucideTrash } from '@ng-icons/lucide'
+import { lucidePencil, lucideTrash, lucideUser } from '@ng-icons/lucide'
 import { BrnDialogContentDirective } from '@spartan-ng/ui-dialog-brain'
 import {
     HlmDialogComponent,
@@ -44,8 +44,9 @@ export type CommentSectionType = 'QUESTION' | 'ANSWER'
         HlmDialogFooterComponent,
         HlmDialogHeaderComponent,
         HlmDialogTitleDirective,
+        NgClass,
     ],
-    providers: [provideIcons({ lucidePencil, lucideTrash })],
+    providers: [provideIcons({ lucidePencil, lucideTrash, lucideUser })],
     templateUrl: './comments.component.html',
     styleUrl: './comments.component.css',
 })

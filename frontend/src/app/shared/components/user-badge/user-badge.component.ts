@@ -16,4 +16,5 @@ import { User } from '../../types/api-types'
 })
 export class UserBadgeComponent {
     @Input({ required: true }) user!: User
+    @Input() variant: 'filled' | 'ghost' = 'filled'
 }
