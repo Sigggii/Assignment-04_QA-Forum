@@ -69,4 +69,5 @@ export class QuillJsComponent implements ControlValueAccessor {
         this.onChange(this.value)
         this.onTouched()
     }
+    protected readonly initialModules = initialModules
 }
