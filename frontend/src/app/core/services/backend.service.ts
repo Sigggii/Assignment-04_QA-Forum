@@ -492,7 +492,7 @@ export class BackendService {
         answerId: Signal<string>
     ) =>
         injectQuery<Rating>(() => ({
-            queryKey: ['userRatingAnswer', userId, answerId],
+            queryKey: ['userRatingAnswer', userId, answerId()],
             enabled:
                 answerId().trim() !== '' && !!userId && userId.trim() !== '',
             queryFn: async () =>

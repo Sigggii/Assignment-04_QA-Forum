@@ -91,7 +91,6 @@ export const getQuestions = async (): Promise<QuestionPreviewData[]> => {
     })
 }
 
-//ToDo check for user who makes request, if he upvoted the question or any answer
 export const getQuestionById = async (id: UUID): Promise<DetailQuestion> => {
     const question = await queryQuestionById(id)
 
@@ -109,6 +108,8 @@ export const getQuestionById = async (id: UUID): Promise<DetailQuestion> => {
         }
     })
 
+    const sortedAnswers = answers.sort((answer1, answer2) => answer2.score - answer1.score)
+
     return {
         id: question.id,
         authorId: question.authorId,
@@ -121,7 +122,7 @@ export const getQuestionById = async (id: UUID): Promise<DetailQuestion> => {
         tags: question.tags.map((tag) => tag.tag),
         score: questionScore,
         comments: question.comments,
-        answers: answers,
+        answers: sortedAnswers,
     }
 }
 
