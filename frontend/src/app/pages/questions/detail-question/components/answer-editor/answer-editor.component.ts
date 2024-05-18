@@ -56,8 +56,6 @@ export class AnswerEditorComponent implements OnChanges {
             [{ header: [1, 2, 3, 4, 5, 6, false] }],
             ['bold', 'italic', 'underline', 'strike'], // toggled buttons
             [{ list: 'ordered' }, { list: 'bullet' }],
-            [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-            [{ align: [] }],
             [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
             ['blockquote', 'code-block', 'link', 'image'], // link and image, video
         ],
