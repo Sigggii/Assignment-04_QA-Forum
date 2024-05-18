@@ -6,7 +6,7 @@ import { heroStar } from '@ng-icons/heroicons/outline'
 import { NgClass } from '@angular/common'
 
 /**
- * Returns the rating of a answer (1-5). If -1 is returned, rating was
+ * Returns the rating of a answer (1-5). If undefined is returned, rating was
  * deleted
  */
 @Component({

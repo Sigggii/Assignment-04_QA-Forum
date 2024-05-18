@@ -31,7 +31,7 @@ export class ScorePostComponent {
             if (component === 'UPVOTE') {
                 scoreChange = this.upvoted
                     ? -1
-                    : this.upvoted === undefined
+                    : this.upvoted === undefined || this.upvoted === null
                       ? +1
                       : +2
 
@@ -39,7 +39,7 @@ export class ScorePostComponent {
             } else {
                 scoreChange = this.upvoted
                     ? -2
-                    : this.upvoted === undefined
+                    : this.upvoted === undefined || this.upvoted === null
                       ? -1
                       : +1
 

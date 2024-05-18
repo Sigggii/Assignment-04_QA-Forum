@@ -1,4 +1,5 @@
 import {
+    booleanAttribute,
     Component,
     EventEmitter,
     inject,
@@ -32,6 +33,7 @@ import {
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
 import { provideIcons } from '@ng-icons/core'
 import { AnswerRatingBadgeComponent } from '../../../../../shared/components/answer-rating-badge/answer-rating-badge.component'
+import { heroStar } from '@ng-icons/heroicons/outline'
 
 @Component({
     selector: 'app-answer',
@@ -55,7 +57,7 @@ import { AnswerRatingBadgeComponent } from '../../../../../shared/components/ans
         HlmIconComponent,
         AnswerRatingBadgeComponent,
     ],
-    providers: [provideIcons({ lucidePencil, lucideTrash })],
+    providers: [provideIcons({ lucidePencil, lucideTrash, heroStar })],
     templateUrl: './answer.component.html',
     styleUrl: './answer.component.css',
 })
@@ -111,4 +113,5 @@ export class AnswerComponent implements OnChanges {
         this.deleteDialogOpen.set('closed')
     }
     protected readonly formatDateXTimeAgo = formatDateXTimeAgo
+    protected readonly booleanAttribute = booleanAttribute
 }

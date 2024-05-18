@@ -4,10 +4,11 @@
         'bg-success text-success-foreground': rating >= 4,
         'bg-accent text-accent-foreground': rating >= 2 && rating < 4,
         'bg-warning text-warning-foreground': rating >= 1 && rating < 2,
-        'bg-destructive text-destructive-foreground': rating < 1
+        'bg-destructive text-destructive-foreground': rating < 1 && rating >= 0,
+        'bg-white text-foregrounds border-foreground border': rating < 0
     }"
 >
-    <span class="mr-0.5 font-semibold">Top Answer:</span
-    >{{ formatNumber(Math.round(rating * 10) / 10, 'en-UK', '1.0-1') }}
+    <span *ngIf="showBestAnswer" class="mr-0.5 font-semibold">Top Answer:</span
+    >{{ handleFormatAnswerRating(rating) }}
     <hlm-icon name="heroStar" size="sm" />
 </div>
