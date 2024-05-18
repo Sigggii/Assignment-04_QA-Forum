@@ -9,5 +9,5 @@
 /*Style badges in case of errors set by FormControl (prevent text and border from getting red*/
 :host.ng-invalid.ng-touched span[hlmBadge] {
     border-color: hsl(var(--primary));;
-    color: hsl(var(--foreground));
+    color: white;
 }
