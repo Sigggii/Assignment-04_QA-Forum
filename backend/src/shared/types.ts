@@ -104,6 +104,10 @@ export type DetailQuestion = {
     answers: Answer[]
 }
 
+export const GetQuestionsParamsSchema = z.object({
+    query: z.string(),
+})
+
 export const CreateAnswerRequestSchema = InsertAnswerSchema.pick({
     content: true,
 })

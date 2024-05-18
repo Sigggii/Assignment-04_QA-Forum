@@ -51,8 +51,10 @@ export const deleteQuestion = async (questionId: string) => {
     await deleteQuestionQuery(questionId)
 }
 
-export const getQuestions = async (): Promise<QuestionPreviewData[]> => {
-    const data = await queryQuestions()
+export const getQuestions = async (query: string): Promise<QuestionPreviewData[]> => {
+    const data = await queryQuestions(query)
+
+    console.log(query, data)
 
     return data.map((question) => {
         const topAnswerRating = calculateTopAnswerRating(question.answers)

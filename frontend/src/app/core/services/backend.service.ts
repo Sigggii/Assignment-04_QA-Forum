@@ -1,4 +1,4 @@
-import { inject, Injectable, InputSignal } from '@angular/core'
+import { inject, Injectable, InputSignal, Signal } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { environment } from '../../../environments/environment'
 
@@ -93,13 +93,18 @@ export class BackendService {
             },
         }))
 
-    fetchQuestions = () =>
+    fetchQuestions = (query: Signal<string>) =>
         injectQuery(() => ({
-            queryKey: ['questions'],
+            queryKey: ['questions', `questions-${query()}`],
             queryFn: () =>
                 lastValueFrom(
                     this.http.get<QuestionPreviewData[]>(
-                        `${environment.apiUrl}questions`
+                        `${environment.apiUrl}questions`,
+                        {
+                            params: {
+                                query: query(),
+                            },
+                        }
                     )
                 ),
         }))

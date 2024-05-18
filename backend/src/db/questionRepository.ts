@@ -1,5 +1,5 @@
-import { commentQuestion, question, question_tag, tag } from './schema'
-import { eq, getTableColumns } from 'drizzle-orm'
+import { answer, commentQuestion, question, question_tag, tag } from './schema'
+import { eq, getTableColumns, sql } from 'drizzle-orm'
 import { db } from '../server'
 import { CreateQuestion, InsertQuestionComment, Question, QuestionTag } from './types'
 import { QueryResultType } from '../utils/typeUtils'
@@ -80,8 +80,11 @@ export const deleteQuestionQuery = async (questionId: UUID) => {
     await db.delete(question).where(eq(question.id, questionId)).execute()
 }
 
-const questionPreviewQuery = () =>
+const questionsPreviewQuery = (query: string) =>
     db.query.question.findMany({
+        where: query
+            ? sql`to_tsvector('english', ${question.title} || ' ' || ${question.content}) @@ plainto_tsquery('english', ${query})`
+            : undefined,
         with: {
             user: {
                 columns: {
@@ -101,9 +104,9 @@ const questionPreviewQuery = () =>
             },
         },
     })
-export type QuestionPreviewResult = QueryResultType<typeof questionPreviewQuery>[number]
-export const queryQuestions = async () => {
-    return await questionPreviewQuery().execute()
+export type QuestionPreviewResult = QueryResultType<typeof questionsPreviewQuery>[number]
+export const queryQuestions = async (query: string) => {
+    return await questionsPreviewQuery(query).execute()
 }
 
 const questionQueryPartial = (id: UUID) =>

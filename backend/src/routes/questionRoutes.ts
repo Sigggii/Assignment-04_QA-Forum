@@ -8,6 +8,7 @@ import {
     CreateQuestionCommentRequestSchema,
     CreateQuestionRequest,
     CreateQuestionRequestSchema,
+    GetQuestionsParamsSchema,
     UpdateQuestionRequest,
     UpdateQuestionRequestSchema,
     UUID,
@@ -26,7 +27,6 @@ import {
     updateQuestion,
 } from '../controller/questionController'
 import { z } from 'zod'
-import { CreateQuestion } from '../db/types'
 import { AuthorizedByUserIdGuard } from './authHandler'
 import { getAnswerByIdQuery } from '../db/answerRepository'
 
@@ -98,9 +98,11 @@ export const questionRoutes = async (fastify: BaseFastifyInstance) => {
         },
     )
 
-    fastify.get('/', async () => {
+    fastify.get('/', { schema: { querystring: GetQuestionsParamsSchema } }, async (req) => {
         try {
-            return await getQuestions()
+            const query = req.query.query
+
+            return await getQuestions(query)
         } catch (err) {
             console.log(err)
         }

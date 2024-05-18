@@ -11,3 +11,15 @@
         </button>
     </div>
 </div>
+
+<section class="mt-8 flex flex-col gap-4">
+    @if (questionQuery.status() === 'pending') {
+        <hlm-spinner class="mx-auto" />
+    } @else {
+        @for (question of questions() ?? []; track question.id) {
+            <app-question-preview [question]="question" />
+        } @empty {
+            <p>No questions found</p>
+        }
+    }
+</section>
