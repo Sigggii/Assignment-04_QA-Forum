@@ -1,9 +1,9 @@
 <div
-    class="flex cursor-pointer items-center gap-1 rounded-full py-[1px] pl-2 pr-2.5 text-sm font-semibold"
+    class="flex items-center gap-1 rounded-full py-[1px] pl-2 pr-2.5 text-sm font-semibold"
     [ngClass]="variant === 'filled' ?
         user.role === 'NOOB' ?
-            'border-noob bg-noob text-noob-foreground hover:bg-noob/80'
-            :'border-pro bg-pro text-pro-foreground hover:bg-pro/80'
+            'border-noob bg-noob text-noob-foreground'
+            :'border-pro bg-pro text-pro-foreground'
         : user.role === 'NOOB' ?
             'text-noob'
             :'text-pro'"
