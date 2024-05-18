@@ -5,11 +5,25 @@ import { db } from '../server'
 import { getTableColumns } from 'drizzle-orm'
 import { QueryResultType } from '../utils/typeUtils'
 import { Rating, UUID, Vote } from '../shared/types'
+import { ResponseError } from '../routes/errorHandling/ResponseError'
 
 export const insertUser = async (
     createUser: Omit<InsertUser, 'password'>,
     password: InsertUser['password'],
 ): Promise<User> => {
+    //check if username already exists
+    const userAlreadyExists = !!(await db.query.user.findFirst({
+        where: (user, { eq }) => eq(user.username, createUser.username),
+    }))
+
+    if (userAlreadyExists) {
+        throw new ResponseError({
+            status: 400,
+            displayMessage: 'Username already exists',
+            errors: [],
+        })
+    }
+
     const saltRounds = 10
 
     const passwordHash = await bcrypt.hash(password, saltRounds)

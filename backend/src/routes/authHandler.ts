@@ -47,7 +47,7 @@ export const AuthorizedByUserIdGuard = (
     //if admin allowed and user admin, allow
     if (isAdminAllowed && jwtPayload.role === 'ADMIN') return
     if (jwtPayload.id !== toCheckId) {
-        throw new Error('Unauthorized')
+        throw new ResponseError({ status: 401, displayMessage: 'Unauthorized', errors: [] })
     }
     new ResponseError({ status: 403, displayMessage: 'Unauthorized', errors: [] })
 }
