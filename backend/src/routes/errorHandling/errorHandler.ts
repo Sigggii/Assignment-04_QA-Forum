@@ -10,6 +10,12 @@ export type ErrorResponse = {
     errors: any[]
 }
 
+/**
+ * Handles errors and sends a response to the client to make error easy parsable in frontend.
+ * @param error
+ * @param request
+ * @param reply
+ */
 export const errorHandler = (error: Error, request: FastifyRequest, reply: FastifyReply) => {
     let ErrorResponse: ErrorResponse = {
         status: 500,

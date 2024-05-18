@@ -16,6 +16,7 @@ import { authenticationHandler, authorizationHandler } from './routes/authHandle
 import { userRoutes } from './routes/userRoutes'
 import { errorHandler } from './routes/errorHandling/errorHandler'
 
+// Add custom fields to Fastify types
 declare module 'fastify' {
     interface FastifyRequest {
         authUser: JWTPayload | undefined
@@ -55,8 +56,13 @@ migrate(dbMigration, { migrationsFolder: 'drizzle' })
 const queryClient = postgres(connectionString)
 export const db = drizzle(queryClient, { schema })
 
+// Create Fastify instance
 export const fastify = Fastify({ logger: true }).withTypeProvider<ZodTypeProvider>()
+
+//set Custom Error Handler
 fastify.setErrorHandler(errorHandler)
+
+// Register plugins
 fastify.register(cookie, {
     secret: getConfig().COOKIE_SECRET,
 })
@@ -77,6 +83,7 @@ fastify.setSerializerCompiler(serializerCompiler)
 
 export type BaseFastifyInstance = typeof fastify
 
+// Register routes
 const routes = async (fastify: BaseFastifyInstance) => {
     fastify.register(authRoutes, { prefix: 'auth' })
     fastify.register(userRoutes, { prefix: 'users' })
@@ -86,6 +93,7 @@ const routes = async (fastify: BaseFastifyInstance) => {
     })
 }
 
+// Set Base route
 fastify.register(routes, { prefix: '/api' })
 const start = async () => {
     try {

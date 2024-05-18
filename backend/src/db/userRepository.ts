@@ -7,6 +7,12 @@ import { QueryResultType } from '../utils/typeUtils'
 import { Rating, UUID, Vote } from '../shared/types'
 import { ResponseError } from '../routes/errorHandling/ResponseError'
 
+/**
+ * Insert User
+ *
+ * @param createUser data for creating a user
+ * @param password password for the user
+ */
 export const insertUser = async (
     createUser: Omit<InsertUser, 'password'>,
     password: InsertUser['password'],
@@ -40,10 +46,22 @@ const userByUsernameQuery = (username: string) =>
     db.query.user.findFirst({ where: (user, { eq }) => eq(user.username, username) })
 
 export type UserQueryByUsernameResult = QueryResultType<typeof userByUsernameQuery>
+
+/**
+ *  get User By username
+ *
+ * @param username username of the user to get
+ */
 export const queryUserByUsername = async (username: string) => {
     return await userByUsernameQuery(username).execute()
 }
 
+/**
+ * Get Upvote for a question
+ *
+ * @param userId id of the user to get vote for
+ * @param questionId id of the question to get vote for
+ */
 export const getUpvoteForQuestionQuery = async (userId: UUID, questionId: UUID): Promise<Vote> => {
     return (
         await db.query.votesQuestion
@@ -56,6 +74,12 @@ export const getUpvoteForQuestionQuery = async (userId: UUID, questionId: UUID):
     )?.upvote
 }
 
+/**
+ * Get Upvote for a Answer
+ *
+ * @param userId id of the user to get upvote for
+ * @param answerId id of the question to get upvote for
+ */
 export const getUpvoteForAnswerQuery = async (userId: UUID, answerId: UUID): Promise<Vote> => {
     return (
         await db.query.votesAnswer
@@ -68,6 +92,12 @@ export const getUpvoteForAnswerQuery = async (userId: UUID, answerId: UUID): Pro
     )?.upvote
 }
 
+/**
+ * Get Rating for a Answer
+ *
+ * @param userId  userId of user to get rating for
+ * @param answerId answerId of answer to get rating for
+ */
 export const getRatingForAnswerQuery = async (userId: UUID, answerId: UUID): Promise<Rating> => {
     return (
         await db.query.ratingAnswer

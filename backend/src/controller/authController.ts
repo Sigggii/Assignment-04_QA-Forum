@@ -4,6 +4,7 @@ import { getConfig } from '../system/EnvManager'
 import jwt from 'jsonwebtoken'
 import { JWTPayload, LoginUser } from '../shared/types'
 import bcrypt from 'bcrypt'
+import { ResponseError } from '../routes/errorHandling/ResponseError'
 
 export const registerUser = async (user: InsertUser): Promise<string> => {
     const registeredUser = await insertUser(user, user.password)
@@ -20,10 +21,20 @@ export const registerUser = async (user: InsertUser): Promise<string> => {
 
 export const loginUser = async (user: LoginUser): Promise<string> => {
     const compareUser = await queryUserByUsername(user.username)
-    if (!compareUser) throw new Error('Username or password wrong')
+    if (!compareUser)
+        throw new ResponseError({
+            status: 401,
+            displayMessage: 'Username or password wrong',
+            errors: [],
+        })
 
     const passwordMatch = await bcrypt.compare(user.password, compareUser.password)
-    if (!passwordMatch) throw new Error('Username or password wrong')
+    if (!passwordMatch)
+        throw new ResponseError({
+            status: 401,
+            displayMessage: 'Username or password wrong',
+            errors: [],
+        })
 
     const jwtSecret = getConfig().JWT_SECRET
 

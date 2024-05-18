@@ -11,6 +11,11 @@ import {
 import { QueryResultType } from '../utils/typeUtils'
 import { UUID } from '../shared/types'
 
+/**
+ * Create Question Query
+ *
+ * @param createQuestion data for creating a question
+ */
 export const createQuestionQuery = async (createQuestion: CreateQuestion) => {
     const questionColumns = getTableColumns(question)
     return await db.transaction(async (tx) => {
@@ -44,6 +49,12 @@ export const createQuestionQuery = async (createQuestion: CreateQuestion) => {
     })
 }
 
+/**
+ * Update Question Query
+ *
+ * @param updateQuestion data for updating a question
+ * @param questionId id of the question to update
+ */
 export const updateQuestionQuery = async (updateQuestion: CreateQuestion, questionId: UUID) => {
     await db.transaction(async (tx) => {
         await tx
@@ -81,6 +92,10 @@ export const updateQuestionQuery = async (updateQuestion: CreateQuestion, questi
     })
 }
 
+/**
+ * Delete Question Query *
+ * @param questionId id of the question to delete
+ */
 export const deleteQuestionQuery = async (questionId: UUID) => {
     await db.delete(question).where(eq(question.id, questionId)).execute()
 }
@@ -109,7 +124,13 @@ const questionsPreviewQuery = (query: string) =>
             },
         },
     })
+
 export type QuestionPreviewResult = QueryResultType<typeof questionsPreviewQuery>[number]
+
+/**
+ * Query Questions by search query
+ * @param query search query
+ */
 export const queryQuestions = async (query: string) => {
     return await questionsPreviewQuery(query).execute()
 }
@@ -169,6 +190,11 @@ type AnswerQueryResultPartial = QueryResultType<typeof answerQueryPartial>
 
 export type QuestionQueryResult = QuestionQueryResultPartial & { answers: AnswerQueryResultPartial }
 
+/**
+ * Query Question by Id
+ *
+ * @param id id of the question to query
+ */
 export const queryQuestionById = async (id: UUID): Promise<QuestionQueryResult> => {
     const question = await questionQueryPartial(id).execute()
     //ToDo use custom Error
@@ -182,10 +208,20 @@ export const queryQuestionById = async (id: UUID): Promise<QuestionQueryResult> 
     }
 }
 
+/**
+ * Create Question Comment Query
+ *
+ * @param comment data for creating a comment
+ */
 export const createQuestionCommentQuery = async (comment: InsertQuestionComment) => {
     await db.insert(commentQuestion).values(comment).execute()
 }
 
+/**
+ * Update Question Comment Query
+ * @param content  content of the comment
+ * @param commentId id of the comment to update
+ */
 export const updateQuestionCommentQuery = async (
     content: InsertQuestionComment['content'],
     commentId: UUID,
@@ -197,10 +233,20 @@ export const updateQuestionCommentQuery = async (
         .execute()
 }
 
+/**
+ * Delete Question Comment Query
+ *
+ * @param commentId id of the comment to delete
+ */
 export const deleteQuestionCommentQuery = async (commentId: UUID) => {
     await db.delete(commentQuestion).where(eq(commentQuestion.id, commentId)).execute()
 }
 
+/**
+ * Get Question Comment By Id Query
+ *
+ * @param commentId id of the comment to get
+ */
 export const getQuestionCommentByIdQuery = async (commentId: UUID) => {
     const commentQuestion = await db.query.commentQuestion
         .findFirst({
@@ -214,6 +260,11 @@ export const getQuestionCommentByIdQuery = async (commentId: UUID) => {
     return commentQuestion
 }
 
+/**
+ * Insert Vote Question Query
+ *
+ * @param voteQuestion data for creating a vote entry
+ */
 export const insertVoteQuestionQuery = async (voteQuestion: InsertVoteQuestion) => {
     await db
         .insert(votesQuestion)
@@ -225,6 +276,12 @@ export const insertVoteQuestionQuery = async (voteQuestion: InsertVoteQuestion) 
         .execute()
 }
 
+/**
+ * Delete Vote Entry for a Question
+ *
+ * @param userId id of the user of the entry
+ * @param questionId id of the question of the entry
+ */
 export const deleteVoteQuestionQuery = async (questionId: UUID, userId: UUID) => {
     await db
         .delete(votesQuestion)
