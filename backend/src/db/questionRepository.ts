@@ -1,24 +1,15 @@
-import {
-    commentAnswer,
-    commentQuestion,
-    question,
-    question_tag,
-    tag,
-    votesAnswer,
-    votesQuestion,
-} from './schema'
-import { and, eq, getTableColumns } from 'drizzle-orm'
+import { commentQuestion, question, question_tag, tag, votesAnswer, votesQuestion } from './schema'
+import { and, eq, getTableColumns, sql } from 'drizzle-orm'
 import { db } from '../server'
 import {
     CreateQuestion,
-    InsertAnswerComment,
     InsertQuestionComment,
     InsertVoteQuestion,
     Question,
     QuestionTag,
 } from './types'
 import { QueryResultType } from '../utils/typeUtils'
-import { UpdateQuestionRequest, UUID } from '../shared/types'
+import { UUID } from '../shared/types'
 
 export const createQuestionQuery = async (createQuestion: CreateQuestion) => {
     const questionColumns = getTableColumns(question)

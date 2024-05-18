@@ -10,6 +10,13 @@ import {
     CreateQuestionCommentRequestSchema,
     CreateQuestionRequest,
     CreateQuestionRequestSchema,
+    CreateRatingAnswer,
+    CreateRatingAnswerSchema,
+    CreateVoteAnswer,
+    CreateVoteAnswerSchema,
+    CreateVoteQuestion,
+    CreateVoteQuestionSchema,
+    GetQuestionsParamsSchema,
     UpdateQuestionRequest,
     UpdateQuestionRequestSchema,
     UUID,
@@ -37,12 +44,8 @@ import {
 } from '../controller/questionController'
 import { z } from 'zod'
 import { AuthorizedByUserIdGuard } from './authHandler'
-import {
-    approveAnswerQuery,
-    getAnswerByIdQuery,
-    getAnswerCommentByIdQuery,
-} from '../db/answerRepository'
-import { getQuestionCommentByIdQuery, updateQuestionCommentQuery } from '../db/questionRepository'
+import { getAnswerByIdQuery, getAnswerCommentByIdQuery } from '../db/answerRepository'
+import { getQuestionCommentByIdQuery } from '../db/questionRepository'
 
 export const questionRoutes = async (fastify: BaseFastifyInstance) => {
     fastify.post(
