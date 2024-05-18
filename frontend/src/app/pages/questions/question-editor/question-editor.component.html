@@ -1,7 +1,7 @@
 <section id="ask-question-container" class="flex max-w-2xl flex-col">
     <form
+        #askForm
         [formGroup]="questionForm"
-        (ngSubmit)="handleSubmitQuestion()"
         class="mt-10 flex max-w-4xl flex-col gap-4"
     >
         <label hlmLabel class="font-medium">
@@ -53,7 +53,8 @@
             <button
                 [disabled]="!questionForm.valid"
                 class="w-fit"
-                type="submit"
+                type="button"
+                (click)="handleSubmitQuestion()"
                 hlmBtn
             >
                 Post Question

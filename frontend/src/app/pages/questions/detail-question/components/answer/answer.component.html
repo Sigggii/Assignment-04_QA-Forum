@@ -12,9 +12,18 @@
                     <span class="flex items-center gap-1">
                     <app-user-badge [user]="answer.user"></app-user-badge>
                     <span class="font-bold">·</span>
-                    <span class="text-sm text-foreground/80">{{
+                    <span class="text-sm text-foreground/80 font-bold">{{
                             formatDateXTimeAgo(answer.createdAt)
-                        }}</span>
+                        }}
+                    </span>
+                    <span *ngIf="answer.lastEditedAt" class="flex items-center gap-1">
+                        <span class="font-bold">·</span>
+                        <span class="text-sm text-foreground/80">{{
+                                " modified: " + formatDateXTimeAgo(answer.lastEditedAt)
+                            }}
+                    </span>
+                </span>
+                <span class="font-bold">·</span>
                        <span *ngIf="authService.checkMatchUserId(answer.user.id)"
                              class="flex text-sm underline-offset-2 underline hover:cursor-pointer text-gray-400"><button
                            hlmBtn size="icon" variant="ghost"
