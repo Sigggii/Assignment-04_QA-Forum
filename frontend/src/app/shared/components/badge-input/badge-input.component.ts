@@ -1,10 +1,4 @@
-import {
-    Component,
-    EventEmitter,
-    forwardRef,
-    Input,
-    Output,
-} from '@angular/core'
+import { Component, forwardRef, Input } from '@angular/core'
 import { NgForOf, NgIf } from '@angular/common'
 import { HlmBadgeDirective } from '@spartan-ng/ui-badge-helm'
 import {

@@ -26,7 +26,13 @@
     <!-- Desktop Search Bar -->
     <app-search class="mx-6 hidden flex-1 md:block" />
     <!-- Mobile Search Button -->
-    <button hlmBtn size="icon" variant="ghost" class="ml-auto md:hidden">
+    <button
+        hlmBtn
+        size="icon"
+        variant="ghost"
+        class="ml-auto md:hidden"
+        (click)="navService.openQuestions()"
+    >
         <hlm-icon name="lucideSearch" />
     </button>
 

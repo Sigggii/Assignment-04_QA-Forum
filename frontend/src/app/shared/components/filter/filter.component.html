@@ -1,0 +1,86 @@
+<section class="flex w-full flex-col gap-2">
+    <div class="flex w-full justify-end">
+        <button
+            hlmBtn
+            class="gap-1"
+            variant="outline"
+            (click)="toggleFilterCollapsible()"
+        >
+            <hlm-icon name="lucideFilter" size="sm" />
+            Filter
+        </button>
+    </div>
+
+    <div id="collabsible" class="hidden w-full">
+        <div
+            class="grid grid-cols-2 gap-4 rounded-lg border p-4 lg:grid-cols-[1fr_1fr_2fr]"
+        >
+            <div class="flex flex-col gap-1">
+                <h3 class="font-semibold">Sort:</h3>
+
+                <brn-radio-group
+                    hlm
+                    [value]="selectedSort"
+                    (change)="handleChangeSort($event)"
+                >
+                    @for (
+                        sortOption of Object.entries(sortOptions);
+                        track sortOption[0]
+                    ) {
+                        <brn-radio hlm [value]="sortOption[0]">
+                            <hlm-radio-indicator indicator />
+                            {{ sortOption[1] }}
+                        </brn-radio>
+                    }
+                </brn-radio-group>
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <h3 class="font-semibold">Filter:</h3>
+
+                <brn-radio-group
+                    hlm
+                    [value]="selectedFilter"
+                    (change)="handleChangeFilter($event)"
+                >
+                    @for (
+                        filterOption of Object.entries(filterOptions);
+                        track filterOption[0]
+                    ) {
+                        <brn-radio hlm [value]="filterOption[0]">
+                            <hlm-radio-indicator indicator />
+                            {{ filterOption[1] }}
+                        </brn-radio>
+                    }
+                </brn-radio-group>
+            </div>
+
+            <form
+                [formGroup]="tagsForm"
+                class="col-span-2 flex flex-col lg:col-span-1"
+            >
+                <h3 class="font-semibold">Tags:</h3>
+
+                <app-badge-input class="w-full" formControlName="tags" />
+            </form>
+
+            <div class="col-span-2 flex gap-2 lg:col-span-3">
+                <button hlmBtn variant="default" (click)="handleApplyFilter()">
+                    Apply
+                </button>
+                <button hlmBtn variant="outline" (click)="handleResetFilter()">
+                    Reset Filter
+                </button>
+
+                <button
+                    hlmBtn
+                    variant="ghost"
+                    class="ml-auto"
+                    (click)="toggleFilterCollapsible()"
+                >
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</section>

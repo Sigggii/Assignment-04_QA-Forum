@@ -10,6 +10,8 @@ import { NgIf } from '@angular/common'
 import { SearchComponent } from '../../shared/components/search/search.component'
 import { SearchService } from '../../core/services/search.service'
 import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm'
+import { filterQuestions } from '../../shared/utils/filterUtils'
+import { FilterComponent } from '../../shared/components/filter/filter.component'
 
 @Component({
     selector: 'app-questions',
@@ -20,6 +22,7 @@ import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm'
         NgIf,
         SearchComponent,
         HlmSpinnerComponent,
+        FilterComponent,
     ],
     templateUrl: './questions.component.html',
     styleUrl: './questions.component.css',
@@ -33,5 +36,10 @@ export class QuestionsComponent {
     questionQuery: CreateQueryResult<QuestionPreviewData[]> =
         this.backendService.fetchQuestions(this.searchService.query)
 
-    questions = computed(() => this.questionQuery.data()?.filter(() => true)) //TODO: do filtering here
+    questions = computed(() =>
+        filterQuestions(
+            this.questionQuery.data() ?? [],
+            this.searchService.filter()
+        )
+    )
 }
