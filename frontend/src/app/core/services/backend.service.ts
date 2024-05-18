@@ -18,6 +18,7 @@ import {
     Vote,
     CreateRatingAnswer,
     Rating,
+    ApproveQuestionRequest,
 } from '../../shared/types/api-types'
 import {
     injectMutation,
@@ -335,6 +336,29 @@ export class BackendService {
                 lastValueFrom(
                     this.http.delete(
                         `${environment.apiUrl}questions/${req.questionId}/answers/${req.answerId}`
+                    )
+                ),
+            onSuccess: async () => {
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['questions'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['question'],
+                })
+            },
+        }))
+
+    approveAnswer = () =>
+        injectMutation(() => ({
+            mutationFn: async (req: {
+                approved: ApproveQuestionRequest
+                answerId: string
+                questionId: string
+            }) =>
+                lastValueFrom(
+                    this.http.put(
+                        `${environment.apiUrl}questions/${req.questionId}/answers/${req.answerId}/approve`,
+                        req.approved
                     )
                 ),
             onSuccess: async () => {

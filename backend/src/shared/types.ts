@@ -84,6 +84,7 @@ export type Answer = {
     user: User
     createdAt: Date
     content: string
+    approved: boolean
     lastEditedAt: Date | null
     questionId: string
     comments: CommentOnAnswer[]
@@ -151,3 +152,6 @@ export type Rating = number | undefined
 
 export const CreateRatingAnswerSchema = z.object({ rating: z.number().gte(1).lte(5).optional() })
 export type CreateRatingAnswer = z.infer<typeof CreateRatingAnswerSchema>
+
+export const ApproveAnswerRequestSchema = z.object({ isApproved: z.boolean() })
+export type ApproveAnswerRequest = z.infer<typeof ApproveAnswerRequestSchema>

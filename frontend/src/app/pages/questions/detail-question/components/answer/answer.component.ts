@@ -34,6 +34,7 @@ import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
 import { provideIcons } from '@ng-icons/core'
 import { AnswerRatingBadgeComponent } from '../../../../../shared/components/answer-rating-badge/answer-rating-badge.component'
 import { heroStar } from '@ng-icons/heroicons/outline'
+import { ApprovedBadgeComponent } from '../../../../../shared/components/approved-badge/approved-badge.component'
 
 @Component({
     selector: 'app-answer',
@@ -56,6 +57,7 @@ import { heroStar } from '@ng-icons/heroicons/outline'
         HlmDialogTitleDirective,
         HlmIconComponent,
         AnswerRatingBadgeComponent,
+        ApprovedBadgeComponent,
     ],
     providers: [provideIcons({ lucidePencil, lucideTrash, heroStar })],
     templateUrl: './answer.component.html',
@@ -63,6 +65,7 @@ import { heroStar } from '@ng-icons/heroicons/outline'
 })
 export class AnswerComponent implements OnChanges {
     @Input({ required: true }) answer!: Answer
+    @Input({ required: true }) questionAuthorId!: string
     answerId = signal<string>('')
     @Output() edit: EventEmitter<Answer> = new EventEmitter<Answer>()
     authService = inject(AuthService)
@@ -70,6 +73,7 @@ export class AnswerComponent implements OnChanges {
     deleteAnswer = this.backendService.deleteAnswer()
     createVoteAnswer = this.backendService.createVoteAnswer()
     createRatingAnswer = this.backendService.createRatingAnswer()
+    approveAnswer = this.backendService.approveAnswer()
 
     userVoteAnswerQuery = this.backendService.fetchUserVoteForAnswer(
         this.authService.getUserData()?.id,
@@ -128,6 +132,16 @@ export class AnswerComponent implements OnChanges {
         })
         this.deleteDialogOpen.set('closed')
     }
+
+    handleApproveAnswer = (approved: boolean) => {
+        this.answer.approved = approved
+        this.approveAnswer.mutate({
+            questionId: this.answer.questionId,
+            answerId: this.answer.id,
+            approved: { isApproved: approved },
+        })
+    }
+
     protected readonly formatDateXTimeAgo = formatDateXTimeAgo
     protected readonly booleanAttribute = booleanAttribute
 }

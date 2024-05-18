@@ -85,6 +85,7 @@ export const answer = pgTable('answer', {
         .references(() => user.id, { onDelete: 'cascade' })
         .notNull(),
     content: varchar('content', { length: 10000 }).notNull(),
+    approved: boolean('approved').notNull().default(false),
     createdAt: timestamp('createdAt').defaultNow().notNull(),
     lastEditedAt: timestamp('lastEditedAt'),
 })

@@ -98,3 +98,7 @@ export const deleteRatingAnswerQuery = async (answerId: UUID, userId: UUID) => {
         .delete(ratingAnswer)
         .where(and(eq(ratingAnswer.answerId, answerId), eq(ratingAnswer.userId, userId)))
 }
+
+export const approveAnswerQuery = async (answerId: UUID, isApproved: boolean) => {
+    await db.update(answer).set({ approved: isApproved }).where(eq(answer.id, answerId)).execute()
+}

@@ -31,6 +31,7 @@ import {
     calculateTopAnswerRating,
 } from '../utils/questionUtils'
 import {
+    approveAnswerQuery,
     createAnswerCommentQuery,
     createAnswerQuery,
     deleteAnswerCommentQuery,
@@ -223,4 +224,8 @@ export const createRatingAnswer = async (
     } else {
         await deleteRatingAnswerQuery(answerId, userId)
     }
+}
+
+export const approveAnswer = async (answerId: UUID, isApproved: boolean) => {
+    await approveAnswerQuery(answerId, isApproved)
 }

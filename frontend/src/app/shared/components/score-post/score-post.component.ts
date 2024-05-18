@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core'
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+} from '@angular/core'
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
 import { provideIcons } from '@ng-icons/core'
 import { lucideArrowBigUp, lucideArrowBigDown } from '@ng-icons/lucide'

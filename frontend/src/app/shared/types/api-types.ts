@@ -85,6 +85,7 @@ export type Answer = {
     user: User
     createdAt: DateAsString
     content: string
+    approved: boolean
     lastEditedAt: DateAsString | null
     questionId: string
     comments: CommentOnAnswer[]
@@ -119,3 +120,5 @@ export type JWTPayload = {
 
 export type Vote = boolean | undefined
 export type Rating = number | undefined
+
+export type ApproveQuestionRequest = { isApproved: boolean }

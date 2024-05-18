@@ -1,5 +1,7 @@
 import { BaseFastifyInstance } from '../server'
 import {
+    ApproveAnswerRequest,
+    ApproveAnswerRequestSchema,
     CreateAnswer,
     CreateAnswerCommentRequest,
     CreateAnswerCommentRequestSchema,
@@ -20,6 +22,7 @@ import {
     UUIDSchema,
 } from '../shared/types'
 import {
+    approveAnswer,
     createAnswer,
     createAnswerComment,
     createQuestion,
@@ -41,7 +44,11 @@ import {
 import { z } from 'zod'
 import { CreateQuestion } from '../db/types'
 import { AuthorizedByUserIdGuard } from './authHandler'
-import { getAnswerByIdQuery, getAnswerCommentByIdQuery } from '../db/answerRepository'
+import {
+    approveAnswerQuery,
+    getAnswerByIdQuery,
+    getAnswerCommentByIdQuery,
+} from '../db/answerRepository'
 import { getQuestionCommentByIdQuery, updateQuestionCommentQuery } from '../db/questionRepository'
 
 export const questionRoutes = async (fastify: BaseFastifyInstance) => {
@@ -304,6 +311,32 @@ export const questionRoutes = async (fastify: BaseFastifyInstance) => {
             const answerToCheck = await getAnswerByIdQuery(answerId)
             AuthorizedByUserIdGuard(req.authUser!, answerToCheck.authorId, true)
             await deleteAnswer(answerId)
+            resp.status(204)
+        },
+    )
+
+    fastify.put(
+        '/:questionId/answers/:answerId/approve',
+        {
+            schema: {
+                body: ApproveAnswerRequestSchema,
+                params: z.object({
+                    questionId: UUIDSchema,
+                    answerId: UUIDSchema,
+                }),
+            },
+            config: {
+                rolesAllowed: 'ALL',
+            },
+            onRequest: [fastify.auth([fastify.authorize])],
+        },
+        async (req, resp) => {
+            const { answerId } = req.params as { questionId: UUID; answerId: UUID }
+            const answerToCheck = await getAnswerByIdQuery(answerId)
+            const questionToCheck = await getQuestionById(answerToCheck.questionId)
+            AuthorizedByUserIdGuard(req.authUser!, questionToCheck.authorId, true)
+            const isApproved = req.body as ApproveAnswerRequest
+            await approveAnswer(answerId, isApproved.isApproved)
             resp.status(204)
         },
     )
