@@ -90,9 +90,6 @@ export class BackendService {
                 await this.queryClient.invalidateQueries({
                     queryKey: ['questions'],
                 })
-                await this.queryClient.invalidateQueries({
-                    queryKey: ['question'],
-                })
                 if (redirect) {
                     await redirect()
                 }
