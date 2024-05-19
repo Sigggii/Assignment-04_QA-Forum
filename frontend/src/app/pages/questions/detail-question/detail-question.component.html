@@ -11,7 +11,7 @@
         <section class="mt-14">
             <h2 class="mb-2 text-2xl">{{ question.answers.length }} Answers</h2>
             <div class="mt-5 flex flex-col gap-10">
-                @for (answer of question.answers; track answer) {
+                @for (answer of question.answers; track answer.id) {
                     <app-answer
                         [answer]="answer"
                         [questionAuthorId]="question.authorId"
