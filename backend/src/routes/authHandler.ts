@@ -36,7 +36,7 @@ export const authorizationHandler = (
         return done()
     }
 
-    throw new ResponseError({ status: 401, displayMessage: 'Not Authenticated', errors: [] })
+    throw new ResponseError({ status: 403, displayMessage: 'Not Authorized', errors: [] })
 }
 
 export const AuthorizedByUserIdGuard = (
