@@ -71,7 +71,7 @@ fastify.register(cookie, {
     secret: getConfig().COOKIE_SECRET,
 })
 fastify.register(fastifyCors, {
-    origin: getConfig().CORS_ALLOWED_ORIGINS,
+    origin: process.env.CORS_ALLOWED_ORIGINS || '',
     credentials: true,
 })
 
