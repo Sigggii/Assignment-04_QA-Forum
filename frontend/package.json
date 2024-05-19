@@ -35,7 +35,7 @@
     "@spartan-ng/ui-radiogroup-brain": "0.0.1-alpha.347",
     "@spartan-ng/ui-separator-brain": "0.0.1-alpha.347",
     "@spartan-ng/ui-toggle-brain": "0.0.1-alpha.347",
-    "@tanstack/angular-query-experimental": "^5.33.0",
+    "@tanstack/angular-query-experimental": "~5.33.0",
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.6.0",
     "clsx": "^1.2.1",
