@@ -62,7 +62,6 @@ export const questionRoutes = async (fastify: BaseFastifyInstance) => {
         },
         async (req, rep) => {
             const userId = req.authUser!.id
-            // ToDo fix stupid type cast
             const question = req.body as CreateQuestionRequest
             const createdQuestion = await createQuestion(question, userId)
 

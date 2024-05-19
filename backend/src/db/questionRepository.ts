@@ -232,7 +232,6 @@ export type QuestionQueryResult = QuestionQueryResultPartial & { answers: Answer
  */
 export const queryQuestionById = async (id: UUID): Promise<QuestionQueryResult> => {
     const question = await questionQueryPartial(id).execute()
-    //ToDo use custom Error
     if (!question) {
         throw new ResponseError({
             status: 400,

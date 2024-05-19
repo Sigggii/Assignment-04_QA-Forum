@@ -99,7 +99,6 @@ export class QuestionEditorComponent implements OnChanges {
         if (changes['editQuestion'] && this.editQuestion) {
             this.questionForm.setValue({
                 title: this.editQuestion.title,
-                //ToDo checken ob das probleme macht, dass der Text leer ist
                 content: {
                     html: this.editQuestion.content,
                     text: this.editQuestion.content,
