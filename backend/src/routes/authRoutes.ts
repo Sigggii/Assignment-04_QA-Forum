@@ -2,6 +2,7 @@ import { BaseFastifyInstance } from '../server'
 import { LoginSchema, LoginUser } from '../shared/types'
 import { loginUser, registerUser } from '../controller/authController'
 import { ResponseError } from './errorHandling/ResponseError'
+import { getConfig } from '../system/EnvManager'
 
 export const authRoutes = async (fastify: BaseFastifyInstance) => {
     fastify.post(
@@ -18,7 +19,7 @@ export const authRoutes = async (fastify: BaseFastifyInstance) => {
                 //Expires in 7 days
                 expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
                 httpOnly: true,
-                sameSite: 'none',
+                sameSite: getConfig().NODE_ENV === 'production' ? 'strict' : 'none',
                 path: '/',
             })
         },
@@ -38,7 +39,7 @@ export const authRoutes = async (fastify: BaseFastifyInstance) => {
                 //Expires in 7 days
                 expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
                 httpOnly: true,
-                sameSite: 'none',
+                sameSite: getConfig().NODE_ENV === 'production' ? 'strict' : 'none',
                 path: '/',
             })
         },
@@ -61,7 +62,7 @@ export const authRoutes = async (fastify: BaseFastifyInstance) => {
             //Expires in 7 days
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             httpOnly: true,
-            sameSite: 'none',
+            sameSite: getConfig().NODE_ENV === 'production' ? 'strict' : 'none',
             path: '/',
         })
     })

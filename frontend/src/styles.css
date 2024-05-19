@@ -19,8 +19,14 @@ app-quill-js.ng-invalid.ng-touched .ql-editor:focus-visible {
     @apply outline-2 outline-destructive outline rounded-b
 }
 
+.quill-js-preview {
+    @apply prose max-w-none prose-neutral prose-sm dark:prose-invert prose-headings:hidden prose-headings:m-0
+    prose-p:my-0.5 prose-ul:hidden prose-ol:hidden prose-li:hidden prose-blockquote:hidden
+    break-words prose-img:hidden prose-a:text-blue-500
+}
+
 .quill-js-content  {
-    @apply prose prose-neutral prose-base dark:prose-invert prose-h1:text-3xl prose-headings:mt-5 prose-headings:mb-1.5
+    @apply prose max-w-none prose-neutral prose-base dark:prose-invert prose-h1:text-3xl prose-headings:mt-5 prose-headings:mb-1.5
     prose-h2:text-2xl prose-h3:text-xl prose-p:my-1.5 prose-ul:my-1.5 prose-ol:my-1.5 prose-li:my-0 prose-blockquote:my-5
     break-words prose-img:rounded-lg prose-img:my-3 prose-a:text-blue-500 prose-p:min-h-4
 }

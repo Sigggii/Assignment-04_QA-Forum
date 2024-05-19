@@ -1,17 +1,11 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    Output,
-    SimpleChanges,
-} from '@angular/core'
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core'
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
 import { provideIcons } from '@ng-icons/core'
 import { lucideArrowBigUp, lucideArrowBigDown } from '@ng-icons/lucide'
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm'
 import { NgClass, NgIf } from '@angular/common'
 import { Vote } from '../../types/api-types'
+import { NavigationService } from '../../../core/services/navigation.service'
 
 // true: upvote, false: upvote, undefined: not voted
 
@@ -31,30 +25,35 @@ export class ScorePostComponent {
     @Input() disabled: boolean = false
     @Output() vote: EventEmitter<Vote> = new EventEmitter<Vote>()
 
+    navigationService = inject(NavigationService)
+
     handleVote = (component: VoteComponent) => {
-        if (!this.disabled) {
-            let scoreChange = 0
-            let voteChange: Vote = false
-            if (component === 'UPVOTE') {
-                scoreChange = this.upvoted
-                    ? -1
-                    : this.upvoted === undefined || this.upvoted === null
-                      ? +1
-                      : +2
-
-                voteChange = this.upvoted ? undefined : true
-            } else {
-                scoreChange = this.upvoted
-                    ? -2
-                    : this.upvoted === undefined || this.upvoted === null
-                      ? -1
-                      : +1
-
-                voteChange = this.upvoted === false ? undefined : false
-            }
-            this.score = this.score + scoreChange
-            this.upvoted = voteChange
-            this.vote.emit(voteChange)
+        if (this.disabled) {
+            this.navigationService.openLogin()
+            return
         }
+
+        let scoreChange = 0
+        let voteChange: Vote = false
+        if (component === 'UPVOTE') {
+            scoreChange = this.upvoted
+                ? -1
+                : this.upvoted === undefined || this.upvoted === null
+                  ? +1
+                  : +2
+
+            voteChange = this.upvoted ? undefined : true
+        } else {
+            scoreChange = this.upvoted
+                ? -2
+                : this.upvoted === undefined || this.upvoted === null
+                  ? -1
+                  : +1
+
+            voteChange = this.upvoted === false ? undefined : false
+        }
+        this.score = this.score + scoreChange
+        this.upvoted = voteChange
+        this.vote.emit(voteChange)
     }
 }
