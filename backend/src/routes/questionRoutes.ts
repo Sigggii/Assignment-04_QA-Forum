@@ -35,6 +35,7 @@ import {
     deleteAnswerComment,
     deleteQuestion,
     deleteQuestionComment,
+    getMyQuestions,
     getQuestionById,
     getQuestions,
     updateAnswer,
@@ -116,14 +117,24 @@ export const questionRoutes = async (fastify: BaseFastifyInstance) => {
     )
 
     fastify.get('/', { schema: { querystring: GetQuestionsParamsSchema } }, async (req) => {
-        try {
-            const query = req.query.query
+        const query = req.query.query
 
-            return await getQuestions(query)
-        } catch (err) {
-            console.log(err)
-        }
+        return await getQuestions(query)
     })
+
+    fastify.get(
+        '/me',
+        {
+            config: {
+                rolesAllowed: 'ALL',
+            },
+            onRequest: [fastify.auth([fastify.authorize])],
+        },
+        async (req) => {
+            const userId = req.authUser!.id
+            return await getMyQuestions(userId)
+        },
+    )
 
     fastify.get(
         '/:id',
@@ -136,12 +147,8 @@ export const questionRoutes = async (fastify: BaseFastifyInstance) => {
         },
 
         async (req) => {
-            try {
-                const { id } = req.params
-                return await getQuestionById(id)
-            } catch (err) {
-                console.log(err)
-            }
+            const { id } = req.params
+            return await getQuestionById(id)
         },
     )
 

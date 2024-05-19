@@ -130,9 +130,42 @@ export type QuestionPreviewResult = QueryResultType<typeof questionsPreviewQuery
 /**
  * Query Questions by search query
  * @param query search query
+ * @returns questions matching the query
  */
 export const queryQuestions = async (query: string) => {
     return await questionsPreviewQuery(query).execute()
+}
+
+const myQuestionsPreviewQuery = (userId: UUID) =>
+    db.query.question.findMany({
+        where: (question, { eq }) => eq(question.authorId, userId),
+        with: {
+            user: {
+                columns: {
+                    password: false,
+                },
+            },
+            tags: {
+                with: {
+                    tag: true,
+                },
+            },
+            votes: true,
+            answers: {
+                with: {
+                    ratings: true,
+                },
+            },
+        },
+    })
+
+/**
+ * Query Questions by User ID
+ * @param userId id of the user to query
+ * @returns questions of the user
+ */
+export const queryMyQuestions = async (userId: UUID) => {
+    return await myQuestionsPreviewQuery(userId).execute()
 }
 
 const questionQueryPartial = (id: UUID) =>

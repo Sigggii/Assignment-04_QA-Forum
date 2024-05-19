@@ -25,7 +25,7 @@ export const userRoutes = async (fastify: BaseFastifyInstance) => {
             },
             onRequest: [fastify.auth([fastify.authorize])],
         },
-        async (req, resp) => {
+        async (req) => {
             const userId = (req.params as { userId: UUID }).userId
             const questionId = (req.query as { questionId: UUID }).questionId
             AuthorizedByUserIdGuard(req.authUser!, userId, true)
@@ -52,7 +52,7 @@ export const userRoutes = async (fastify: BaseFastifyInstance) => {
             },
             onRequest: [fastify.auth([fastify.authorize])],
         },
-        async (req, resp) => {
+        async (req) => {
             const userId = (req.params as { userId: UUID }).userId
             const answerId = (req.query as { answerId: UUID }).answerId
             AuthorizedByUserIdGuard(req.authUser!, userId, true)
