@@ -44,7 +44,7 @@
         class="quill-js-content mt-1 leading-6"
     ></section>
     <section class="mt-4 flex flex-wrap gap-1">
-        @for (tag of question.tags; track tag) {
+        @for (tag of question.tags; track tag.id) {
             <app-tag-badge [tag]="tag.name" />
         }
     </section>
