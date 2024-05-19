@@ -17,6 +17,7 @@ export type ErrorResponse = {
  * @param reply
  */
 export const errorHandler = (error: Error, request: FastifyRequest, reply: FastifyReply) => {
+    console.log(error)
     let ErrorResponse: ErrorResponse = {
         status: 500,
         displayMessage: 'Unexcpected Error',
