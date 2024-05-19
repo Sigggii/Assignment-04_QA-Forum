@@ -46,7 +46,6 @@ const connectionString = getConfig().DB_CONNECTION_STRING
 const sql = postgres(connectionString, { max: 1 })
 const dbMigration = drizzle(sql)
 
-console.log('Test start migration')
 //migrate db schema
 migrate(dbMigration, { migrationsFolder: 'drizzle' })
     .then(() => console.log('Migration completed'))
@@ -55,7 +54,6 @@ migrate(dbMigration, { migrationsFolder: 'drizzle' })
         process.exit(1)
     })
 
-console.log('Test migration completed')
 // initialize db-client for database access
 const queryClient = postgres(connectionString)
 export const db = drizzle(queryClient, { schema })
