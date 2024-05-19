@@ -46,7 +46,6 @@ const connectionString = getConfig().DB_CONNECTION_STRING
 const sql = postgres(connectionString, { max: 1 })
 const dbMigration = drizzle(sql)
 
-console.log('Test start migration')
 //migrate db schema
 migrate(dbMigration, { migrationsFolder: 'drizzle' })
     .then(() => console.log('Migration completed'))
@@ -55,7 +54,6 @@ migrate(dbMigration, { migrationsFolder: 'drizzle' })
         process.exit(1)
     })
 
-console.log('Test migration completed')
 // initialize db-client for database access
 const queryClient = postgres(connectionString)
 export const db = drizzle(queryClient, { schema })
@@ -70,10 +68,14 @@ fastify.setErrorHandler(errorHandler)
 fastify.register(cookie, {
     secret: getConfig().COOKIE_SECRET,
 })
-fastify.register(fastifyCors, {
-    origin: getConfig().CORS_ALLOWED_ORIGINS || '',
-    credentials: true,
-})
+
+const corsOrigins = getConfig().CORS_ALLOWED_ORIGINS
+if (corsOrigins) {
+    fastify.register(fastifyCors, {
+        origin: corsOrigins,
+        credentials: true,
+    })
+}
 
 fastify.register(auth)
 fastify.decorate('authenticate', authenticationHandler)
