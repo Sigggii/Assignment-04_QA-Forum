@@ -3,6 +3,7 @@ import { db } from '../server'
 import { answer, commentAnswer, question, ratingAnswer, votesAnswer } from './schema'
 import { and, eq } from 'drizzle-orm'
 import { Answer, CreateAnswer, UUID } from '../shared/types'
+import { ResponseError } from '../routes/errorHandling/ResponseError'
 
 /**
  * Create Answer Query
@@ -45,7 +46,11 @@ export const getAnswerByIdQuery = async (id: UUID) => {
         .execute()
 
     if (!answer) {
-        throw new Error('No Answer with this Id')
+        throw new ResponseError({
+            status: 400,
+            displayMessage: 'Answer does not exist',
+            errors: [],
+        })
     }
     return answer
 }
@@ -94,7 +99,11 @@ export const getAnswerCommentByIdQuery = async (commentId: UUID) => {
         .execute()
 
     if (!commentAnswer) {
-        throw new Error('No AnswerComment with this Id')
+        throw new ResponseError({
+            status: 400,
+            displayMessage: 'Comment does not exist',
+            errors: [],
+        })
     }
     return commentAnswer
 }

@@ -10,6 +10,7 @@ import {
 } from './types'
 import { QueryResultType } from '../utils/typeUtils'
 import { UUID } from '../shared/types'
+import { ResponseError } from '../routes/errorHandling/ResponseError'
 
 /**
  * Create Question Query
@@ -215,6 +216,7 @@ const answerQueryPartial = (id: UUID) =>
                 },
             },
         },
+        orderBy: (answers, { asc }) => [asc(answers.createdAt)],
         where: (answer, { eq }) => eq(answer.questionId, id),
     })
 
@@ -232,7 +234,11 @@ export const queryQuestionById = async (id: UUID): Promise<QuestionQueryResult> 
     const question = await questionQueryPartial(id).execute()
     //ToDo use custom Error
     if (!question) {
-        throw new Error('Kein Anschluss unter dieser ID')
+        throw new ResponseError({
+            status: 400,
+            displayMessage: 'Question does not exist',
+            errors: [],
+        })
     }
     const answers = await answerQueryPartial(id).execute()
     return {
@@ -288,7 +294,11 @@ export const getQuestionCommentByIdQuery = async (commentId: UUID) => {
         .execute()
 
     if (!commentQuestion) {
-        throw new Error('No QuestionComment with this Id')
+        throw new ResponseError({
+            status: 400,
+            displayMessage: 'Comment does not exist',
+            errors: [],
+        })
     }
     return commentQuestion
 }

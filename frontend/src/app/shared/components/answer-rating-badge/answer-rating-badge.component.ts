@@ -19,7 +19,7 @@ export class AnswerRatingBadgeComponent {
     protected readonly Math = Math
 
     handleFormatAnswerRating = (rating: number) => {
-        if (rating < 0) return '-'
+        if (rating <= 0) return '-'
         return formatNumber(Math.round(rating * 10) / 10, 'en-UK', '1.0-1')
     }
 }
