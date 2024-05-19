@@ -1,6 +1,7 @@
 import Fastify from 'fastify'
 import dotenv from 'dotenv'
 import postgres from 'postgres'
+import path from 'node:path'
 import { drizzle } from 'drizzle-orm/postgres-js'
 import { migrate } from 'drizzle-orm/postgres-js/migrator'
 import { checkEnv, getConfig } from './system/EnvManager'
@@ -44,6 +45,7 @@ const connectionString = getConfig().DB_CONNECTION_STRING
 const sql = postgres(connectionString, { max: 1 })
 const dbMigration = drizzle(sql)
 
+console.log('Test start migration')
 //migrate db schema
 migrate(dbMigration, { migrationsFolder: 'drizzle' })
     .then(() => console.log('Migration completed'))
@@ -52,6 +54,7 @@ migrate(dbMigration, { migrationsFolder: 'drizzle' })
         process.exit(1)
     })
 
+console.log('Test migration completed')
 // initialize db-client for database access
 const queryClient = postgres(connectionString)
 export const db = drizzle(queryClient, { schema })
@@ -83,6 +86,11 @@ fastify.setSerializerCompiler(serializerCompiler)
 
 export type BaseFastifyInstance = typeof fastify
 
+fastify.register(require('@fastify/static'), {
+    root: path.join(__dirname, 'public'),
+    prefix: '/', // optional: default '/'
+})
+
 // Register routes
 const routes = async (fastify: BaseFastifyInstance) => {
     fastify.register(authRoutes, { prefix: 'auth' })
@@ -95,6 +103,7 @@ const routes = async (fastify: BaseFastifyInstance) => {
 
 // Set Base route
 fastify.register(routes, { prefix: '/api' })
+
 const start = async () => {
     try {
         await fastify.listen({ port: getConfig().PORT })
