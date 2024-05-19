@@ -107,10 +107,17 @@ export class AnswerComponent implements OnChanges {
     }) => {
         // Optimistic Updates
         if (rating.currentRating) {
-            this.answer.rating =
-                (this.answer.rating * this.answer.ratingsCount +
-                    rating.currentRating) /
-                (this.answer.ratingsCount + 1)
+            if (rating.previousRating) {
+                this.answer.rating =
+                    (this.answer.rating * this.answer.ratingsCount +
+                        (rating.previousRating - rating.previousRating)) /
+                    this.answer.ratingsCount
+            } else {
+                this.answer.rating =
+                    (this.answer.rating * this.answer.ratingsCount +
+                        rating.currentRating) /
+                    (this.answer.ratingsCount + 1)
+            }
         } else {
             this.answer.rating =
                 (this.answer.rating * this.answer.ratingsCount -
