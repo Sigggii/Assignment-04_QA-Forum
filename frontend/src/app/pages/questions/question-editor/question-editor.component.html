@@ -57,7 +57,7 @@
                 (click)="handleSubmitQuestion()"
                 hlmBtn
             >
-                Post Question
+                {{ editQuestion ? 'Update Question' : 'Post Question' }}
             </button>
             <button
                 *ngIf="cancelHandler"
