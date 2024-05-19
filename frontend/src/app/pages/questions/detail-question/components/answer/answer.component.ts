@@ -110,7 +110,7 @@ export class AnswerComponent implements OnChanges {
             if (rating.previousRating) {
                 this.answer.rating =
                     (this.answer.rating * this.answer.ratingsCount +
-                        (rating.previousRating - rating.previousRating)) /
+                        (rating.currentRating - rating.previousRating)) /
                     this.answer.ratingsCount
             } else {
                 this.answer.rating =
