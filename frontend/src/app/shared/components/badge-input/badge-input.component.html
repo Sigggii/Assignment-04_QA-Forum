@@ -31,7 +31,7 @@
             </ng-template>
             <input
                 class="bg-background focus:outline-none"
-                value=""
+                [value]="internalTags[internalTags.length - 1]"
                 type="text"
                 appDynamicSize
                 (input)="handleNewBadgeInput($event)"
