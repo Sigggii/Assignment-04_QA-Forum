@@ -75,6 +75,8 @@ export class FilterComponent {
         this.selectedSort = 'newest'
         this.selectedFilter = 'all'
         this.tags = []
+
+        this.tagsForm.controls.tags.setValue(this.tags)
         this.searchService.handleFilter({
             sort: this.selectedSort,
             filter: this.selectedFilter,
