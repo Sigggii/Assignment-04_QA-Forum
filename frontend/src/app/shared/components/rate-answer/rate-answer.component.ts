@@ -46,6 +46,4 @@ export class RateAnswerComponent {
             previousRating: previousRating,
         })
     }
-    protected readonly heroStarSolid = heroStarSolid
-    protected readonly heroStar = heroStar
 }

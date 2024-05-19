@@ -25,7 +25,7 @@
                     </div>
                 }
 
-                @if (authService.checkMatchUserId(question.user.id)) {
+                @if (authService.checkEditRights(question.user.id)) {
                     <span class="font-bold">·</span>
                     <section class="ml-1 flex flex-wrap items-center gap-3">
                         <button routerLink="./edit">

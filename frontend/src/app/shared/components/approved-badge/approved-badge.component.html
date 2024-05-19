@@ -1,5 +1,12 @@
 <div>
-    <button (click)="handleClick()" size="icon" [variant]="approved ? 'success' : 'outline'"  hlmBtn>
+    <button
+        (click)="handleClick()"
+        size="icon"
+        [variant]="approved ? 'success' : 'outline'"
+        hlmBtn
+        [disabled]="!editable"
+        class="disabled:opacity-100"
+    >
         <hlm-icon class="w-fit" size="lg" name="lucideBadgeCheck" />
     </button>
 </div>

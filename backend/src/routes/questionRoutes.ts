@@ -259,7 +259,7 @@ export const questionRoutes = async (fastify: BaseFastifyInstance) => {
                 }),
             },
             config: {
-                rolesAllowed: ['PRO'],
+                rolesAllowed: ['PRO', 'ADMIN'],
             },
             onRequest: [fastify.auth([fastify.authorize])],
         },
