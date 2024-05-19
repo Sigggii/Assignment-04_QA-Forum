@@ -9,6 +9,7 @@ import { SignUpNoobComponent } from './pages/sign-up-noob/sign-up-noob.component
 import { authGuard } from './core/guards/auth.guard'
 import { loginGuard } from './core/guards/login.guard'
 import { EditComponent } from './pages/questions/edit/edit.component'
+import { MyQuestionsComponent } from './pages/questions/my-questions/my-questions.component'
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -16,6 +17,11 @@ export const routes: Routes = [
     {
         path: 'questions/ask',
         component: AskComponent,
+        canActivate: [authGuard(['NOOB', 'PRO', 'ADMIN'])],
+    },
+    {
+        path: 'questions/me',
+        component: MyQuestionsComponent,
         canActivate: [authGuard(['NOOB', 'PRO', 'ADMIN'])],
     },
     { path: 'questions/:questionId', component: DetailQuestionComponent },

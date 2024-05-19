@@ -1,5 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core'
 import { Router } from '@angular/router'
+import { toObservable } from '@angular/core/rxjs-interop'
 
 export type SearchFilter = {
     tags: string[]
@@ -18,6 +19,12 @@ export const filterOptions: Record<SearchFilter['filter'], string> = {
     answered: 'Answered',
 }
 
+export const defaultFilter: SearchFilter = {
+    tags: [],
+    sort: 'newest',
+    filter: 'all',
+}
+
 @Injectable({
     providedIn: 'root',
 })
@@ -25,11 +32,8 @@ export class SearchService {
     router = inject(Router)
 
     query = signal('')
-    filter = signal<SearchFilter>({
-        tags: [],
-        sort: 'newest',
-        filter: 'all',
-    })
+    filter = signal<SearchFilter>(defaultFilter)
+    filterObservable = toObservable(this.filter)
 
     handleSearch() {
         this.router.navigate(['/questions'], {
@@ -39,8 +43,6 @@ export class SearchService {
     }
 
     handleFilter(filter: SearchFilter) {
-        this.filter.set(filter)
-
         this.router.navigate(['/questions'], {
             queryParams: {
                 filter: encodeURIComponent(JSON.stringify(filter)),
@@ -50,7 +52,7 @@ export class SearchService {
     }
 
     handleFilterLoad(filter: Partial<SearchFilter>) {
-        this.filter.update(prev => ({ ...prev, ...filter }))
+        this.filter.set({ ...defaultFilter, ...filter })
     }
 
     handleQueryChange(query: string) {

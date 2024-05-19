@@ -19,6 +19,7 @@ import {
     deleteQuestionQuery,
     deleteVoteQuestionQuery,
     insertVoteQuestionQuery,
+    queryMyQuestions,
     queryQuestionById,
     queryQuestions,
     updateQuestionCommentQuery,
@@ -29,6 +30,7 @@ import {
     calculateAnswerScore,
     calculateQuestionScore,
     calculateTopAnswerRating,
+    mapQuestionPreviewResult,
 } from '../utils/questionUtils'
 import {
     approveAnswerQuery,
@@ -70,28 +72,13 @@ export const deleteQuestion = async (questionId: string) => {
 export const getQuestions = async (query: string): Promise<QuestionPreviewData[]> => {
     const data = await queryQuestions(query)
 
-    console.log(query, data)
+    return mapQuestionPreviewResult(data)
+}
 
-    return data.map((question) => {
-        const topAnswerRating = calculateTopAnswerRating(question.answers)
-        const score = calculateQuestionScore(question.votes)
+export const getMyQuestions = async (userId: UUID): Promise<QuestionPreviewData[]> => {
+    const data = await queryMyQuestions(userId)
 
-        return {
-            id: question.id,
-            authorId: question.authorId,
-            content: question.content,
-            createdAt: question.createdAt,
-            lastEditedAt: question.lastEditedAt,
-            title: question.title,
-
-            user: question.user,
-            tags: question.tags.map((tag) => tag.tag),
-
-            topAnswerRating: topAnswerRating,
-            answerCount: question.answers.length,
-            score: score,
-        }
-    })
+    return mapQuestionPreviewResult(data)
 }
 
 export const getQuestionById = async (id: UUID): Promise<DetailQuestion> => {

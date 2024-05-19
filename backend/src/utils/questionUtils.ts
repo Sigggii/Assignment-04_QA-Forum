@@ -50,6 +50,29 @@ export const calculateAnswerScore = (
     return upvotes - downvotes
 }
 
+export const mapQuestionPreviewResult = (data: QuestionPreviewResult[]) => {
+    return data.map((question) => {
+        const topAnswerRating = calculateTopAnswerRating(question.answers)
+        const score = calculateQuestionScore(question.votes)
+
+        return {
+            id: question.id,
+            authorId: question.authorId,
+            content: question.content,
+            createdAt: question.createdAt,
+            lastEditedAt: question.lastEditedAt,
+            title: question.title,
+
+            user: question.user,
+            tags: question.tags.map((tag) => tag.tag),
+
+            topAnswerRating: topAnswerRating,
+            answerCount: question.answers.length,
+            score: score,
+        }
+    })
+}
+
 /**
  * Calculate the average of numbers
  * @param numbers average, or -1 if array was empty

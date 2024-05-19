@@ -115,6 +115,17 @@ export class BackendService {
                 ),
         }))
 
+    fetchMyQuestions = () =>
+        injectQuery(() => ({
+            queryKey: ['questions', 'my-questions'],
+            queryFn: () =>
+                lastValueFrom(
+                    this.http.get<QuestionPreviewData[]>(
+                        `${environment.apiUrl}questions/me`
+                    )
+                ),
+        }))
+
     //Todo currently, only all question requests can be invalidatet. Trying to set the
     // questionId as additional queryKey didnt work yet. If time left figure out what the
     // problem is
@@ -475,6 +486,9 @@ export class BackendService {
             onSuccess: async () => {
                 await this.queryClient.invalidateQueries({
                     queryKey: ['userInfo'],
+                })
+                await this.queryClient.invalidateQueries({
+                    queryKey: ['questions', 'my-questions'],
                 })
             },
         }))
