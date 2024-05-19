@@ -35,15 +35,6 @@ import { HlmLabelDirective } from '@spartan-ng/ui-label-helm'
     ],
     styleUrl: './badge-input.component.css',
 })
-
-/*
-TODO: Not finished yet:
-    - has problems with line breaks copy-pasted
-    - maybe use directives for control of inputs
-    - currently I use span for badges (eslint is whining about it)
-    - eslint mag kein autofocus attribut (ignoren oder anders handlen?)
-    - unordered list listen elemente funktionieren nicht
- */
 export class BadgeInputComponent implements ControlValueAccessor {
     @Input() label: string = ''
 
