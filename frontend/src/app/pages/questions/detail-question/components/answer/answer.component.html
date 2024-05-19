@@ -1,5 +1,5 @@
-<section>
-    <section class="flex">
+<div>
+    <div class="flex">
         <div class="flex flex-1 gap-4">
             <app-score-post
                 [disabled]="!authService.isLoggedIn()"
@@ -64,7 +64,7 @@
                     : 'invisible'
             "
         />
-    </section>
+    </div>
     <section
         [innerHTML]="answer.content"
         class="quill-js-content mt-1 leading-6"
@@ -80,7 +80,7 @@
         [questionId]="answer.id"
         [answerId]="answer.id"
     />
-</section>
+</div>
 <hlm-dialog
     [state]="deleteDialogOpen()"
     (closed)="deleteDialogOpen.set('closed')"
