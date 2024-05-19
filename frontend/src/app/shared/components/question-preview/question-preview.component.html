@@ -7,13 +7,18 @@
         </section>
     }
     <a routerLink="/questions/{{ question.id }}">
-        <h2 class="cursor-pointer text-xl font-semibold hover:underline">
+        <h2
+            class="line-clamp-3 cursor-pointer text-xl font-semibold hover:underline"
+        >
             {{ question.title }}
         </h2>
     </a>
 
     <!-- TODO: make innerHTML and style correctly -->
-    <div>{{ question.content }}</div>
+    <div
+        [innerHTML]="question.content"
+        class="quill-js-preview line-clamp-3"
+    ></div>
 
     <section class="flex flex-wrap items-center gap-1">
         <app-score-badge [score]="question.score" />
