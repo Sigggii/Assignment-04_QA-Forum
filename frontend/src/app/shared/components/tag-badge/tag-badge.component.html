@@ -1,6 +1,7 @@
 <div
     hlmBadge
     class="flex cursor-pointer gap-1 bg-accent pl-2 text-accent-foreground hover:bg-accent/80"
+    (click)="handleTagClick()"
 >
     <hlm-icon name="lucideHash" size="sm" />
     {{ tag }}

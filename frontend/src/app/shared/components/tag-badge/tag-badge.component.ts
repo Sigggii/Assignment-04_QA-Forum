@@ -1,8 +1,10 @@
-import { Component, Input } from '@angular/core'
+import { Component, inject, Input } from '@angular/core'
 import { HlmBadgeDirective } from '@spartan-ng/ui-badge-helm'
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm'
 import { provideIcons } from '@ng-icons/core'
 import { lucideHash } from '@ng-icons/lucide'
+import { Router } from '@angular/router'
+import { SearchService } from '../../../core/services/search.service'
 
 @Component({
     selector: 'app-tag-badge',
@@ -14,4 +16,23 @@ import { lucideHash } from '@ng-icons/lucide'
 })
 export class TagBadgeComponent {
     @Input({ required: true }) tag!: string
+
+    searchService = inject(SearchService)
+    router = inject(Router)
+
+    handleTagClick() {
+        const old = this.searchService.filter()
+        if (old.tags.includes(this.tag)) return
+
+        const filter = {
+            ...old,
+            tags: [...old.tags, this.tag],
+        }
+        this.router.navigate(['/questions'], {
+            queryParams: {
+                filter: encodeURIComponent(JSON.stringify(filter)),
+            },
+            queryParamsHandling: 'merge',
+        })
+    }
 }

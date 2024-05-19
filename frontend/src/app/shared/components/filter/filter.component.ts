@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core'
 import { BrnToggleDirective } from '@spartan-ng/ui-toggle-brain'
 import { HlmToggleDirective } from '@spartan-ng/ui-toggle-helm'
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm'
@@ -52,7 +52,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
     styleUrl: './filter.component.css',
     providers: [provideIcons({ lucideFilter })],
 })
-export class FilterComponent {
+export class FilterComponent implements OnInit {
     searchService = inject(SearchService)
 
     selectedSort: SearchFilter['sort'] = this.searchService.filter().sort
@@ -94,6 +94,12 @@ export class FilterComponent {
 
     toggleFilterCollapsible() {
         document.getElementById('collabsible')!.classList.toggle('hidden')
+    }
+
+    ngOnInit(): void {
+        this.searchService.filterObservable.subscribe(newValue => {
+            this.tagsForm.controls.tags.setValue(newValue.tags)
+        })
     }
 
     protected readonly sortOptions = sortOptions
