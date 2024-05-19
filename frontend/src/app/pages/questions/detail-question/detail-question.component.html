@@ -3,22 +3,35 @@
         <span>loading...</span>
     } @else if (questionQuery.status() === 'error') {
         <!-- ToDo handle error globaly with alert or so and maybe redirect -->
-            Error: {{ questionQuery!.error()?.message }}
+        Error: {{ questionQuery!.error()?.message }}
     }
     @if (questionQuery.data(); as question) {
         <app-question [question]="question" />
 
         <section class="mt-14">
-            <h2 class="text-2xl mb-2">{{question.answers.length}} Answers</h2>
-            <div class="flex flex-col gap-10 mt-5">
-            @for (answer of question.answers; track answer) {
-                <app-answer [answer]="answer" [questionAuthorId]="question.authorId"  (edit)="handleEditAnswer($event)" />
-            }
+            <h2 class="mb-2 text-2xl">{{ question.answers.length }} Answers</h2>
+            <div class="mt-5 flex flex-col gap-10">
+                @for (answer of question.answers; track answer) {
+                    <app-answer
+                        [answer]="answer"
+                        [questionAuthorId]="question.authorId"
+                        (edit)="handleEditAnswer($event)"
+                    />
+                }
             </div>
         </section>
-        <section #answerEditor *ngIf="authService.isPro()" class="mt-10 bg-background bottom-5" [ngClass]="answerEditorSticky? 'sticky' : ''">
-            <app-answer-editor [editAnswer]="editAnswer" (sticky)="handleAnswerEditorSticky($event)" (create)="handleCreateAnswer($event)" (cancel)="handleCancelAnswer()" />
+        <section
+            #answerEditor
+            *ngIf="authService.isPro()"
+            class="bottom-4 mt-10 bg-background md:bottom-8"
+            [ngClass]="answerEditorSticky ? 'sticky' : ''"
+        >
+            <app-answer-editor
+                [editAnswer]="editAnswer"
+                (sticky)="handleAnswerEditorSticky($event)"
+                (create)="handleCreateAnswer($event)"
+                (cancel)="handleCancelAnswer()"
+            />
         </section>
     }
-
 </section>

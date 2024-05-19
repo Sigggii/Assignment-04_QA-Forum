@@ -44,7 +44,7 @@ export class AuthService {
         return this.userInfo.data()
     }
 
-    checkMatchUserId = (userId: string): boolean => {
-        return this.userInfo.data()?.id === userId
+    checkEditRights = (userId: string): boolean => {
+        return this.userInfo.data()?.id === userId || this.isAdmin()
     }
 }

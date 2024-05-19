@@ -14,7 +14,9 @@ import { HlmButtonDirective } from '@spartan-ng/ui-button-helm'
 })
 export class ApprovedBadgeComponent {
     @Input() approved: boolean = false
-    @Output() approve: EventEmitter<boolean> = new EventEmitter<boolean>()
+    @Input({ required: true }) editable!: boolean
+    @Output()
+    approve: EventEmitter<boolean> = new EventEmitter<boolean>()
 
     handleClick = () => {
         const approved = !this.approved

@@ -42,6 +42,7 @@ export class DetailQuestionComponent {
                 answerId: this.editAnswer.id,
                 answer: answer,
             })
+            this.editAnswer = undefined
         } else {
             this.createAnswer.mutate({
                 questionId: this.questionId(),
