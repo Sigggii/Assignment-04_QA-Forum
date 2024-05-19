@@ -17,8 +17,8 @@ import { authenticationHandler, authorizationHandler } from './routes/authHandle
 import { userRoutes } from './routes/userRoutes'
 import { errorHandler } from './routes/errorHandling/errorHandler'
 import { ResponseError } from './routes/errorHandling/ResponseError'
+import fastifyStatic from '@fastify/static'
 
-// Add custom fields to Fastify types
 declare module 'fastify' {
     interface FastifyRequest {
         authUser: JWTPayload | undefined
@@ -87,7 +87,7 @@ fastify.addHook('onRequest', fastify.authenticate)
 fastify.setValidatorCompiler(validatorCompiler)
 fastify.setSerializerCompiler(serializerCompiler)
 
-fastify.register(require('@fastify/static'), {
+fastify.register(fastifyStatic, {
     root: path.join(__dirname, 'public'),
     prefix: '/', // optional: default '/'
 })
@@ -110,12 +110,11 @@ fastify.setNotFoundHandler((request, reply) => {
         throw new ResponseError({ status: 404, displayMessage: 'API route not found', errors: [] })
     } else {
         // Serve the index.html
-        //@ts-ignore
         return reply.status(200).sendFile('index.html')
     }
 })
 
-const { ADDRESS = 'localhost', PORT = '3000' } = process.env
+const { ADDRESS = 'localhost' } = process.env
 const start = async () => {
     try {
         await fastify.listen({ host: ADDRESS, port: getConfig().PORT })
