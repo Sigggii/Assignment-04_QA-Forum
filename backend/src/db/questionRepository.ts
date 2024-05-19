@@ -216,6 +216,7 @@ const answerQueryPartial = (id: UUID) =>
                 },
             },
         },
+        orderBy: (answers, { asc }) => [asc(answers.createdAt)],
         where: (answer, { eq }) => eq(answer.questionId, id),
     })
 
