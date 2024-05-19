@@ -68,10 +68,14 @@ fastify.setErrorHandler(errorHandler)
 fastify.register(cookie, {
     secret: getConfig().COOKIE_SECRET,
 })
-fastify.register(fastifyCors, {
-    origin: getConfig().CORS_ALLOWED_ORIGINS || '',
-    credentials: true,
-})
+
+const corsOrigins = getConfig().CORS_ALLOWED_ORIGINS
+if (corsOrigins) {
+    fastify.register(fastifyCors, {
+        origin: corsOrigins,
+        credentials: true,
+    })
+}
 
 fastify.register(auth)
 fastify.decorate('authenticate', authenticationHandler)
