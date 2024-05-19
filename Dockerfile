@@ -21,19 +21,22 @@ COPY backend/ .
 
 # Install dependencies for backend
 RUN npm install
+# Build Backend
+RUN npm run build
 # Copy static frontent to public folder in backend
-RUN cp -r /tmp/frontend/dist/frontend/browser/ public/
+RUN mkdir -p ./dist/src/public
+RUN cp -a /tmp/frontend/dist/frontend/browser/. ./dist/src/public/
+RUN ls -la ./dist/src/public
+
+
 
 # Define ENV Variables
+ENV ADDRESS=0.0.0.0
 ENV PORT=8080
 ENV NODE_ENV=production
-ENV JWT_SECRET="juifhaöqadiowjfknkjduzd)(wr2rud_qw289d)0382dfg2f2032823d"
-ENV COOKIE_SECRET="ijfwifioe?=2r2jm_w2830ca()2r2fm20990)=ß02ß32942=)893289r28398"
-ENV CORS_ALLOWED_ORIGINS="http://localhost:4200"
 
 # Start application \
 CMD ["npm", "run", "start-prod"]
 
-# Expose port
-EXPOSE 8080
+
 

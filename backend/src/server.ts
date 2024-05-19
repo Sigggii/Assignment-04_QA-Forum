@@ -16,6 +16,7 @@ import { JWTPayload, Role } from './shared/types'
 import { authenticationHandler, authorizationHandler } from './routes/authHandler'
 import { userRoutes } from './routes/userRoutes'
 import { errorHandler } from './routes/errorHandling/errorHandler'
+import { ResponseError } from './routes/errorHandling/ResponseError'
 
 // Add custom fields to Fastify types
 declare module 'fastify' {
@@ -84,29 +85,38 @@ fastify.addHook('onRequest', fastify.authenticate)
 fastify.setValidatorCompiler(validatorCompiler)
 fastify.setSerializerCompiler(serializerCompiler)
 
-export type BaseFastifyInstance = typeof fastify
-
 fastify.register(require('@fastify/static'), {
     root: path.join(__dirname, 'public'),
     prefix: '/', // optional: default '/'
 })
+
+export type BaseFastifyInstance = typeof fastify
 
 // Register routes
 const routes = async (fastify: BaseFastifyInstance) => {
     fastify.register(authRoutes, { prefix: 'auth' })
     fastify.register(userRoutes, { prefix: 'users' })
     fastify.register(questionRoutes, { prefix: 'questions' })
-    fastify.get('/', (res, rep) => {
-        rep.status(200).send()
-    })
 }
 
 // Set Base route
 fastify.register(routes, { prefix: '/api' })
 
+// Catch-all routes which are not found to serve spa
+fastify.setNotFoundHandler((request, reply) => {
+    if (request.url.startsWith('/api')) {
+        throw new ResponseError({ status: 404, displayMessage: 'API route not found', errors: [] })
+    } else {
+        // Serve the index.html
+        //@ts-ignore
+        return reply.status(200).sendFile('index.html')
+    }
+})
+
+const { ADDRESS = 'localhost', PORT = '3000' } = process.env
 const start = async () => {
     try {
-        await fastify.listen({ port: getConfig().PORT })
+        await fastify.listen({ host: ADDRESS, port: getConfig().PORT })
     } catch (err) {
         console.log(err)
     }
