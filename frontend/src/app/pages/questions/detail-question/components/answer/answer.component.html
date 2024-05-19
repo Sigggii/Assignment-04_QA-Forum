@@ -1,43 +1,71 @@
 <section>
     <section class="flex">
-        <div class="flex-1 flex gap-4">
-            <app-score-post [disabled]="!authService.isLoggedIn()" [score]="answer.score"
-                            [upvoted]="userVoteAnswerQuery.data()" (vote)="handleUpvote($event)" />
-            <div class="flex flex-col mt-2 justify-between pb-2">
-                <span class="flex gap-2 items-center">
-                    <app-rate-answer [currentRating]="userRatingAnswerQuery.data()" (rate)="handleRate($event)" /> |
-                    <app-answer-rating-badge showBestAnswer="false" [rating]="answer.rating" />
+        <div class="flex flex-1 gap-4">
+            <app-score-post
+                [disabled]="!authService.isLoggedIn()"
+                [score]="answer.score"
+                [upvoted]="userVoteAnswerQuery.data()"
+                (vote)="handleUpvote($event)"
+            />
+            <div class="mt-2 flex flex-col justify-between pb-2">
+                <span class="flex items-center gap-2">
+                    <app-rate-answer
+                        [currentRating]="userRatingAnswerQuery.data()"
+                        (rate)="handleRate($event)"
+                    />
+                    |
+                    <app-answer-rating-badge
+                        showBestAnswer="false"
+                        [rating]="answer.rating"
+                    />
                 </span>
-                    <span class="flex flex-wrap items-center gap-1">
-                        <app-user-badge [user]="answer.user"></app-user-badge>
-                        <span class="font-bold">·</span>
-                        <span class="text-sm text-foreground/80 font-bold">{{
-                                formatDateXTimeAgo(answer.createdAt)
-                            }}
-                            <span class="font-bold">·</span>
-                        </span>
-                        <span *ngIf="answer.lastEditedAt" class="flex items-center gap-1">
-
-                            <span class="text-sm text-foreground/80">{{
-                                    " modified: " + formatDateXTimeAgo(answer.lastEditedAt)
-                                }}
-                        </span>
-                            <span class="font-bold">·</span>
+                <span class="flex flex-wrap items-center gap-1">
+                    <app-user-badge [user]="answer.user"></app-user-badge>
+                    <span class="font-bold">·</span>
+                    <span class="text-sm font-bold text-foreground/80"
+                        >{{ formatDateXTimeAgo(answer.createdAt) }}
                     </span>
 
-                       <span *ngIf="authService.checkMatchUserId(answer.user.id)"
-                             class="flex items-center gap-3 ml-2">
-                           <button (click)="edit.emit(answer)"><hlm-icon size="sm" name="lucidePencil" /></button>
-                           <button (click)="deleteDialogOpen.set('open')"><hlm-icon
-                               size="sm" name="lucideTrash" />
-                           </button>
-                       </span>
+                    @if (answer.lastEditedAt) {
+                        <span class="font-bold">·</span>
+                        <div
+                            class="flex items-center gap-1 text-sm text-foreground/80"
+                        >
+                            <span class="font-semibold">{{ 'edited: ' }}</span>
+                            {{ formatDateXTimeAgo(answer.lastEditedAt) }}
+                        </div>
+                    }
+
+                    @if (authService.checkMatchUserId(answer.user.id)) {
+                        <span class="font-bold">·</span>
+                        <span class="ml-1 flex items-center gap-3">
+                            <button (click)="edit.emit(answer)">
+                                <hlm-icon size="sm" name="lucidePencil" />
+                            </button>
+                            <button (click)="deleteDialogOpen.set('open')">
+                                <hlm-icon size="sm" name="lucideTrash" />
+                            </button>
+                        </span>
+                    }
                 </span>
             </div>
         </div>
-        <app-approved-badge  (approve)="handleApproveAnswer($event)" [approved]="answer.approved" class="mt-2 mr-2 " [ngClass]="authService.checkMatchUserId(questionAuthorId) || answer.approved ? '' : 'invisible'" />
+        <app-approved-badge
+            (approve)="handleApproveAnswer($event)"
+            [approved]="answer.approved"
+            class="mr-2 mt-2"
+            [ngClass]="
+                authService.checkMatchUserId(questionAuthorId) ||
+                answer.approved
+                    ? ''
+                    : 'invisible'
+            "
+        />
     </section>
-    <section [innerHTML]="answer.content" class="mt-1 leading-6 quill-js-content"></section>
+    <section
+        [innerHTML]="answer.content"
+        class="quill-js-content mt-1 leading-6"
+    ></section>
     <hr
         class="mb-4 mt-2 h-[1px] border-t-0"
         [ngClass]="answer.user.role === 'NOOB' ? 'bg-noob' : 'bg-pro'"
@@ -50,13 +78,18 @@
         [answerId]="answer.id"
     />
 </section>
-<hlm-dialog [state]="deleteDialogOpen()" (closed)="deleteDialogOpen.set('closed')">
+<hlm-dialog
+    [state]="deleteDialogOpen()"
+    (closed)="deleteDialogOpen.set('closed')"
+>
     <hlm-dialog-content *brnDialogContent="let ctx">
         <hlm-dialog-header class="w-[250px]">
             <h3 hlmDialogTitle>Delete Answer?</h3>
         </hlm-dialog-header>
         <hlm-dialog-footer>
-            <button (click)="handleDeleteAnswer()" hlmBtn variant="destructive">Delete</button>
+            <button (click)="handleDeleteAnswer()" hlmBtn variant="destructive">
+                Delete
+            </button>
         </hlm-dialog-footer>
     </hlm-dialog-content>
 </hlm-dialog>

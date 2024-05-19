@@ -14,14 +14,17 @@
                 <span class="text-sm font-bold text-foreground/80">{{
                     formatDateXTimeAgo(question.createdAt)
                 }}</span>
-                <span class="font-bold">·</span>
-                <div
-                    *ngIf="question.lastEditedAt"
-                    class="flex items-center gap-1 text-sm text-foreground/80"
-                >
-                    <span class="font-semibold">{{ 'edited: ' }}</span>
-                    {{ formatDateXTimeAgo(question.lastEditedAt) }}
-                </div>
+
+                @if (question.lastEditedAt) {
+                    <span class="font-bold">·</span>
+                    <div
+                        class="flex items-center gap-1 text-sm text-foreground/80"
+                    >
+                        <span class="font-semibold">{{ 'edited: ' }}</span>
+                        {{ formatDateXTimeAgo(question.lastEditedAt) }}
+                    </div>
+                }
+
                 @if (authService.checkMatchUserId(question.user.id)) {
                     <span class="font-bold">·</span>
                     <section class="ml-1 flex flex-wrap items-center gap-3">
