@@ -121,13 +121,12 @@ export class AnswerComponent implements OnChanges {
         } else {
             if (this.answer.ratingsCount === 1) {
                 this.answer.rating = 0
-                return
+            } else {
+                this.answer.rating =
+                    (this.answer.rating * this.answer.ratingsCount -
+                        (rating.previousRating ?? 0)) /
+                    (this.answer.ratingsCount - 1)
             }
-
-            this.answer.rating =
-                (this.answer.rating * this.answer.ratingsCount -
-                    (rating.previousRating ?? 0)) /
-                (this.answer.ratingsCount - 1)
         }
 
         this.createRatingAnswer.mutate({

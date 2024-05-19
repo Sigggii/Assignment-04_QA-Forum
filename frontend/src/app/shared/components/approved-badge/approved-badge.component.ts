@@ -13,7 +13,7 @@ import { HlmButtonDirective } from '@spartan-ng/ui-button-helm'
     providers: [provideIcons({ lucideBadgeCheck })],
 })
 export class ApprovedBadgeComponent {
-    @Input() approved: boolean = false
+    @Input({ required: true }) approved!: boolean
     @Input({ required: true }) editable!: boolean
     @Output()
     approve: EventEmitter<boolean> = new EventEmitter<boolean>()
